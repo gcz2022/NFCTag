@@ -1,14 +1,20 @@
 package connection.client;
 
-import connection.json.JSONArray;
-import connection.json.JSONException;
-import connection.json.JSONObject;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
+
+import connection.json.JSONArray;
+import connection.json.JSONException;
+import connection.json.JSONObject;
+
 
 public class Client {
     public static final String SERVER_URL = "http://10.180.87.183//java/virtual_wallet/";
@@ -85,7 +91,7 @@ public class Client {
             return false;
         }
 
-        if (response.getResult().equals("success")) { // 验证通过
+        if (response.json.getBoolean("valid")) { // 验证通过
             this.logined = true;
             this.username = username;
             this.password = password;
@@ -356,3 +362,4 @@ class Response {
             return rawString;
     }
 }
+
