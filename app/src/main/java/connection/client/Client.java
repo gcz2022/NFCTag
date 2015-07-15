@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 
 public class Client {
-    public static final String SERVER_URL = "http://localhost/java/virtual_wallet/";
+    public static final String SERVER_URL = "http://10.180.87.183//java/virtual_wallet/";
     private static Client singleton;
 
     private boolean logined;
@@ -33,16 +33,16 @@ public class Client {
     }
 
     // test function
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Client client = Client.getClient();
 //        debug(client.register("du3", "du5"));
 //        debug(client.validate("du5", "du5"));
 //        debug(client.register("yang", "yang"));
 //        client.validate("yang", "yang");
 //        client.getUserInfo();
-        client.validate("shinima", "shinima");
+//        client.validate("shinima", "shinima");
 //        debug(client.getUserBalance());
-        debug(client.createItem("item0", null, "item0 description", 20));
+//        debug(client.createItem("item0", null, "item0 description", 20));
         debug(client.getItemInfo("item0", null));
 //        debug(client);
     }
@@ -52,14 +52,18 @@ public class Client {
      *
      * @param username 用户名
      * @param password 密码
-     * @return response
-     * @throws IOException
+     * @return response 如果response为null,表示发生了错误
      */
-    public Response register(String username, String password) throws IOException, JSONException {
-        JSONObject content = packActionData("register",
-                new JSONObject().put("username", username).put("password", password));
+    public Response register(String username, String password) {
+        try {
+            JSONObject content = packActionData("register",
+                    new JSONObject().put("username", username).put("password", password));
 
-        return jsonPost(content, Client.SERVER_URL);
+            return jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -68,13 +72,19 @@ public class Client {
      * @param username 用户名
      * @param password 密码
      * @return 如果验证通过, 返回true并设置相应的username,password, 否则返回false
-     * @throws IOException
      */
-    public boolean validate(String username, String password) throws IOException {
-        JSONObject content = packActionData("validate",
-                new JSONObject().put("username", username).put("password", password));
+    public boolean validate(String username, String password) {
+        Response response;
+        try {
+            JSONObject content = packActionData("validate",
+                    new JSONObject().put("username", username).put("password", password));
 
-        Response response = jsonPost(content, Client.SERVER_URL);
+            response = jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
         if (response.getResult().equals("success")) { // 验证通过
             this.logined = true;
             this.username = username;
@@ -95,25 +105,28 @@ public class Client {
     /**
      * 获取用户的信息
      *
-     * @return 如果用户的信息, 如果用户不存在, 返回null
-     * @throws IOException
+     * @return 返回包含用户信息的Response对象, 如果用户不存在或发生错误, 返回null
      */
-    public Response getUserInfo() throws IOException {
+    public Response getUserInfo() {
         if (!logined)
             return null;
-        JSONObject content = packActionData("getUserInfo",
-                addUserInfo(new JSONObject()));
+        try {
+            JSONObject content = packActionData("getUserInfo",
+                    addUserInfo(new JSONObject()));
 
-        return jsonPost(content, Client.SERVER_URL);
+            return jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
      * 获取用户的余额
      *
      * @return 出错返回-1,否则返回用户的余额(大于等于0)
-     * @throws IOException
      */
-    public int getUserBalance(Response response) throws IOException {
+    public int getUserBalance(Response response) {
         if (response == null || !response.getResult().equals("success")) {
             return -1;
         } else {
@@ -121,15 +134,16 @@ public class Client {
         }
     }
 
-    public int getUserBalance() throws IOException {
+    public int getUserBalance() {
         return getUserBalance(getUserInfo());
     }
 
     /**
      * 创建物品单
+     *
+     * @return response 如果出错,则返回null
      */
-    public Response createItem(String rawVal, String hashVal, String description, int price)
-            throws IOException {
+    public Response createItem(String rawVal, String hashVal, String description, int price) {
         if (!logined)
             return null;
         JSONObject data = addUserInfo(new JSONObject());
@@ -140,20 +154,32 @@ public class Client {
         data.put("description", description).put("price", price);
         JSONObject content = packActionData("createItem", data);
 
-        return jsonPost(content, Client.SERVER_URL);
+        try {
+            return jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
      * 获取物品单的信息
+     *
+     * @return response 如果出错,则返回null
      */
-    public Response getItemInfo(String rawVal, String hashVal) throws IOException {
+    public Response getItemInfo(String rawVal, String hashVal) {
         JSONObject data = new JSONObject();
         if (rawVal != null)
             data.put("rawVal", rawVal);
         if (hashVal != null)
             data.put("hashVal", hashVal);
         JSONObject content = packActionData("getItemInfo", data);
-        return jsonPost(content, Client.SERVER_URL);
+        try {
+            return jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean isLogined() {
@@ -196,7 +222,6 @@ public class Client {
 
     // debug function
     static void debugToFile(String content) throws IOException {
-//        System.out.println(content);
         FileWriter writer = new FileWriter(new File("C:\\Users\\sfc84\\.IdeaIC14\\config\\scratches\\scratch"));
         writer.write(content);
         writer.close();
@@ -240,7 +265,7 @@ public class Client {
         connection.setRequestProperty("Content-type",
                 "application/x-www-form-urlencoded");
         connection.setRequestProperty("accept", "*/*");
-        connection.setRequestProperty("connection/connect", "Keep-Alive");
+        connection.setRequestProperty("connection", "Keep-Alive");
         // connection.connect(); // connection.setDoOutput(true)将调用connect(),故connect()可以省略
         DataOutputStream out = new DataOutputStream(connection.getOutputStream());
         out.writeBytes(content);
@@ -254,11 +279,11 @@ public class Client {
         reader.close();
         connection.disconnect();
 
-        debugToFile(result);
+//        debugToFile(result);
         return new Response(result);
     }
 
-    private static JSONObject packActionData(String action, JSONObject data) throws IOException {
+    private static JSONObject packActionData(String action, JSONObject data) {
         return new JSONObject().put("action", action).put("data", data);
     }
 
