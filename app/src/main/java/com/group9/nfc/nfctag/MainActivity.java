@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 //        textView.setTextSize(40);
 //        if(account.equals("admin"))
 //        {
-//            textView.setText("admin");
+//            textView.setTe"admin");
 //        }
 //        else
 //        {
