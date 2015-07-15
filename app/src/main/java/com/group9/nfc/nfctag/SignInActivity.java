@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class SignInActivity extends ActionBarActivity {
@@ -42,13 +43,21 @@ public class SignInActivity extends ActionBarActivity {
     }
     public void signIn(View view)
     {
-        Intent intent=new Intent(this, MainActivity.class);
+        Intent intent;
 
         EditText account=(EditText)findViewById(R.id.account);
         EditText password=(EditText)findViewById(R.id.password);
 
-        intent.putExtra("account", account.getText().toString());
-        intent.putExtra("password", password.getText().toString());
+        if(account.getText().toString().equals("admin"))
+        {
+            intent=new Intent(this, MainActivity.class);
+            Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            intent=new Intent(this, MainActivity2.class);
+            Toast.makeText(this, "User sign in succeed", Toast.LENGTH_LONG).show();
+        }
 
         startActivity(intent);
     }

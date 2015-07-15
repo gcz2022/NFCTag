@@ -2,23 +2,20 @@ package com.group9.nfc.nfctag;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity2 extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private Button buttonRead;
@@ -30,12 +27,12 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        mTitle = "admin";
+        mTitle = "user";
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -56,8 +53,6 @@ public class MainActivity extends ActionBarActivity
 //            }
 //        });
 
-        Intent intent = getIntent();
-        String account = intent.getStringExtra("account");
 //        TextView textView=(TextView)findViewById(R.id.title);
 //        textView.setTextSize(40);
 //        if(account.equals("admin"))
@@ -165,7 +160,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
+            ((MainActivity2) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
