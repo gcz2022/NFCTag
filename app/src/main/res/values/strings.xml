@@ -8,9 +8,15 @@
     <string name="title_activity_display_message">After sign in</string>
     <string name="title_activity_sign_in">Sign in</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">我的账户</string>
+    <string name="title_section2">商品入库</string>
+    <string name="title_section3">用户消费</string>
+    <string name="title_section4">设置</string>
+
+    <string name="title_section2_1">我的账户</string>
+    <string name="title_section2_2">支付</string>
+    <string name="title_section2_3">充值</string>
+    <string name="title_section2_4">设置</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

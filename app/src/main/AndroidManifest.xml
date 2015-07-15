@@ -57,10 +57,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".DisplayMessageActivity"
-            android:label="@string/title_activity_display_message" >
-        </activity>
-        <activity
             android:name=".SignInActivity"
             android:label="Sign in"
             >

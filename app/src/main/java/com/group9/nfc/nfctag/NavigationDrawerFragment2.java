@@ -1,7 +1,6 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,14 +20,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment2 extends Fragment {
 
     /**
      * Remember the position of the selected item.
@@ -64,7 +62,7 @@ public class NavigationDrawerFragment extends Fragment {
     {
         this.type=type;
     }
-    public NavigationDrawerFragment() {
+    public NavigationDrawerFragment2() {
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,9 +104,9 @@ public class NavigationDrawerFragment extends Fragment {
 
         str[0]=getString(R.string.title_section1);
 
-        str[1]=getString(R.string.title_section2);
+        str[1]=getString(R.string.title_section2_2);
 
-        str[2]=getString(R.string.title_section3);
+        str[2]=getString(R.string.title_section2_3);
 
         str[3]=getString(R.string.title_section4);
 
