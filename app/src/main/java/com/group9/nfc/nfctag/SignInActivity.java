@@ -1,20 +1,27 @@
 package com.group9.nfc.nfctag;
 
+import connection.client.Client;
+
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.PasswordAuthentication;
+
+import javax.xml.validation.Validator;
 
 public class SignInActivity extends ActionBarActivity {
+    Boolean result = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
@@ -41,24 +48,58 @@ public class SignInActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void signIn(View view)
-    {
+
+    public void signIn(View view) {
+        AccessClient accessClient = new AccessClient(this);
+        accessClient.start();
+        try {
+            accessClient.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (result) {
+            EditText account = (EditText) findViewById(R.id.account);
+            if (account.getText().toString().equals("admin")) {
+                Intent intent = new Intent(this, MainActivity.class);
+                Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, MainActivity2.class);
+                Toast.makeText(this, "User :" + account.getText().toString() + " sign in succeed", Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+        } else {
+            Toast.makeText(this, "input again", Toast.LENGTH_LONG).show();
+        }
+//        if(account.getText().toString().equals("admin"))
+//        {
+//            intent=new Intent(this, MainActivity.class);
+//            Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
+//        }
+//        else
+//        {
+//            intent=new Intent(this, MainActivity2.class);
+//            Toast.makeText(this, "User sign in succeed", Toast.LENGTH_LONG).show();
+//        }
+    }
+}
+
+class AccessClient extends Thread {
+    SignInActivity activity;
+
+    public AccessClient(SignInActivity activity) {
+        this.activity = activity;
+    }
+
+    public void run() {
         Intent intent;
-
-        EditText account=(EditText)findViewById(R.id.account);
-        EditText password=(EditText)findViewById(R.id.password);
-
-        if(account.getText().toString().equals("admin"))
-        {
-            intent=new Intent(this, MainActivity.class);
-            Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            intent=new Intent(this, MainActivity2.class);
-            Toast.makeText(this, "User sign in succeed", Toast.LENGTH_LONG).show();
-        }
-
-        startActivity(intent);
+        Client client = Client.getClient();
+        EditText account = (EditText) activity.findViewById(R.id.account);
+        EditText password = (EditText) activity.findViewById(R.id.password);
+        String username = account.getText().toString();
+        String pwd = password.getText().toString();
+        Log.i("Android", "username is " + username + "  password is " + pwd);
+        activity.result = client.validate(username, pwd);
     }
 }
