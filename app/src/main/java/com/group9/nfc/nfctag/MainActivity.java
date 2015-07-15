@@ -29,48 +29,74 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+        mNavigationDrawerFragment=new NavigationDrawerFragment();
+        mNavigationDrawerFragment.setType("admin");
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
         mTitle = getTitle();
         mTitle = "admin";
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-//        buttonWrite = (Button)findViewById(R.id.buttonWrite);
-//        buttonWrite.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, WriteTagActivity.class));
-//            }
-//        });
-//
-//        buttonRead = (Button)findViewById(R.id.buttonRead);
-//        buttonRead.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, ReadTagActivity.class));
-//            }
-//        });
+        buttonWrite = (Button)findViewById(R.id.buttonWrite);
+        buttonWrite.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WriteTagActivity.class));
+            }
+        });
 
-        Intent intent = getIntent();
-        String account = intent.getStringExtra("account");
-//        TextView textView=(TextView)findViewById(R.id.title);
-//        textView.setTextSize(40);
-//        if(account.equals("admin"))
-//        {
-//            textView.setTe"admin");
-//        }
-//        else
-//        {
-//            textView.s
-//        }
+        buttonRead = (Button)findViewById(R.id.buttonRead);
+        buttonRead.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ReadTagActivity.class));
+            }
+        });
+
+
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        super.onRestoreInstanceState(savedInstanceState);
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -90,6 +116,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
                 break;
         }
     }

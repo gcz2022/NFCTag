@@ -15,27 +15,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import static com.group9.nfc.nfctag.R.id.navigation_drawer;
+
 public class MainActivity2 extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment2.NavigationDrawerCallbacks {
 
     private Button buttonRead;
     private Button buttonWrite;
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragment2 mNavigationDrawerFragment;
 
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main2);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment2)
+                getSupportFragmentManager().findFragmentById(navigation_drawer);
+
         mTitle = getTitle();
         mTitle = "user";
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
+                navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 //        buttonWrite = (Button)findViewById(R.id.buttonWrite);
 //        buttonWrite.setOnClickListener(new OnClickListener() {
@@ -78,13 +83,16 @@ public class MainActivity2 extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_section2_1);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_section2_2);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.title_section2_3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section2_4);
                 break;
         }
     }

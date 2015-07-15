@@ -44,7 +44,7 @@ tools:context=".MainActivity">
 <fragment android:id="@+id/navigation_drawer"
     android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:name="com.group9.nfc.nfctag.NavigationDrawerFragment"
+    android:name="com.group9.nfc.nfctag.NavigationDrawerFragment2"
     tools:layout="@layout/fragment_navigation_drawer" />
 
 
