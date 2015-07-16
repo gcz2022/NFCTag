@@ -11,13 +11,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
-import connection.json.JSONArray;
 import connection.json.JSONException;
 import connection.json.JSONObject;
 
-
 public class Client {
-    public static final String SERVER_URL = "http://10.180.87.183//java/virtual_wallet/";
+    //    public static final String SERVER_URL = "http://localhost/java/virtual_wallet/index.php";
+    public static final String SERVER_URL = "http://virtualwallet.sinaapp.com/";
     private static Client singleton;
 
     private boolean logined;
@@ -40,17 +39,50 @@ public class Client {
 
     // test function
     public static void main(String[] args) {
-        Client client = Client.getClient();
-//        debug(client.register("du3", "du5"));
-//        debug(client.validate("du5", "du5"));
-//        debug(client.register("yang", "yang"));
-//        client.validate("yang", "yang");
-//        client.getUserInfo();
-//        client.validate("shinima", "shinima");
+//        Client client = Client.getClient();
+//        debug(client.validate("yty", "yty"));
+//
+//        Response getBillsResponse = client.getBills();
+//        if (getBillsResponse.getResult().equals("success")) {
+//            debug(getBillsResponse.json.getJSONArray("bills").toString(4));
+//        } else {
+//            debug(getBillsResponse.getErrorMsg());
+//        }
+//        debug(client.getUserInfo());
+//        debug(client.buyItem(1, 1));
 //        debug(client.getUserBalance());
-//        debug(client.createItem("item0", null, "item0 description", 20));
-        debug(client.getItemInfo("item0", null));
+//        debug(client.createItem("item1", null, "item1", "item1 description", 20));
+//        debug(client.getItemInfo("item1", null));
 //        debug(client);
+        test1(true);
+    }
+
+    public static void test1(boolean firstTime) {
+        Client client = Client.getClient();
+        if (firstTime) {
+            debug(client.register("t1-admin", "t1-admin"));
+        }
+        debug(client.validate("t1-admin", "t1-admin"));
+        if (firstTime) {
+            debug(client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1));
+            debug(client.createItem("t1-item2", "t1-item2", "t1-item2 description", 1));
+        }
+
+        client.logout();
+        // 切换到顾客
+        if (firstTime) {
+            debug(client.register("t1-user", "t1-user"));
+        }
+        debug(client.validate("t1-user", "t1-user"));
+        Response itemInfo = client.getItemInfo("t1-item1");
+        debug(itemInfo);
+        if (itemInfo.getResult().equals("success")) {
+            int itemId = itemInfo.json.getJSONObject("itemInfo").getInt("id");
+            debug(client.buyItem(itemId, 1));
+            debug(client.buyItem(itemId, 2));
+        }
+        debug(client.getBills());
+
     }
 
     /**
@@ -58,7 +90,7 @@ public class Client {
      *
      * @param username 用户名
      * @param password 密码
-     * @return response 如果response为null,表示发生了错误
+     * @return response
      */
     public Response register(String username, String password) {
         try {
@@ -68,7 +100,7 @@ public class Client {
             return jsonPost(content, Client.SERVER_URL);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return Response.Prefab.connectionError();
         }
     }
 
@@ -88,6 +120,11 @@ public class Client {
             response = jsonPost(content, Client.SERVER_URL);
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+        }
+        if (response.getResult().equals("error")) { // 服务返回了非json串,json解析出错
+            debug(response.getErrorMsg());
+            debug(response.getRawString());
             return false;
         }
 
@@ -111,11 +148,12 @@ public class Client {
     /**
      * 获取用户的信息
      *
-     * @return 返回包含用户信息的Response对象, 如果用户不存在或发生错误, 返回null
+     * @return 返回包含用户信息的Response对象, 如果用户不存在或发生错误, 返回对应错误信息
      */
     public Response getUserInfo() {
-        if (!logined)
-            return null;
+        if (!logined) {
+            return Response.Prefab.needValidate();
+        }
         try {
             JSONObject content = packActionData("getUserInfo",
                     addUserInfo(new JSONObject()));
@@ -123,7 +161,20 @@ public class Client {
             return jsonPost(content, Client.SERVER_URL);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return Response.Prefab.connectionError();
+        }
+    }
+
+    public Response getBills() {
+        if (!logined) {
+            return Response.Prefab.needValidate();
+        }
+        try {
+            JSONObject content = packActionData("getBills", addUserInfo(new JSONObject()));
+            return jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.Prefab.connectionError();
         }
     }
 
@@ -132,7 +183,8 @@ public class Client {
      *
      * @return 出错返回-1,否则返回用户的余额(大于等于0)
      */
-    public int getUserBalance(Response response) {
+    public int getUserBalance() {
+        Response response = getUserInfo();
         if (response == null || !response.getResult().equals("success")) {
             return -1;
         } else {
@@ -140,51 +192,62 @@ public class Client {
         }
     }
 
-    public int getUserBalance() {
-        return getUserBalance(getUserInfo());
-    }
-
     /**
      * 创建物品单
      *
-     * @return response 如果出错,则返回null
+     * @return response
      */
-    public Response createItem(String rawVal, String hashVal, String description, int price) {
-        if (!logined)
-            return null;
-        JSONObject data = addUserInfo(new JSONObject());
-        if (rawVal != null)
-            data.put("rawVal", rawVal);
-        if (hashVal != null)
-            data.put("hashVal", hashVal);
-        data.put("description", description).put("price", price);
+    public Response createItem(String rawVal, String name, String description, int price) {
+        if (!logined) {
+            return Response.Prefab.needValidate();
+        }
+        JSONObject data = addUserInfo(new JSONObject()).put("rawVal", rawVal);
+        data.put("name", name).put("description", description).put("price", price);
         JSONObject content = packActionData("createItem", data);
 
         try {
             return jsonPost(content, Client.SERVER_URL);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return Response.Prefab.connectionError();
         }
     }
 
     /**
-     * 获取物品单的信息
+     * 购买物品
      *
-     * @return response 如果出错,则返回null
+     * @param itemId 购买的商品id
+     * @param amount 购买数量
+     * @return response
      */
-    public Response getItemInfo(String rawVal, String hashVal) {
-        JSONObject data = new JSONObject();
-        if (rawVal != null)
-            data.put("rawVal", rawVal);
-        if (hashVal != null)
-            data.put("hashVal", hashVal);
+    public Response buyItem(int itemId, int amount) {
+        if (!logined) {
+            return Response.Prefab.needValidate();
+        }
+        JSONObject data = addUserInfo(new JSONObject());
+        data.put("itemId", itemId).put("amount", amount);
+        JSONObject content = packActionData("buyItem", data);
+
+        try {
+            return jsonPost(content, Client.SERVER_URL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.Prefab.connectionError();
+        }
+
+    }
+
+    /**
+     * 获取物品单的信息
+     */
+    public Response getItemInfo(String rawVal) {
+        JSONObject data = new JSONObject().put("rawVal", rawVal);
         JSONObject content = packActionData("getItemInfo", data);
         try {
             return jsonPost(content, Client.SERVER_URL);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return Response.Prefab.connectionError();
         }
     }
 
@@ -206,7 +269,7 @@ public class Client {
             return null;
     }
 
-    public int getuserId() {
+    public int getUserId() {
         if (logined)
             return userId;
         else
@@ -221,39 +284,35 @@ public class Client {
         return data;
     }
 
+    // test function
     public String toString() {
         return "logined:" + logined + "\nuserId:" +
                 userId + "\nusername:" + username + "\npassword:" + password;
     }
 
     // debug function
-    static void debugToFile(String content) throws IOException {
-        FileWriter writer = new FileWriter(new File("C:\\Users\\sfc84\\.IdeaIC14\\config\\scratches\\scratch"));
-        writer.write(content);
-        writer.close();
+    static void debugToFile(String content) {
+        File file = new File("C:\\Users\\sfc84\\.IdeaIC14\\config\\scratches\\scratch");
+        try {
+            FileWriter writer = new FileWriter(file);
+            writer.write(content);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // debug function
     static void debug(Object... objects) {
+        String seprator = "";
         for (Object object : objects) {
             if (object != null)
-                System.out.print(object.toString() + " ");
+                System.out.print(seprator + object.toString());
             else
                 System.out.print("null ");
+            seprator = " ";
         }
         System.out.println();
-    }
-
-    // test function
-    static void test1() throws IOException {
-        Client client = Client.getClient();
-        JSONObject data = new JSONObject();
-        data.put("aaa", "bbb").put("hello", "world");
-        JSONArray array1 = new JSONArray();
-        array1.put(1).put(2).put(3);
-        data.put("array", array1);
-        System.out.println(data.toString());
-        System.out.println(client.jsonPost(data, Client.SERVER_URL));
     }
 
     Response jsonPost(JSONObject jsonObject, String serverUrl) throws IOException {
@@ -330,6 +389,18 @@ class Response {
     private String result, errorMsg, rawString;
     public JSONObject json;
 
+    static class Prefab {
+        static Response needValidate() {
+            return new Response(new JSONObject().put("result", "error")
+                    .put("errorMsg", "Call validate() first!").toString());
+        }
+
+        static Response connectionError() {
+            return new Response(new JSONObject().put("result", "error")
+                    .put("errorMsg", "Connection failed.").toString());
+        }
+    }
+
     public Response(String string) {
         rawString = string;
         try {
@@ -340,6 +411,8 @@ class Response {
             }
         } catch (JSONException e) {
             json = null;
+            result = "error";
+            errorMsg = "Server responds a non-JSON string or an invalid JSON string.";
         }
     }
 
@@ -362,4 +435,3 @@ class Response {
             return rawString;
     }
 }
-
