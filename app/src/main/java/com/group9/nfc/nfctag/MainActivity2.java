@@ -1,7 +1,6 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,10 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import android.view.View.OnClickListener;
+import connection.client.Client;
 
+import static com.group9.nfc.nfctag.R.id.balance;
 import static com.group9.nfc.nfctag.R.id.navigation_drawer;
+import static com.group9.nfc.nfctag.R.id.textView;
 
 public class MainActivity2 extends ActionBarActivity
         implements NavigationDrawerFragment2.NavigationDrawerCallbacks {
@@ -26,7 +29,6 @@ public class MainActivity2 extends ActionBarActivity
     private Button buttonRead;
     private Button buttonWrite;
     private NavigationDrawerFragment2 mNavigationDrawerFragment;
-
     private CharSequence mTitle;
 
     @Override
@@ -100,6 +102,8 @@ public class MainActivity2 extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Client.getClient().logout();
+            startActivity(new Intent(this, SignInActivity.class));
             return true;
         }
 
@@ -110,11 +114,15 @@ public class MainActivity2 extends ActionBarActivity
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        private int account_balance;
+        private TextView textAccountName;
+        private TextView textAccountBalance;
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_BALANCE = "account_balance";
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -136,18 +144,27 @@ public class MainActivity2 extends ActionBarActivity
                                  Bundle savedInstanceState) {
             int select = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView = null;
-            switch (select){
+            switch (select) {
                 case 1:
-                     rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                    account_balance = new Client.AsnyRequest(){
+                        public Client.Response getResponse() {
+                            return Client.getClient().getUserInfo();
+                        }
+                    }.post().helpler.getUserBalance();
+                    rootView = inflater.inflate(R.layout.fragment_account, container, false);
+                    textAccountName = (TextView) rootView.findViewById(R.id.accountName);
+                    textAccountName.setText(Client.getClient().getUsername());
+                    textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
+                    textAccountBalance.setText(String.valueOf(account_balance));
                     break;
                 case 2:
-                     rootView = inflater.inflate(R.layout.fragment_pay, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_pay, container, false);
                     break;
                 case 3:
-                     rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
                     break;
                 case 4:
-                     rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_settings, container, false);
                     break;
             }
             return rootView;

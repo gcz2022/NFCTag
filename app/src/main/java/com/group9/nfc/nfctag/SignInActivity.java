@@ -52,15 +52,16 @@ public class SignInActivity extends ActionBarActivity {
             }
         }.post();
         if (Client.getClient().isLogined()) {
-            // Client.getClient().getUsername(); // ÓÃ¸Ãº¯Êý¿ÉÒÔ»ñÈ¡µ½µÇÂ¼ÓÃ»§µÄÕËºÅ
+            // Client.getClient().getUsername(); // ï¿½Ã¸Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ëºï¿½
             if (username.equals("admin")) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
                 startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, MainActivity2.class);
+                Toast.makeText(this, "User :" + username + " sign in succeed", Toast.LENGTH_LONG).show();
+                startActivity(intent);
             }
-            Intent intent = new Intent(this, MainActivity2.class);
-            Toast.makeText(this, "User :" + username + " sign in succeed", Toast.LENGTH_LONG).show();
-            startActivity(intent);
         } else {
 //            Toast.makeText(this, "input again", Toast.LENGTH_LONG).show();
             Toast.makeText(this, response.getErrorMsg(), Toast.LENGTH_LONG).show();
