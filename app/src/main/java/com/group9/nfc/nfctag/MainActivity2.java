@@ -38,7 +38,6 @@ public class MainActivity2 extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment2)
                 getSupportFragmentManager().findFragmentById(navigation_drawer);
-
         mTitle = getTitle();
         mTitle = "user";
         // Set up the drawer.
@@ -61,18 +60,6 @@ public class MainActivity2 extends ActionBarActivity
                 startActivity(new Intent(MainActivity2.this, ReadTagActivity.class));
             }
         });
-
-//        TextView textView=(TextView)findViewById(R.id.title);
-//        textView.setTextSize(40);
-//        if(account.equals("admin"))
-//        {
-//            textView.setTe"admin");
-//        }
-//        else
-//        {
-//            textView.s
-//        }
-
     }
 
     @Override
