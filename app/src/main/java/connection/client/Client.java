@@ -364,7 +364,7 @@ public class Client {
         return builder.toString();
     }
 
-    abstract static class AsnyRequest implements Runnable {
+    public abstract static class AsnyRequest implements Runnable {
         private Response response;
 
         @Override
@@ -391,7 +391,7 @@ public class Client {
         }
     }
 
-    static class Response {
+    public static class Response {
         public static final boolean autoDebug = true;
         public Helpler helpler;
         private String result, errorMsg, rawString;
