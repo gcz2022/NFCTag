@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import connection.client.Client;
@@ -30,6 +31,8 @@ public class MainActivity extends ActionBarActivity
     private TextView accountTextView;
     private TextView balanceTextView;
     private TextView balanceTitleTextView;
+
+    private LinearLayout myAccount;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -49,6 +52,8 @@ public class MainActivity extends ActionBarActivity
 
         account=intent.getStringExtra("account");
 
+        myAccount=(LinearLayout)findViewById(R.id.myAccount);
+
         accountTextView=(TextView)findViewById(R.id.accountName);
         accountTextView.setText(account);
         accountTextView.setTextSize(25);
@@ -57,10 +62,17 @@ public class MainActivity extends ActionBarActivity
 
         balanceTextView=(TextView)findViewById(R.id.balance);
 
-        Client client = Client.getClient();
-        String balanceNum=String.valueOf(client.getUserBalance());
 
-        balanceTextView.setText("111");
+
+        Client.Response response = new Client.AsnyRequest() {
+            public Client.Response getResponse(){
+                return Client.getClient().getUserInfo();
+            }
+        }.post();
+
+        String balanceNum=String.valueOf(response.helpler.getUserBalance());
+
+        balanceTextView.setText(balanceNum);
         balanceTextView.setTextSize(25);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -131,20 +143,20 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
     }
+    public void setVisible(int number)
+    {
 
+    }
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                accountTextView.setVisibility(View.VISIBLE);
-                balanceTextView.setVisibility(View.VISIBLE);
-                balanceTitleTextView.setVisibility(View.VISIBLE);
+                myAccount.setVisibility(View.VISIBLE);
 
                 mTitle = getString(R.string.title_section1);
                 break;
             case 2:
-                accountTextView.setVisibility(View.GONE);
-                balanceTextView.setVisibility(View.GONE);
-                balanceTitleTextView.setVisibility(View.GONE);
+                myAccount.setVisibility(View.INVISIBLE);
+
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:

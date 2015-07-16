@@ -42,10 +42,10 @@ public class Client {
 
     // test function
     public static void main(String[] args) {
-        Client client = Client.getClient();
+        final Client client = Client.getClient();
 
         Response response = new AsnyRequest() {
-            Response getResponse() {
+            public Response getResponse() {
                 client.validate("yty", "yty");
                 return client.getUserInfo();
             }
@@ -56,9 +56,10 @@ public class Client {
     }
 
     // test function
-    public static void test1(boolean firstTime) {
+    public static void test1(boolean first) {
+        final boolean firstTime = first;
         new AsnyRequest() {
-            Response getResponse() {
+            public Response getResponse() {
                 Client client = Client.getClient();
                 if (firstTime) {
                     client.register("t1-admin", "t1-admin");
@@ -364,7 +365,7 @@ public class Client {
         return builder.toString();
     }
 
-    abstract static class AsnyRequest implements Runnable {
+    public abstract static class AsnyRequest implements Runnable {
         private Response response;
 
         @Override
@@ -372,7 +373,7 @@ public class Client {
             response = getResponse();
         }
 
-        abstract Response getResponse();
+        public abstract Response getResponse();
 
         /**
          * 发送一个异步请求
@@ -391,7 +392,7 @@ public class Client {
         }
     }
 
-    static class Response {
+    public static class Response {
         public static final boolean autoDebug = true;
         public Helpler helpler;
         private String result, errorMsg, rawString;

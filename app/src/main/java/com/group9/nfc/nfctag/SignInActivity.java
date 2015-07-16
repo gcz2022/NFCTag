@@ -58,14 +58,13 @@ public class SignInActivity extends ActionBarActivity {
             e.printStackTrace();
             return;
         }
-        if (result) {
+        if (Client.getClient().isLogined()) {
             EditText account = (EditText) findViewById(R.id.account);
             if (account.getText().toString().equals("admin")) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
 
-                intent.putExtra("account", "admin");
-
+                intent.putExtra("account", account.getText().toString());
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, MainActivity2.class);
@@ -106,6 +105,6 @@ class AccessClient extends Thread {
         String username = account.getText().toString();
         String pwd = password.getText().toString();
         Log.i("Android", "username is " + username + "  password is " + pwd);
-        activity.result = client.validate(username, pwd);
+        client.validate(username, pwd);
     }
 }
