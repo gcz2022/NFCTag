@@ -1,6 +1,7 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import android.view.View.OnClickListener;
 
 import static com.group9.nfc.nfctag.R.id.navigation_drawer;
 
@@ -42,21 +45,22 @@ public class MainActivity2 extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-//        buttonWrite = (Button)findViewById(R.id.buttonWrite);
-//        buttonWrite.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, WriteTagActivity.class));
-//            }
-//        });
-//
-//        buttonRead = (Button)findViewById(R.id.buttonRead);
-//        buttonRead.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, ReadTagActivity.class));
-//            }
-//        });
+        buttonWrite = (Button)findViewById(R.id.buttonWrite);
+        buttonWrite.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity2.this, WriteTagActivity.class));
+            }
+        });
+
+        buttonRead = (Button)findViewById(R.id.buttonRead);
+        buttonRead.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity2.this, ReadTagActivity.class));
+            }
+        });
 
 //        TextView textView=(TextView)findViewById(R.id.title);
 //        textView.setTextSize(40);
