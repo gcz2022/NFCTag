@@ -1,25 +1,17 @@
 package com.group9.nfc.nfctag;
 
-import connection.client.Client;
-
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.PasswordAuthentication;
-
-import javax.xml.validation.Validator;
+import connection.client.Client;
 
 public class SignInActivity extends ActionBarActivity {
-    Boolean result = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,61 +42,28 @@ public class SignInActivity extends ActionBarActivity {
     }
 
     public void signIn(View view) {
-        AccessClient accessClient = new AccessClient(this);
-        accessClient.start();
-        try {
-            accessClient.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return;
-        }
+        EditText accountView = (EditText) findViewById(R.id.account);
+        EditText passwordView = (EditText) findViewById(R.id.password);
+        final String username = accountView.getText().toString();
+        final String password = passwordView.getText().toString();
+        Client.Response response = new Client.AsnyRequest() {
+            public Client.Response getResponse() {
+                return Client.getClient().validate(username, password);
+            }
+        }.post();
         if (Client.getClient().isLogined()) {
-            EditText account = (EditText) findViewById(R.id.account);
-            if (account.getText().toString().equals("admin")) {
+            // Client.getClient().getUsername(); // 用该函数可以获取到登录用户的账号
+            if (username.equals("admin")) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
-
-                intent.putExtra("account", account.getText().toString());
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(this, MainActivity2.class);
-                Toast.makeText(this, "User :" + account.getText().toString() + " sign in succeed", Toast.LENGTH_LONG).show();
-
-                intent.putExtra("account", account.getText().toString());
-
                 startActivity(intent);
             }
+            Intent intent = new Intent(this, MainActivity2.class);
+            Toast.makeText(this, "User :" + username + " sign in succeed", Toast.LENGTH_LONG).show();
+            startActivity(intent);
         } else {
-            Toast.makeText(this, "input again", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "input again", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, response.getErrorMsg(), Toast.LENGTH_LONG).show();
         }
-//        if(account.getText().toString().equals("admin"))
-//        {
-//            intent=new Intent(this, MainActivity.class);
-//            Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
-//        }
-//        else
-//        {
-//            intent=new Intent(this, MainActivity2.class);
-//            Toast.makeText(this, "User sign in succeed", Toast.LENGTH_LONG).show();
-//        }
-    }
-}
-
-class AccessClient extends Thread {
-    SignInActivity activity;
-
-    public AccessClient(SignInActivity activity) {
-        this.activity = activity;
-    }
-
-    public void run() {
-        Intent intent;
-        Client client = Client.getClient();
-        EditText account = (EditText) activity.findViewById(R.id.account);
-        EditText password = (EditText) activity.findViewById(R.id.password);
-        String username = account.getText().toString();
-        String pwd = password.getText().toString();
-        Log.i("Android", "username is " + username + "  password is " + pwd);
-        client.validate(username, pwd);
     }
 }
