@@ -43,50 +43,46 @@ public class Client {
     // test function
     public static void main(String[] args) {
         Client client = Client.getClient();
-        client.validate("admin", "admin");
-        client.getUserBalance();
-//
-//        Response getBillsResponse = client.getBills();
-//        if (getBillsResponse.getResult().equals("success")) {
-//            debug(getBillsResponse.json.getJSONArray("bills").toString(4));
-//        } else {
-//            debug(getBillsResponse.getErrorMsg());
-//        }
-//        debug(client.getUserInfo());
-//        debug(client.buyItem(1, 1));
-//        debug(client.getUserBalance());
-//        debug(client.createItem("item1", null, "item1", "item1 description", 20));
-//        debug(client.getItemInfo("item1", null));
-//        debug(client);
-//        test1(true);
+
+        Response response = new AsnyRequest() {
+            Response getResponse() {
+                client.validate("yty", "yty");
+                return client.getUserInfo();
+            }
+        }.post();
+        debug(response.helpler.getUserBalance());
+        debug(client.isLogined());
+//     test1(false);
     }
 
     // test function
     public static void test1(boolean firstTime) {
-        Client client = Client.getClient();
-        if (firstTime) {
-            client.register("t1-admin", "t1-admin");
-        }
-        debug(client.validate("t1-admin", "t1-admin"));
-        if (firstTime) {
-            client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1);
-            client.createItem("t1-item2", "t1-item2", "t1-item2 description", 1);
-        }
+        new AsnyRequest() {
+            Response getResponse() {
+                Client client = Client.getClient();
+                if (firstTime) {
+                    client.register("t1-admin", "t1-admin");
+                }
+                debug(client.validate("t1-admin", "t1-admin"));
+                if (firstTime) {
+                    client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1);
+                    client.createItem("t1-item2", "t1-item2", "t1-item2 description", 1);
+                }
 
-        client.logout();
-        // 切换到顾客
-        if (firstTime) {
-            client.register("t1-user", "t1-user");
-        }
-        client.validate("t1-user", "t1-user");
-        Response itemInfo = client.getItemInfo("t1-item1");
-        if (itemInfo.getResult().equals("success")) {
-            int itemId = itemInfo.json.getJSONObject("itemInfo").getInt("id");
-            client.buyItem(itemId, 1);
-            client.buyItem(itemId, 2);
-        }
-        client.getBills();
-
+                client.logout();
+                // 切换到顾客
+                if (firstTime) client.register("t1-user", "t1-user");
+                client.validate("t1-user", "t1-user");
+                Response itemInfo = client.getItemInfo("t1-item1");
+                if (itemInfo.getResult().equals("success")) {
+                    int itemId = itemInfo.json.getJSONObject("itemInfo").getInt("id");
+                    client.buyItem(itemId, 1);
+                    client.buyItem(itemId, 2);
+                }
+                client.getBills();
+                return null;
+            }
+        }.post();
     }
 
     /**
@@ -113,33 +109,24 @@ public class Client {
      *
      * @param username 用户名
      * @param password 密码
-     * @return 如果验证通过, 返回true并设置相应的username,password, 否则返回false
+     * @return response 如果验证通过,将会设置相应的username,password,logined
      */
-    public boolean validate(String username, String password) {
-        Response response;
+    public Response validate(String username, String password) {
         try {
             JSONObject content = packActionData("validate",
                     new JSONObject().put("username", username).put("password", password));
 
-            response = jsonPost(content, Client.SERVER_URL);
+            Response response = jsonPost(content, Client.SERVER_URL);
+            if (response.getResult().equals("success")) {
+                this.logined = true;
+                this.username = username;
+                this.password = password;
+                this.userId = response.json.getInt("userId");
+            }
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
-        }
-        if (response.getResult().equals("error")) { // 服务返回了非json串,json解析出错
-            debug(response.getErrorMsg());
-            debug(response.getRawString());
-            return false;
-        }
-
-        if (response.json.getBoolean("valid")) { // 验证通过
-            this.logined = true;
-            this.username = username;
-            this.password = password;
-            this.userId = response.json.getInt("userId");
-            return true;
-        } else {
-            return false;
+            return Response.Prefab.connectionError();
         }
     }
 
@@ -182,20 +169,6 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
             return Response.Prefab.connectionError();
-        }
-    }
-
-    /**
-     * 获取用户的余额
-     *
-     * @return 出错返回-1,否则返回用户的余额(大于等于0)
-     */
-    public int getUserBalance() {
-        Response response = getUserInfo();
-        if (response == null || !response.getResult().equals("success")) {
-            return -1;
-        } else {
-            return response.json.getJSONObject("userInfo").getInt("balance");
         }
     }
 
@@ -283,7 +256,6 @@ public class Client {
             return -1;
     }
 
-
     private JSONObject addUserInfo(JSONObject data) {
         if (logined) {
             data.put("username", username).put("password", password).put("userId", userId);
@@ -351,8 +323,8 @@ public class Client {
         reader.close();
         connection.disconnect();
 
-        // TODO
-        debugToFile(result);
+//         TODO
+//        debugToFile(result);
         return new Response(result);
     }
 
@@ -391,64 +363,102 @@ public class Client {
         }
         return builder.toString();
     }
-}
 
-class Response {
-    public static final boolean autoDebug = true;
+    abstract static class AsnyRequest implements Runnable {
+        private Response response;
 
-    private String result, errorMsg, rawString;
-    public JSONObject json;
-
-    static class Prefab {
-        static Response needValidate() {
-            return new Response(new JSONObject().put("result", "error")
-                    .put("errorMsg", "Call validate() first!").toString());
+        @Override
+        public void run() {
+            response = getResponse();
         }
 
-        static Response connectionError() {
-            return new Response(new JSONObject().put("result", "error")
-                    .put("errorMsg", "Connection failed.").toString());
-        }
+        abstract Response getResponse();
 
-        static Response needLogout() {
-            return new Response(new JSONObject().put("result", "error")
-                    .put("errorMsg", "You are alread validated, call logout() before call validate().").toString());
-        }
-    }
-
-    public Response(String string) {
-        rawString = string;
-        try {
-            json = new JSONObject(string);
-            result = json.getString("result");
-            if (result.equals("error")) {
-                errorMsg = json.getString("errorMsg");
+        /**
+         * 发送一个异步请求
+         *
+         * @return 请求对应的响应
+         */
+        public Response post() {
+            Thread thread = new Thread(this);
+            try {
+                thread.start();
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            json = null;
-            result = "error";
-            errorMsg = "Server responds a non-JSON string or an invalid JSON string.";
+            return response;
         }
-        if (autoDebug)
-            Client.debug(this);
     }
 
-    public String getRawString() {
-        return rawString;
-    }
+    static class Response {
+        public static final boolean autoDebug = true;
+        public Helpler helpler;
+        private String result, errorMsg, rawString;
+        public JSONObject json;
 
-    public String getResult() {
-        return result;
-    }
+        static class Prefab {
+            static Response needValidate() {
+                return new Response(new JSONObject().put("result", "error")
+                        .put("errorMsg", "Call validate() first!").toString());
+            }
 
-    public String getErrorMsg() {
-        return errorMsg;
-    }
+            static Response connectionError() {
+                return new Response(new JSONObject().put("result", "error")
+                        .put("errorMsg", "Cannot connect to server.").toString());
+            }
 
-    public String toString() {
-        if (json != null)
-            return json.toString(4);
-        else
+            static Response needLogout() {
+                return new Response(new JSONObject().put("result", "error")
+                        .put("errorMsg", "You are alread validated, call logout() before call validate().").toString());
+            }
+        }
+
+        public class Helpler {
+            /**
+             * 获取用户的余额
+             */
+            public int getUserBalance() {
+                return json.getJSONObject("userInfo").getInt("balance");
+            }
+        }
+
+        public Response(String string) {
+            rawString = string;
+            try {
+                json = new JSONObject(string);
+                result = json.getString("result");
+                if (result.equals("error")) {
+                    errorMsg = json.getString("errorMsg");
+                }
+            } catch (JSONException e) {
+                json = null;
+                result = "error";
+                errorMsg = "Server responds a non-JSON string or an invalid JSON string.";
+            }
+            if (autoDebug)
+                Client.debug(this);
+            helpler = new Helpler();
+        }
+
+        public String getRawString() {
             return rawString;
+        }
+
+        public String getResult() {
+            return result;
+        }
+
+        public String getErrorMsg() {
+            return errorMsg;
+        }
+
+        public String toString() {
+            if (json != null)
+                return json.toString(4);
+            else
+                return rawString;
+        }
     }
+
 }
