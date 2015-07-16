@@ -4,7 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">log out</string>
     <string name="editText">Please input your message</string>
-    <string name="clickme">click me</string>
     <string name="title_activity_display_message">After sign in</string>
     <string name="title_activity_sign_in">Sign in</string>
 
@@ -12,6 +11,8 @@
     <string name="title_section2">商品入库</string>
     <string name="title_section3">用户消费</string>
     <string name="title_section4">设置</string>
+
+    <string name="balanceTitle">您当前的余额为:</string>
 
     <string name="title_section2_1">我的账户</string>
     <string name="title_section2_2">支付</string>

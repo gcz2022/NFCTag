@@ -9,29 +9,45 @@ tools:context=".MainActivity">
 <FrameLayout android:id="@+id/container" android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
-        <Button
+        android:layout_gravity="left|center_vertical"
+        android:weightSum="1">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WRITE TAG"
-            android:id="@+id/buttonWrite"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="123dp" />
+            android:text="account"
+            android:id="@+id/accountName"
+            android:layout_gravity="center_horizontal" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="READ TAG"
-            android:id="@+id/buttonRead"
-            android:layout_below="@+id/buttonWrite"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.10"
+            android:id="@+id/linear1">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/balanceTitle"
+                android:id="@+id/balanceTitle"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="balance"
+                android:id="@+id/balance"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
 </FrameLayout>
 
 <!-- android:layout_gravity="start" tells DrawerLayout to treat

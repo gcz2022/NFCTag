@@ -18,11 +18,19 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import connection.client.Client;
+
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private Button buttonRead;
     private Button buttonWrite;
+    private String account;
+
+    private TextView accountTextView;
+    private TextView balanceTextView;
+    private TextView balanceTitleTextView;
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     private CharSequence mTitle;
@@ -31,10 +39,29 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
 
 
+        Intent intent=getIntent();
+
         super.onCreate(savedInstanceState);
         mNavigationDrawerFragment=new NavigationDrawerFragment();
         mNavigationDrawerFragment.setType("admin");
         setContentView(R.layout.activity_main);
+
+
+        account=intent.getStringExtra("account");
+
+        accountTextView=(TextView)findViewById(R.id.accountName);
+        accountTextView.setText(account);
+        accountTextView.setTextSize(25);
+
+        balanceTitleTextView=(TextView)findViewById(R.id.balanceTitle);
+
+        balanceTextView=(TextView)findViewById(R.id.balance);
+
+        Client client = Client.getClient();
+        String balanceNum=String.valueOf(client.getUserBalance());
+
+        balanceTextView.setText("111");
+        balanceTextView.setTextSize(25);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -45,22 +72,21 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        buttonWrite = (Button)findViewById(R.id.buttonWrite);
-        buttonWrite.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, WriteTagActivity.class));
-            }
-        });
-
-        buttonRead = (Button)findViewById(R.id.buttonRead);
-        buttonRead.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ReadTagActivity.class));
-            }
-        });
-
+//        buttonWrite = (Button)findViewById(R.id.buttonWrite);
+//        buttonWrite.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, WriteTagActivity.class));
+//            }
+//        });
+//
+//        buttonRead = (Button)findViewById(R.id.buttonRead);
+//        buttonRead.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, ReadTagActivity.class));
+//            }
+//        });
 
     }
     @Override
@@ -109,15 +135,28 @@ public class MainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
+                accountTextView.setVisibility(View.VISIBLE);
+                balanceTextView.setVisibility(View.VISIBLE);
+                balanceTitleTextView.setVisibility(View.VISIBLE);
+
                 mTitle = getString(R.string.title_section1);
                 break;
             case 2:
+                accountTextView.setVisibility(View.GONE);
+                balanceTextView.setVisibility(View.GONE);
+                balanceTitleTextView.setVisibility(View.GONE);
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
+                accountTextView.setVisibility(View.GONE);
+                balanceTextView.setVisibility(View.GONE);
+                balanceTitleTextView.setVisibility(View.GONE);
                 mTitle = getString(R.string.title_section3);
                 break;
             case 4:
+                accountTextView.setVisibility(View.GONE);
+                balanceTextView.setVisibility(View.GONE);
+                balanceTitleTextView.setVisibility(View.GONE);
                 mTitle = getString(R.string.title_section4);
                 break;
         }
