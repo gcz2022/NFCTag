@@ -38,28 +38,10 @@ public class MainActivity2 extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment2)
                 getSupportFragmentManager().findFragmentById(navigation_drawer);
-        mTitle = getTitle();
-        mTitle = "user";
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        buttonWrite = (Button)findViewById(R.id.buttonWrite);
-        buttonWrite.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(MainActivity2.this, WriteTagActivity.class));
-            }
-        });
-
-        buttonRead = (Button)findViewById(R.id.buttonRead);
-        buttonRead.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity2.this, ReadTagActivity.class));
-            }
-        });
     }
 
     @Override
@@ -152,7 +134,22 @@ public class MainActivity2 extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            int select = getArguments().getInt(ARG_SECTION_NUMBER);
+            View rootView = null;
+            switch (select){
+                case 1:
+                     rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                    break;
+                case 2:
+                     rootView = inflater.inflate(R.layout.fragment_pay, container, false);
+                    break;
+                case 3:
+                     rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
+                    break;
+                case 4:
+                     rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+                    break;
+            }
             return rootView;
         }
 
