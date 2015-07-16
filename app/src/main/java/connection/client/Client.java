@@ -15,8 +15,11 @@ import connection.json.JSONException;
 import connection.json.JSONObject;
 
 public class Client {
-    //    public static final String SERVER_URL = "http://localhost/java/virtual_wallet/index.php";
+
+    // 新浪服务器地址
     public static final String SERVER_URL = "http://virtualwallet.sinaapp.com/";
+    // 本地调试地址
+//    public static final String SERVER_URL = "http://localhost/java/virtualwallet/1/";
     private static Client singleton;
 
     private boolean logined;
@@ -39,8 +42,9 @@ public class Client {
 
     // test function
     public static void main(String[] args) {
-//        Client client = Client.getClient();
-//        debug(client.validate("yty", "yty"));
+        Client client = Client.getClient();
+        client.validate("admin", "admin");
+        client.getUserBalance();
 //
 //        Response getBillsResponse = client.getBills();
 //        if (getBillsResponse.getResult().equals("success")) {
@@ -54,34 +58,34 @@ public class Client {
 //        debug(client.createItem("item1", null, "item1", "item1 description", 20));
 //        debug(client.getItemInfo("item1", null));
 //        debug(client);
-        test1(true);
+//        test1(true);
     }
 
+    // test function
     public static void test1(boolean firstTime) {
         Client client = Client.getClient();
         if (firstTime) {
-            debug(client.register("t1-admin", "t1-admin"));
+            client.register("t1-admin", "t1-admin");
         }
         debug(client.validate("t1-admin", "t1-admin"));
         if (firstTime) {
-            debug(client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1));
-            debug(client.createItem("t1-item2", "t1-item2", "t1-item2 description", 1));
+            client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1);
+            client.createItem("t1-item2", "t1-item2", "t1-item2 description", 1);
         }
 
         client.logout();
         // 切换到顾客
         if (firstTime) {
-            debug(client.register("t1-user", "t1-user"));
+            client.register("t1-user", "t1-user");
         }
-        debug(client.validate("t1-user", "t1-user"));
+        client.validate("t1-user", "t1-user");
         Response itemInfo = client.getItemInfo("t1-item1");
-        debug(itemInfo);
         if (itemInfo.getResult().equals("success")) {
             int itemId = itemInfo.json.getJSONObject("itemInfo").getInt("id");
-            debug(client.buyItem(itemId, 1));
-            debug(client.buyItem(itemId, 2));
+            client.buyItem(itemId, 1);
+            client.buyItem(itemId, 2);
         }
-        debug(client.getBills());
+        client.getBills();
 
     }
 
@@ -139,6 +143,9 @@ public class Client {
         }
     }
 
+    /**
+     * 登出
+     */
     public void logout() {
         logined = false;
         username = null;
@@ -303,7 +310,7 @@ public class Client {
     }
 
     // debug function
-    static void debug(Object... objects) {
+    public static void debug(Object... objects) {
         String seprator = "";
         for (Object object : objects) {
             if (object != null)
@@ -315,11 +322,11 @@ public class Client {
         System.out.println();
     }
 
-    Response jsonPost(JSONObject jsonObject, String serverUrl) throws IOException {
+    private Response jsonPost(JSONObject jsonObject, String serverUrl) throws IOException {
         return post(jsonEncode(jsonObject), serverUrl);
     }
 
-    Response post(String content, String serverUrl) throws IOException {
+    private Response post(String content, String serverUrl) throws IOException {
         URL url = new URL(serverUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
@@ -344,7 +351,8 @@ public class Client {
         reader.close();
         connection.disconnect();
 
-//        debugToFile(result);
+        // TODO
+        debugToFile(result);
         return new Response(result);
     }
 
@@ -386,6 +394,8 @@ public class Client {
 }
 
 class Response {
+    public static final boolean autoDebug = true;
+
     private String result, errorMsg, rawString;
     public JSONObject json;
 
@@ -398,6 +408,11 @@ class Response {
         static Response connectionError() {
             return new Response(new JSONObject().put("result", "error")
                     .put("errorMsg", "Connection failed.").toString());
+        }
+
+        static Response needLogout() {
+            return new Response(new JSONObject().put("result", "error")
+                    .put("errorMsg", "You are alread validated, call logout() before call validate().").toString());
         }
     }
 
@@ -414,6 +429,8 @@ class Response {
             result = "error";
             errorMsg = "Server responds a non-JSON string or an invalid JSON string.";
         }
+        if (autoDebug)
+            Client.debug(this);
     }
 
     public String getRawString() {
