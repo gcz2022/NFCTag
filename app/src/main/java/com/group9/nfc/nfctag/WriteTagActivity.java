@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import java.nio.charset.Charset;
 
+import connection.client.Client;
+
 /**
  * Created by desolate on 15/5/19.
  */
@@ -76,6 +78,7 @@ public class WriteTagActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent)
     {
+
         if (writeMode)
         {
             if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))

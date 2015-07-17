@@ -59,6 +59,7 @@ public class Client {
         client.register("yty", "yty");
         client.register("dza", "dza");
         client.register("gcz", "gcz");
+        client.register("admin", "admin");
     }
 
     // Very dangerous!!!
@@ -223,9 +224,12 @@ public class Client {
      * @return response
      */
     public Response createItem(String rawVal, String name, String description, int price) {
-        return new Request().requireLogin().put("rawVal", rawVal).put("name", name)
-                .put("description", description).put("price", price).pack("createItem").post(SERVER_URL);
-
+        return new Request().requireLogin()
+                .put("rawVal", rawVal)
+                .put("name", name)
+                .put("description", description)
+                .put("price", price)
+                .pack("createItem").post(SERVER_URL);
     }
 
     /**
@@ -236,7 +240,9 @@ public class Client {
      * @return response
      */
     public Response buyItem(int itemId, int amount) {
-        return new Request().requireLogin().put("itemId", itemId).put("amount", amount)
+        return new Request().requireLogin()
+                .put("itemId", itemId)
+                .put("amount", amount)
                 .pack("buyItem").post(SERVER_URL);
     }
 
@@ -247,7 +253,8 @@ public class Client {
      * @return response
      */
     public Response getItemInfo(String rawVal) {
-        return new Request().put("rawVal", rawVal)
+        return new Request()
+                .put("rawVal", rawVal)
                 .pack("getItemInfo").post(SERVER_URL);
     }
 
@@ -261,13 +268,23 @@ public class Client {
     }
 
     /**
+     * 获取用户的所有商品信息
+     *
+     * @return response
+     */
+    public Response getItems() {
+        return new Request().requireLogin().pack("getItems").post(SERVER_URL);
+    }
+
+    /**
      * 获取用户某个钱包的账单
      *
      * @param walletId 钱包id
      * @return response
      */
     public Response getWalletBills(int walletId) {
-        return new Request().requireLogin().put("walletId", walletId)
+        return new Request().requireLogin()
+                .put("walletId", walletId)
                 .pack("getWalletBills").post(SERVER_URL);
     }
 
@@ -313,6 +330,18 @@ public class Client {
         return new Request().requireLogin()
                 .put("walletId", walletId)
                 .pack("deleteWallet").post(SERVER_URL);
+    }
+
+    /**
+     * 删除一个商品单
+     *
+     * @param itemId 商品单id
+     * @return response
+     */
+    public Response deleteItem(int itemId) {
+        return new Request().requireLogin()
+                .put("itemId", itemId)
+                .pack("deleteItem").post(SERVER_URL);
     }
 
     public boolean isLogined() {
@@ -632,7 +661,7 @@ public class Client {
                 json = null;
                 result = "error";
                 errorMsg = "Server responds a non-JSON string or an invalid JSON string. "
-                        + "You can use rawString to debug";
+                        + "Maybe you connect to ZJUWALN but has not logined.";
             }
             if (autoDebug)
                 Client.debug(this);
