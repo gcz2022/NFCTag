@@ -198,7 +198,9 @@
 
             <Button android:text="重置" />
 
-            <Button android:text="创建" />
+            <Button
+                android:id="@+id/newWalletButton"
+                android:text="创建" />
 
             <TextView />
         </TableRow>
