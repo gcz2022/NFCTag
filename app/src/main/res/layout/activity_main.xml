@@ -73,8 +73,7 @@ tools:context=".MainActivity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/goodsIn"
-            android:onClick="goodsInFunc"
+            android:id="@+id/customerBuy"
             android:layout_weight="0.05">
 
             <LinearLayout
@@ -85,19 +84,35 @@ tools:context=".MainActivity">
                 android:id="@+id/linear2">
 
                 <Button
-                    android:layout_width="144dp"
-                    android:layout_height="wrap_content"
-                    android:text="goodsInRead"
-                    android:layout_gravity="center_horizontal"
-                    android:onClick="goodsInFunc"
-                    android:id="@+id/goodInRead" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="商品ID"
+                    android:text="读取用户ID"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="readCustomer"
+                    android:id="@+id/readCustomer" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="用户ID"
                     android:layout_gravity="center_vertical"
-                    android:id="@+id/textDetected" />
+                    android:id="@+id/customerID"
+                    />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="总额"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/amount"
+                 />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收款"
+                    android:onClick="charge"
+                    android:id="@+id/charge" />
             </LinearLayout>
         </LinearLayout>
 
