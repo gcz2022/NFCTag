@@ -2,61 +2,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account"
     android:layout_width="fill_parent"
-    android:layout_height="100dp"
+    android:layout_height="fill_parent"
     android:layout_margin="10dp"
-    android:background="@drawable/border"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <ImageView
-        android:id="@+id/accountImage"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
-        android:src="@drawable/images" />
-
-    <TableLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp">
+        android:layout_height="60dp"
+        android:background="@drawable/border"
+        android:orientation="horizontal">
 
-        <TableRow>
-
+        <ImageView
+            android:id="@+id/accountImage"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:src="@drawable/images" />
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_width="fill_parent"
+                android:layout_height="25dp"
                 android:text="账号:"
                 android:textColor="#ff5b75dc"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/accountName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
                 android:textColor="#ff5b75dc"
-                android:textSize="20dp" />
-        </TableRow>
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
 
-        <TableRow>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="余额:"
-                android:textColor="#ffdc4a4a"
-                android:textSize="20dp" />
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:gravity="center|bottom"
+                android:text="2"
+                android:textSize="40sp" />
 
             <TextView
-                android:id="@+id/accountBalance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textColor="#ffdc4a4a"
-                android:textSize="20dp" />
-        </TableRow>
-    </TableLayout>
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center|top"
+                android:text="银行卡" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:textColor="#ffff3c29"
+                android:id="@+id/accountBalance2"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:gravity="center|bottom"
+                android:textSize="40sp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center|top"
+                android:text="余额" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/accountWallet"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:gravity="center|bottom"
+                android:text="2"
+                android:textSize="40sp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:gravity="center|top"
+                android:text="钱包" />
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
+
+

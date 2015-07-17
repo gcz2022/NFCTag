@@ -115,6 +115,7 @@ public class MainActivity2 extends ActionBarActivity
      */
     public static class PlaceholderFragment extends Fragment {
         private int account_balance;
+        private int wallets;
         private TextView textAccountName;
         private TextView textAccountBalance;
         /**
@@ -154,7 +155,7 @@ public class MainActivity2 extends ActionBarActivity
                     rootView = inflater.inflate(R.layout.fragment_account, container, false);
                     textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                     textAccountName.setText(Client.getClient().getUsername());
-                    textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
+                    textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
                     textAccountBalance.setText(String.valueOf(account_balance));
                     break;
                 case 2:
