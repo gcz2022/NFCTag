@@ -42,6 +42,7 @@ public class SignInActivity extends ActionBarActivity {
     }
 
     public void signIn(View view) {
+
         EditText accountView = (EditText) findViewById(R.id.account);
         EditText passwordView = (EditText) findViewById(R.id.password);
         final String username = accountView.getText().toString();
@@ -56,6 +57,7 @@ public class SignInActivity extends ActionBarActivity {
             if (username.equals("admin")) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
+                intent.putExtra("account", "admin");
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(this, MainActivity2.class);

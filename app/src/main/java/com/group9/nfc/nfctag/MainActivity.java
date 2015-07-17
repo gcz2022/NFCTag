@@ -34,9 +34,12 @@ public class MainActivity extends ActionBarActivity
     private TextView accountTextView;
     private TextView balanceTextView;
     private TextView balanceTitleTextView;
-    private TextView textDetected;
+    private TextView customerId;
+    private TextView amount;
+
     private LinearLayout myAccount;
     private LinearLayout goodsIn;
+    private LinearLayout customerBuy;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -44,106 +47,70 @@ public class MainActivity extends ActionBarActivity
 
     void initViewPointer() {
         myAccount = (LinearLayout) findViewById(R.id.myAccount);
-        goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
 
-        goodsInRead = (Button) findViewById(R.id.goodInRead);
+        customerBuy=(LinearLayout) findViewById(R.id.customerBuy);
 
+        //用户名
         accountTextView = (TextView) findViewById(R.id.accountName);
         accountTextView.setText(account);
         accountTextView.setTextSize(25);
 
+        //余额
+        balanceTextView = (TextView) findViewById(R.id.balance);
+        String balanceNum=getBalance(); //= String.valueOf(response.helper.getUserBalance());
+        balanceTextView.setText(balanceNum);
+        balanceTextView.setTextSize(25);
+
+        //用户消费
+        customerId=(TextView) findViewById(R.id.customerID);
+        amount=(TextView) findViewById(R.id.amount);
+
+    }
+    public String getBalance()
+    {
         Client.Response response = new Client.AsnyRequest() {
             public Client.Response getResponse() {
                 return Client.getClient().getUserInfo();
             }
         }.post();
-
-        balanceTextView = (TextView) findViewById(R.id.balance);
         String balanceNum = String.valueOf(response.helper.getUserBalance());
-
-        balanceTextView.setText(balanceNum);
-        balanceTextView.setTextSize(25);
-
-        textDetected = (TextView) findViewById(R.id.textDetected);
-
+        return balanceNum;
+    }
+    public void readCustomer(View view)
+    {
+        Toast.makeText(this, "正在读取nfc数据……", Toast.LENGTH_LONG).show();
     }
 
-    public void goodsInFunc(View view) {
-        Toast.makeText(this, "正在读取nfc数据…�??", Toast.LENGTH_LONG).show();
-
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
-            NdefMessage[] msgs = getNdefMessagesFromIntent(intent);
-            confirmDisplayedContentOverwrite(msgs[0]);
-
-        } else if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-            Toast.makeText(this, "This NFC tag has no NDEF data.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    NdefMessage[] getNdefMessagesFromIntent(Intent intent) {
-        NdefMessage[] msgs = null;
-        String action = intent.getAction();
-        if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED) || action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
-            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            if (rawMsgs != null) {
-                msgs = new NdefMessage[rawMsgs.length];
-                for (int i = 0; i < rawMsgs.length; i++) {
-                    msgs[i] = (NdefMessage) rawMsgs[i];
-                }
-
-            } else {
-                // Unknown tag type
-                byte[] empty = new byte[]{};
-                NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, empty, empty);
-                NdefMessage msg = new NdefMessage(new NdefRecord[]{record});
-                msgs = new NdefMessage[]{msg};
-
+    public void charge(View view)
+    {
+        Client.Response response = new Client.AsnyRequest(){
+            public Client.Response getResponse(){
+                return Client.getClient().charge(customerId.getText().toString(), Integer.parseInt(amount.getText().toString()));
             }
-
-        } else {
-//            Log.e(TAG, "Unknown intent.");
-            finish();
+        }.post();
+        if(response.getResult().equals("success"))
+        {
+            Toast.makeText(this, "收款成功！", Toast.LENGTH_LONG).show();
         }
-        return msgs;
-    }
+        else
+        { // error
+            Toast.makeText(this, response.getErrorMsg(), Toast.LENGTH_LONG).show();    // get error message
+        }
 
-    private void confirmDisplayedContentOverwrite(final NdefMessage msg) {
-//        new AlertDialog.Builder(this).setTitle("New tag found!").setMessage("Do you wanna show the content of this tag?")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-
-        String payload = new String(msg.getRecords()[0].getPayload());
-
-        textDetected.setText(new String(payload));
-        Toast.makeText(this, "读取成功", Toast.LENGTH_LONG).show();
-//                    }
-//                }).setNegativeButton("No", new DialogInterface.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(DialogInterface dialog, int id)
-//            {
-//                textDetected.setText(data);
-//                dialog.cancel();
-//            }
-//        }).show();
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = getIntent();
+        account = intent.getStringExtra("account");
 
         super.onCreate(savedInstanceState);
         mNavigationDrawerFragment = new NavigationDrawerFragment();
         mNavigationDrawerFragment.setType("admin");
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        account = intent.getStringExtra("account");
+
         initViewPointer();
 
 
@@ -225,18 +192,26 @@ public class MainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
+                String balanceNum=getBalance();
+                balanceTextView.setText(balanceNum);
+
                 myAccount.setVisibility(View.VISIBLE);
-                goodsIn.setVisibility(View.GONE);
+//                goodsIn.setVisibility(View.GONE);
+                customerBuy.setVisibility(View.GONE);
 
                 mTitle = getString(R.string.title_section1);
                 break;
             case 2:
                 myAccount.setVisibility(View.GONE);
-                goodsIn.setVisibility(View.VISIBLE);
+//                goodsIn.setVisibility(View.VISIBLE);
+                customerBuy.setVisibility(View.GONE);
 
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
+                myAccount.setVisibility(View.GONE);
+                customerBuy.setVisibility(View.VISIBLE);
+
                 mTitle = getString(R.string.title_section3);
                 break;
             case 4:

@@ -25,6 +25,7 @@ public class ReadTagActivity extends Activity
 {
     private static String TAG = ReadTagActivity.class.getSimpleName();
 
+
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     IntentFilter[] tagFilters;
