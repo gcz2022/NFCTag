@@ -11,12 +11,18 @@ tools:context=".MainActivity">
     android:layout_height="match_parent"
     android:background="@drawable/background"
     >
-
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="left|center_vertical"
+        android:id="@+id/total"
+        android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
         android:id="@+id/myAccount"
         android:weightSum="1">
@@ -62,45 +68,38 @@ tools:context=".MainActivity">
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:id="@+id/goodsIn"
-            android:weightSum="1">
-
+            android:onClick="goodsInFunc"
+            android:layout_weight="0.05">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/linear2">
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/balanceTitle"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:id="@+id/balanceTitle"-->
-                    <!--android:layout_gravity="center_vertical" />-->
+                <Button
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:text="goodsInRead"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="goodsInFunc"
+                    android:id="@+id/goodInRead" />
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="balance"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:id="@+id/balance"-->
-                    <!--android:layout_gravity="center_vertical" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="元"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:id="@+id/yuan"-->
-                    <!--android:layout_gravity="center_vertical"/>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="商品ID"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/textDetected" />
             </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
