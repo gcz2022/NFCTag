@@ -14,14 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import connection.client.Client;
 
-import static com.group9.nfc.nfctag.R.id.balance;
 import static com.group9.nfc.nfctag.R.id.navigation_drawer;
-import static com.group9.nfc.nfctag.R.id.textView;
 
 public class MainActivity2 extends ActionBarActivity
         implements NavigationDrawerFragment2.NavigationDrawerCallbacks {
@@ -151,7 +148,7 @@ public class MainActivity2 extends ActionBarActivity
                         public Client.Response getResponse() {
                             return Client.getClient().getUserInfo();
                         }
-                    }.post().helpler.getUserBalance();
+                    }.post().helper.getUserBalance();
                     rootView = inflater.inflate(R.layout.fragment_account, container, false);
                     textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                     textAccountName.setText(Client.getClient().getUsername());

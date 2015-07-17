@@ -1,28 +1,23 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,42 +42,40 @@ public class MainActivity extends ActionBarActivity
 
     private CharSequence mTitle;
 
-    void initViewPointer()
-    {
-        myAccount=(LinearLayout)findViewById(R.id.myAccount);
-        goodsIn=(LinearLayout)findViewById(R.id.goodsIn);
+    void initViewPointer() {
+        myAccount = (LinearLayout) findViewById(R.id.myAccount);
+        goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
 
-        goodsInRead=(Button)findViewById(R.id.goodInRead);
+        goodsInRead = (Button) findViewById(R.id.goodInRead);
 
-        accountTextView=(TextView)findViewById(R.id.accountName);
+        accountTextView = (TextView) findViewById(R.id.accountName);
         accountTextView.setText(account);
         accountTextView.setTextSize(25);
 
         Client.Response response = new Client.AsnyRequest() {
-            public Client.Response getResponse(){
+            public Client.Response getResponse() {
                 return Client.getClient().getUserInfo();
             }
         }.post();
 
-        balanceTextView=(TextView)findViewById(R.id.balance);
-        String balanceNum=String.valueOf(response.helpler.getUserBalance());
+        balanceTextView = (TextView) findViewById(R.id.balance);
+        String balanceNum = String.valueOf(response.helper.getUserBalance());
 
         balanceTextView.setText(balanceNum);
         balanceTextView.setTextSize(25);
 
-        textDetected=(TextView)findViewById(R.id.textDetected);
+        textDetected = (TextView) findViewById(R.id.textDetected);
 
     }
-    public void goodsInFunc(View view)
-    {
-        Toast.makeText(this, "正在读取nfc数据……", Toast.LENGTH_LONG).show();
+
+    public void goodsInFunc(View view) {
+        Toast.makeText(this, "正在读取nfc数据…�??", Toast.LENGTH_LONG).show();
 
     }
+
     @Override
-    protected void onNewIntent(Intent intent)
-    {
-        if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
-        {
+    protected void onNewIntent(Intent intent) {
+        if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
             NdefMessage[] msgs = getNdefMessagesFromIntent(intent);
             confirmDisplayedContentOverwrite(msgs[0]);
 
@@ -91,8 +84,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    NdefMessage[] getNdefMessagesFromIntent(Intent intent)
-    {
+    NdefMessage[] getNdefMessagesFromIntent(Intent intent) {
         NdefMessage[] msgs = null;
         String action = intent.getAction();
         if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED) || action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
@@ -119,8 +111,7 @@ public class MainActivity extends ActionBarActivity
         return msgs;
     }
 
-    private void confirmDisplayedContentOverwrite(final NdefMessage msg)
-    {
+    private void confirmDisplayedContentOverwrite(final NdefMessage msg) {
 //        new AlertDialog.Builder(this).setTitle("New tag found!").setMessage("Do you wanna show the content of this tag?")
 //                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 //                    @Override
@@ -142,16 +133,17 @@ public class MainActivity extends ActionBarActivity
 //        }).show();
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        mNavigationDrawerFragment=new NavigationDrawerFragment();
+        mNavigationDrawerFragment = new NavigationDrawerFragment();
         mNavigationDrawerFragment.setType("admin");
         setContentView(R.layout.activity_main);
 
-        Intent intent=getIntent();
-        account=intent.getStringExtra("account");
+        Intent intent = getIntent();
+        account = intent.getStringExtra("account");
         initViewPointer();
 
 
@@ -181,6 +173,7 @@ public class MainActivity extends ActionBarActivity
 //        });
 
     }
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
@@ -215,6 +208,7 @@ public class MainActivity extends ActionBarActivity
     protected void onRestart() {
         super.onRestart();
     }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -223,10 +217,11 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
     }
-    public void setVisible(int number)
-    {
+
+    public void setVisible(int number) {
 
     }
+
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
