@@ -3,58 +3,65 @@
     android:id="@+id/TableLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInActivity"
-    android:stretchColumns="0,3"
-    android:gravity="center_vertical"
     android:background="@drawable/background"
-    >
+    android:gravity="center_vertical"
+    android:stretchColumns="0,3"
+    tools:context=".SignInActivity">
 
     <TableRow>
+
         <TextView />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名:"
-            />
+            android:text="用户名:" />
+
         <EditText
             android:id="@+id/account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="150dp"
-            />
+            android:singleLine="true" />
+
         <TextView />
     </TableRow>
 
     <TableRow>
+
         <TextView />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密  码:"
-            />
+            android:text="密  码:" />
+
         <EditText
             android:id="@+id/password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="150dp"
             android:inputType="textPassword"
-            />
+            android:minWidth="150dp"
+            android:singleLine="true" />
+
         <TextView />
     </TableRow>
 
     <TableRow>
+
         <TextView />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注册"
-            />
+            android:text="注册" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="signIn"
-            android:text="登陆"
-            />
+            android:text="登陆" />
+
         <TextView />
     </TableRow>
 

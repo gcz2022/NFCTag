@@ -18,19 +18,22 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_marginLeft="10dp"
             android:id="@+id/accountImage"
             android:layout_width="50dp"
             android:layout_height="fill_parent"
             android:src="@drawable/images" />
+
         <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
             <TextView
-                android:layout_gravity="top"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
+                android:layout_gravity="top"
                 android:text="账号:"
                 android:textColor="#ff5b75dc"
                 android:textSize="20sp" />
@@ -39,7 +42,9 @@
                 android:id="@+id/accountName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="yty"
                 android:textColor="#ff5b75dc"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -74,6 +79,12 @@
                 android:text="银行卡" />
         </LinearLayout>
 
+        <View
+            android:layout_width="1dip"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="#000000" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"
@@ -81,12 +92,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:textColor="#ffff3c29"
                 android:id="@+id/accountBalance2"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:gravity="center|bottom"
+                android:textColor="#ffff3c29"
                 android:textSize="40sp" />
 
             <TextView
@@ -96,6 +107,12 @@
                 android:gravity="center|top"
                 android:text="余额" />
         </LinearLayout>
+
+        <View
+            android:layout_width="1dip"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="fill_parent"

@@ -15,8 +15,8 @@
     <string name="balanceTitle">营业额:</string>
 
     <string name="title_section2_1">我的账户</string>
-    <string name="title_section2_2">支付</string>
-    <string name="title_section2_3">充值</string>
+    <string name="title_section2_2">购买商品</string>
+    <string name="title_section2_3">创建钱包</string>
     <string name="title_section2_4">设置</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
