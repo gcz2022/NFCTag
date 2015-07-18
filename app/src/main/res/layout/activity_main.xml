@@ -73,7 +73,7 @@ tools:context=".MainActivity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/customerBuy"
+            android:id="@+id/goodsIn"
             android:layout_weight="0.05">
 
             <LinearLayout
@@ -81,7 +81,53 @@ tools:context=".MainActivity">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/linear2">
+                android:id="@+id/custo">
+                
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="名称"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/goodsName"
+                    />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="描述"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/goodsDescription"
+                 />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="单价"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/unitPrice"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生成商品ID"
+                    android:onClick="createItem"
+                    android:id="@+id/createItem" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/customerBuy"
+            android:layout_weight="0.05" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/linearLayout" >
 
                 <Button
                     android:layout_width="wrap_content"
@@ -96,16 +142,14 @@ tools:context=".MainActivity">
                     android:layout_height="wrap_content"
                     android:hint="用户ID"
                     android:layout_gravity="center_vertical"
-                    android:id="@+id/customerID"
-                    />
+                    android:id="@+id/customerId" />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="总额"
                     android:layout_gravity="center_vertical"
-                    android:id="@+id/amount"
-                 />
+                    android:id="@+id/amount" />
 
                 <Button
                     android:layout_width="wrap_content"
