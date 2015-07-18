@@ -1,6 +1,7 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,20 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
 import connection.client.Client;
+import connection.json.JSONArray;
+import connection.json.JSONObject;
 
 /**
  * Created by yang on 15/7/17.
  */
 public class PlaceholderFragment extends Fragment {
+    Activity mactivity;
     private int account_balance;
     private int wallets;
+    private TextView textWallets;
     private TextView textAccountName;
     private TextView textAccountBalance;
+    private TextView textWalletName;
+    private TextView textWalletBalance;
     private Button buttonWallet;
     /**
      * The fragment argument representing the section number for this
@@ -35,24 +46,24 @@ public class PlaceholderFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PlaceholderFragment newInstance(int sectionNumber) {
+    public static PlaceholderFragment newInstance(int sectionNumber, Activity activity) {
         PlaceholderFragment fragment = new PlaceholderFragment();
+        fragment.mactivity = activity;
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public PlaceholderFragment() {
-    }
-    public String ranId(){
-        String ans="";
-        for (int i=0; i<4; i++){
-            int ch = (int)Math.floor(Math.random()*1000) % 4;
-            ans+=('a'+ch);
+    public String ranId() {
+        String ans = "";
+        for (int i = 0; i < 4; i++) {
+            int ch = (int) Math.floor(Math.random() * 1000) % 4;
+            ans += ('a' + ch);
         }
         return ans;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,6 +81,32 @@ public class PlaceholderFragment extends Fragment {
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
                 textAccountBalance.setText(String.valueOf(account_balance));
+                Client.Response response = new Client.AsnyRequest() {
+                    public Client.Response getResponse() {
+                        return Client.getClient().getWallets();
+                    }
+                }.post();
+                if (response.getResult().equals("success")) {
+                    JSONArray wallets = response.json.getJSONArray("wallets");
+                    textWallets = (TextView) rootView.findViewById(R.id.accountWalletNum);
+                    textWallets.setText(String.valueOf(wallets.length()));
+                    LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
+                    for (int i = 0; i < wallets.length(); i++) {
+                        JSONObject wallet = wallets.getJSONObject(i);
+                        LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
+                        textWalletName = (TextView) ly.findViewById(R.id.WalletName);
+                        textWalletName.setText(wallet.getString("name"));
+                        textWalletBalance = (TextView) ly.findViewById(R.id.WalletBalance);
+                        textWalletBalance.setText(String.valueOf(wallet.getInt("balance")));
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp.setMargins(0, 20, 0, 0);
+                        layout.addView(ly, lp);
+
+                    }
+                } else {
+                    response.getErrorMsg();
+                }
                 break;
             case 2:
                 rootView = inflater.inflate(R.layout.fragment_pay, container, false);
@@ -85,14 +122,19 @@ public class PlaceholderFragment extends Fragment {
                         EditText pwd = (EditText) rootView_.findViewById(R.id.AccountPwd);
                         EditText BalanceWallet = (EditText) rootView_.findViewById(R.id.WalletBalance);
                         EditText desc = (EditText) rootView_.findViewById(R.id.descriptionWallet);
-                        String name = newWallet.getText().toString();
-                        String rawVal = ranId();
-                        String description = desc.getText().toString();
-                        int balance = Integer.valueOf(BalanceWallet.getText().toString());
-                        Client.Response response = Client.getClient().createWallet(name,rawVal,description,balance);
-                        if(response.getResult().equals("success")){
+                        final String name = newWallet.getText().toString();
+                        final String rawVal = ranId();
+                        final String description = desc.getText().toString();
+                        final int balance = Integer.valueOf(BalanceWallet.getText().toString());
+                        Client.Response response = new Client.AsnyRequest() {
+                            public Client.Response getResponse() {
+                                return Client.getClient().createWallet(name, rawVal, description, balance);
+                            }
+                        }.post();
+                        if (response.getResult().equals("success")) {
                             // success
-                            Log.i("app","success");
+                            Toast.makeText(mactivity, "success", Toast.LENGTH_LONG).show();
+                            Log.i("app", "success");
                         } else {
                             Log.i("app", response.getErrorMsg());
                         }
