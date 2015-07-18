@@ -96,8 +96,8 @@ public class PlaceholderFragment extends Fragment {
                     LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
                     for (int i = 0; i < wallets.length(); i++) {
                         JSONObject wallet = wallets.getJSONObject(i);
-                        final int walletId = wallet.getInt("walletId");
-                        LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
+                        final int walletId = wallet.getInt("id");
+                        final LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
                         textWalletName = (TextView) ly.findViewById(R.id.WalletName);
                         textWalletName.setText(wallet.getString("name"));
                         textWalletBalance = (TextView) ly.findViewById(R.id.WalletBalance);
@@ -111,8 +111,18 @@ public class PlaceholderFragment extends Fragment {
                                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(mactivity, "positive: " + which, Toast.LENGTH_SHORT).show();
-                                        Client.getClient().deleteWallet(walletId);
+                                        Toast.makeText(mactivity, "delete success", Toast.LENGTH_SHORT).show();
+                                        int currentWallets = Integer.valueOf(textWallets.getText().toString()) - 1;
+                                        textWallets.setText(String.valueOf(currentWallets));
+                                        int currentBalance = Integer.valueOf(textAccountBalance.getText().toString()) +
+                                                    Integer.valueOf(textWalletBalance.getText().toString());
+                                        textAccountBalance.setText(String.valueOf(currentBalance));
+                                        ly.setVisibility(View.GONE);
+                                        new Client.AsnyRequest() {
+                                            public Client.Response getResponse() {
+                                                return Client.getClient().deleteWallet(walletId);
+                                            }
+                                        }.post();
                                     }
                                 });
                                 //    设置一个NegativeButton
