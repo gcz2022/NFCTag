@@ -68,6 +68,7 @@
         android:text="账单" />
 
     <Button
+        android:id="@+id/deleteWallet"
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
