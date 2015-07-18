@@ -1,6 +1,9 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -93,11 +96,44 @@ public class PlaceholderFragment extends Fragment {
                     LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
                     for (int i = 0; i < wallets.length(); i++) {
                         JSONObject wallet = wallets.getJSONObject(i);
+                        final int walletId = wallet.getInt("walletId");
                         LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
                         textWalletName = (TextView) ly.findViewById(R.id.WalletName);
                         textWalletName.setText(wallet.getString("name"));
                         textWalletBalance = (TextView) ly.findViewById(R.id.WalletBalance);
                         textWalletBalance.setText(String.valueOf(wallet.getInt("balance")));
+                        ly.findViewById(R.id.deleteWallet).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
+                                builder.setTitle("虚拟钱包");
+                                builder.setMessage("确认删除钱包么");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mactivity, "positive: " + which, Toast.LENGTH_SHORT).show();
+                                        Client.getClient().deleteWallet(walletId);
+                                    }
+                                });
+                                //    设置一个NegativeButton
+                                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mactivity, "negative: " + which, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                //    设置一个NeutralButton
+                                builder.setNeutralButton("忽略", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mactivity, "neutral: " + which, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                //    显示出该对话框
+                                builder.show();
+
+                            }
+                        });
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         lp.setMargins(0, 20, 0, 0);
@@ -126,6 +162,9 @@ public class PlaceholderFragment extends Fragment {
                         final String rawVal = ranId();
                         final String description = desc.getText().toString();
                         final int balance = Integer.valueOf(BalanceWallet.getText().toString());
+                        if (name.length() > 10){
+
+                        }
                         Client.Response response = new Client.AsnyRequest() {
                             public Client.Response getResponse() {
                                 return Client.getClient().createWallet(name, rawVal, description, balance);
