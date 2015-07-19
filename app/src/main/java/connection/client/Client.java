@@ -51,7 +51,17 @@ public class Client {
 //        initUsers();
 //        test1(true);
 //        test2(true);
-        test3();
+//        test3();
+        Client client = Client.getClient();
+        client.validate("sfc", "sfc");
+        client.validate("sfc", "sfc");
+//        client.logout();
+//        client.validate("admin", "admin");
+//        client.getUserInfo();
+//        client.getUserInfo();
+//        client.recharge(1000);
+//        client.getUserInfo();
+
     }
 
     private static void initUsers() {
@@ -316,6 +326,18 @@ public class Client {
                 .put("rawVal", rawVal)
                 .put("totalPrice", totalPrice)
                 .pack("charge").post(SERVER_URL);
+    }
+
+    /**
+     * 用户进行帐户充值
+     *
+     * @param amount 充值金额
+     * @return response
+     */
+    public Response recharge(int amount) {
+        return new Request().requireLogin()
+                .put("amount", amount)
+                .pack("recharge").post(SERVER_URL);
     }
 
     /**
