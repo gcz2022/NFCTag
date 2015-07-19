@@ -12,9 +12,11 @@ import android.widget.Toast;
 import connection.client.Client;
 
 public class SignInActivity extends ActionBarActivity {
+    private ActionBarActivity mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_sign_in);
 
     }
@@ -62,7 +64,8 @@ public class SignInActivity extends ActionBarActivity {
             } else {
                 Intent intent = new Intent(this, MainActivity2.class);
                 Toast.makeText(this, "User :" + username + " sign in succeed", Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                mContext.startActivity(intent);
+                mContext.finish();
             }
         } else {
 //            Toast.makeText(this, "input again", Toast.LENGTH_LONG).show();
