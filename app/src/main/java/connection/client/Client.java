@@ -47,10 +47,21 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        clearDB();
-        initUsers();
-        test1(true);
-        test2(true);
+//        clearDB();
+//        initUsers();
+//        test1(true);
+//        test2(true);
+//        test3();
+        Client client = Client.getClient();
+        client.validate("sfc", "sfc");
+        client.validate("sfc", "sfc");
+//        client.logout();
+//        client.validate("admin", "admin");
+//        client.getUserInfo();
+//        client.getUserInfo();
+//        client.recharge(1000);
+//        client.getUserInfo();
+
     }
 
     private static void initUsers() {
@@ -82,15 +93,16 @@ public class Client {
             client.register("t1-admin", "t1-admin"); // duplicate register
             client.validate("t1-admin", "wrong-password"); // wrong password
             client.validate("t1-admin", "t1-admin");
-            client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1);
-            client.createItem("t1-item2", "t1-item2", "t1-item2 description", 3);
+            client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1, 100);
+            client.createItem("t1-item2", "t1-item2", "t1-item2 description", 3, 100);
+            client.getItems();
         }
         // 切换到admin2
         if (firstTime) {
             client.logout();
             client.register("t1-admin2", "t1-admin2");
             client.validate("t1-admin2", "t1-admin2");
-            client.createItem("t1-item3", "t1-item3", "t1-item3 description", 3);
+            client.createItem("t1-item3", "t1-item3", "t1-item3 description", 3, 100);
         }
 
         // 切换到user1
@@ -150,6 +162,18 @@ public class Client {
         client.logout();
         client.validate("t2-user", "t2-user");
         client.getWalletBills(walletIds[0]);
+    }
+
+    private static void test3() {
+        Client client = Client.getClient();
+        client.validate("sfc", "sfc");
+        client.buyItem(1, 10);
+        client.getBills();
+
+        client.logout();
+        client.validate("t1-admin", "t1-admin");
+        client.getItemInfo("t1-item1");
+        client.getBills();
     }
 
     /**
@@ -223,12 +247,14 @@ public class Client {
      * @param price       物品单价
      * @return response
      */
-    public Response createItem(String rawVal, String name, String description, int price) {
+    public Response createItem(String rawVal, String name,
+                               String description, int price, int initial) {
         return new Request().requireLogin()
                 .put("rawVal", rawVal)
                 .put("name", name)
                 .put("description", description)
                 .put("price", price)
+                .put("initial", initial)
                 .pack("createItem").post(SERVER_URL);
     }
 
@@ -300,6 +326,18 @@ public class Client {
                 .put("rawVal", rawVal)
                 .put("totalPrice", totalPrice)
                 .pack("charge").post(SERVER_URL);
+    }
+
+    /**
+     * 用户进行帐户充值
+     *
+     * @param amount 充值金额
+     * @return response
+     */
+    public Response recharge(int amount) {
+        return new Request().requireLogin()
+                .put("amount", amount)
+                .pack("recharge").post(SERVER_URL);
     }
 
     /**

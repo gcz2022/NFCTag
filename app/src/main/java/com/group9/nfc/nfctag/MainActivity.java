@@ -107,7 +107,7 @@ public class MainActivity extends ActionBarActivity
 
         Client.Response response = new Client.AsnyRequest(){
             public Client.Response getResponse(){
-                return Client.getClient().createItem(generateResult, goodsNameStr, goodsDescriptionStr, Integer.parseInt(unitPriceStr));
+                return Client.getClient().createItem(generateResult, goodsNameStr, goodsDescriptionStr, Integer.parseInt(unitPriceStr),100);
             }
         }.post();
         if(response.getResult().equals("success"))

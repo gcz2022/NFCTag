@@ -1,9 +1,11 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.util.Random;
-
 import connection.client.Client;
 import connection.json.JSONArray;
 import connection.json.JSONObject;
@@ -26,35 +23,35 @@ import connection.json.JSONObject;
  * Created by yang on 15/7/17.
  */
 public class PlaceholderFragment extends Fragment {
-    Activity mactivity;
-    private int account_balance;
-    private int wallets;
+    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final int MY_ACCOUNT = 1;
+
+    private Activity mActivity;
+    private int accountBalance;
     private TextView textWallets;
     private TextView textAccountName;
     private TextView textAccountBalance;
     private TextView textWalletName;
     private TextView textWalletBalance;
+    private TextView hintWalletBalance;
     private Button buttonWallet;
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_BALANCE = "account_balance";
-
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
     public static PlaceholderFragment newInstance(int sectionNumber, Activity activity) {
         PlaceholderFragment fragment = new PlaceholderFragment();
-        fragment.mactivity = activity;
+        fragment.mActivity = activity;
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
 
+    /**
+     * 返回一个随机字符串代表钱包的标识符rawVal
+     * @return string
+     */
     public String ranId() {
         String ans = "";
         for (int i = 0; i < 4; i++) {
@@ -69,9 +66,13 @@ public class PlaceholderFragment extends Fragment {
                              Bundle savedInstanceState) {
         int select = getArguments().getInt(ARG_SECTION_NUMBER);
         View rootView = null;
+        /**
+         * 根据不同的select 来创建不同的fragment
+         */
         switch (select) {
             case 1:
-                account_balance = new Client.AsnyRequest() {
+
+                accountBalance = new Client.AsnyRequest() {
                     public Client.Response getResponse() {
                         return Client.getClient().getUserInfo();
                     }
@@ -80,7 +81,7 @@ public class PlaceholderFragment extends Fragment {
                 textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
-                textAccountBalance.setText(String.valueOf(account_balance));
+                textAccountBalance.setText(String.valueOf(accountBalance));
                 Client.Response response = new Client.AsnyRequest() {
                     public Client.Response getResponse() {
                         return Client.getClient().getWallets();
@@ -93,11 +94,47 @@ public class PlaceholderFragment extends Fragment {
                     LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
                     for (int i = 0; i < wallets.length(); i++) {
                         JSONObject wallet = wallets.getJSONObject(i);
-                        LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
+                        final int walletId = wallet.getInt("id");
+                        final LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
                         textWalletName = (TextView) ly.findViewById(R.id.WalletName);
                         textWalletName.setText(wallet.getString("name"));
                         textWalletBalance = (TextView) ly.findViewById(R.id.WalletBalance);
                         textWalletBalance.setText(String.valueOf(wallet.getInt("balance")));
+                        ly.findViewById(R.id.deleteWallet).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                                builder.setTitle("虚拟钱包");
+                                builder.setMessage("确认删除钱包么");
+                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mActivity, "delete success", Toast.LENGTH_SHORT).show();
+                                        int currentWallets = Integer.valueOf(textWallets.getText().toString()) - 1;
+                                        textWallets.setText(String.valueOf(currentWallets));
+                                        int currentBalance = Integer.valueOf(textAccountBalance.getText().toString()) +
+                                                    Integer.valueOf(textWalletBalance.getText().toString());
+                                        textAccountBalance.setText(String.valueOf(currentBalance));
+                                        ly.setVisibility(View.GONE);
+                                        new Client.AsnyRequest() {
+                                            public Client.Response getResponse() {
+                                                return Client.getClient().deleteWallet(walletId);
+                                            }
+                                        }.post();
+                                    }
+                                });
+                                //    设置一个NegativeButton
+                                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(mActivity, "negative: " + which, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                //    显示出该对话框
+                                builder.show();
+
+                            }
+                        });
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         lp.setMargins(0, 20, 0, 0);
@@ -112,8 +149,19 @@ public class PlaceholderFragment extends Fragment {
                 rootView = inflater.inflate(R.layout.fragment_pay, container, false);
                 break;
             case 3:
+                accountBalance = new Client.AsnyRequest() {
+                    public Client.Response getResponse() {
+                        return Client.getClient().getUserInfo();
+                    }
+                }.post().helper.getUserBalance();
                 rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
                 final View rootView_ = rootView;
+                textAccountName = (TextView) rootView.findViewById(R.id.accountName);
+                textAccountName.setText(Client.getClient().getUsername());
+                textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
+                textAccountBalance.setText(String.valueOf(accountBalance));
+                hintWalletBalance = (EditText) rootView.findViewById(R.id.WalletBalance);
+                hintWalletBalance.setHint("输入0~"+ String.valueOf(accountBalance)+"元");
                 buttonWallet = (Button) rootView.findViewById(R.id.newWalletButton);
                 buttonWallet.setOnClickListener(new Button.OnClickListener() {
 
@@ -126,6 +174,9 @@ public class PlaceholderFragment extends Fragment {
                         final String rawVal = ranId();
                         final String description = desc.getText().toString();
                         final int balance = Integer.valueOf(BalanceWallet.getText().toString());
+                        if (name.length() > 10){
+
+                        }
                         Client.Response response = new Client.AsnyRequest() {
                             public Client.Response getResponse() {
                                 return Client.getClient().createWallet(name, rawVal, description, balance);
@@ -133,7 +184,11 @@ public class PlaceholderFragment extends Fragment {
                         }.post();
                         if (response.getResult().equals("success")) {
                             // success
-                            Toast.makeText(mactivity, "success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mActivity, "success", Toast.LENGTH_LONG).show();
+//                            FragmentManager fragmentManager = getFragmentManager();
+//                            fragmentManager.beginTransaction()
+//                                    .replace(R.id.container, PlaceholderFragment.newInstance(MY_ACCOUNT, mActivity))
+//                                    .commit();
                             Log.i("app", "success");
                         } else {
                             Log.i("app", response.getErrorMsg());
