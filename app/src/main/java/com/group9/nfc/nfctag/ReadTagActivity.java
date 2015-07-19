@@ -13,8 +13,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import connection.client.Client;
 
 /**
  * Created by desolate on 15/5/19.
@@ -30,6 +34,7 @@ public class ReadTagActivity extends Activity
     private PendingIntent pendingIntent;
     IntentFilter[] tagFilters;
 
+    Button returnnns;
     private TextView textView;
 
     @Override
@@ -40,6 +45,25 @@ public class ReadTagActivity extends Activity
 
         textView = (TextView)findViewById(R.id.textView);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        returnnns=(Button)findViewById(R.id.returnnns);
+        returnnns.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View v)
+                                         {
+                                             if(Client.getClient().getUsername().equals("admin"))
+                                             {
+                                                 Intent intent=new Intent(v.getContext(), MainActivity.class);
+                                                 intent.putExtra("read", "true");
+                                                 intent.putExtra("customerId", textView.getText().toString());
+                                                 startActivity(intent);
+                                             }
+                                             else
+                                                 startActivity(new Intent(v.getContext(), MainActivity2.class));
+                                         }
+                                     }
+
+        );
 
         if (nfcAdapter == null) {
             Toast.makeText(this, "The device doesn't support NFC.", Toast.LENGTH_LONG).show();
@@ -78,6 +102,9 @@ public class ReadTagActivity extends Activity
                 String payloadString = new String(payload);
 
                 textView.setText(payloadString);
+
+
+
             }
         }
     }
@@ -93,6 +120,7 @@ public class ReadTagActivity extends Activity
     @Override
     protected void onNewIntent(Intent intent)
     {
+
         if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
         {
             NdefMessage[] msgs = getNdefMessagesFromIntent(intent);
@@ -139,8 +167,8 @@ public class ReadTagActivity extends Activity
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String payload = new String(msg.getRecords()[0].getPayload());
+                        textView.setText((payload));
 
-                        textView.setText(new String(payload));
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener()
         {

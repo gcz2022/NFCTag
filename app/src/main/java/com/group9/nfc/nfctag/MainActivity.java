@@ -207,6 +207,8 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         Intent intent = getIntent();
+
+
         account = intent.getStringExtra("account");
 
         super.onCreate(savedInstanceState);
@@ -224,6 +226,12 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        if(intent.getStringExtra("read")!=null&&intent.getStringExtra("read").equals("true"))
+        {
+            onNavigationDrawerItemSelected(2);
+            customerId.setText(intent.getStringExtra("customerId"));
+        }
     }
 
     @Override
@@ -338,6 +346,9 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SignInActivity.class));
+            Client.getClient().logout();
+            finish();
             return true;
         }
 
