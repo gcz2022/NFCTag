@@ -33,6 +33,7 @@ public class PlaceholderFragment extends Fragment {
     private TextView textAccountBalance;
     private TextView textWalletName;
     private TextView textWalletBalance;
+    private TextView hintWalletBalance;
     private Button buttonWallet;
     /**
      * Returns a new instance of this fragment for the given section
@@ -129,13 +130,6 @@ public class PlaceholderFragment extends Fragment {
                                         Toast.makeText(mActivity, "negative: " + which, Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                                //    设置一个NeutralButton
-                                builder.setNeutralButton("忽略", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(mActivity, "neutral: " + which, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
                                 //    显示出该对话框
                                 builder.show();
 
@@ -155,8 +149,19 @@ public class PlaceholderFragment extends Fragment {
                 rootView = inflater.inflate(R.layout.fragment_pay, container, false);
                 break;
             case 3:
+                accountBalance = new Client.AsnyRequest() {
+                    public Client.Response getResponse() {
+                        return Client.getClient().getUserInfo();
+                    }
+                }.post().helper.getUserBalance();
                 rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
                 final View rootView_ = rootView;
+                textAccountName = (TextView) rootView.findViewById(R.id.accountName);
+                textAccountName.setText(Client.getClient().getUsername());
+                textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
+                textAccountBalance.setText(String.valueOf(accountBalance));
+                hintWalletBalance = (EditText) rootView.findViewById(R.id.WalletBalance);
+                hintWalletBalance.setHint("输入0~"+ String.valueOf(accountBalance)+"元");
                 buttonWallet = (Button) rootView.findViewById(R.id.newWalletButton);
                 buttonWallet.setOnClickListener(new Button.OnClickListener() {
 
@@ -180,10 +185,10 @@ public class PlaceholderFragment extends Fragment {
                         if (response.getResult().equals("success")) {
                             // success
                             Toast.makeText(mActivity, "success", Toast.LENGTH_LONG).show();
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.container, PlaceholderFragment.newInstance(MY_ACCOUNT, mActivity))
-                                    .commit();
+//                            FragmentManager fragmentManager = getFragmentManager();
+//                            fragmentManager.beginTransaction()
+//                                    .replace(R.id.container, PlaceholderFragment.newInstance(MY_ACCOUNT, mActivity))
+//                                    .commit();
                             Log.i("app", "success");
                         } else {
                             Log.i("app", response.getErrorMsg());
