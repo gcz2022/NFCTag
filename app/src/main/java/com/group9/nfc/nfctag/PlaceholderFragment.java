@@ -96,7 +96,7 @@ public class PlaceholderFragment extends Fragment {
                     LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
                     for (int i = 0; i < wallets.length(); i++) {
                         JSONObject wallet = wallets.getJSONObject(i);
-                        final int walletId = wallet.getInt("walletId");
+//                        final int walletId = wallet.getInt("walletId");
                         LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
                         textWalletName = (TextView) ly.findViewById(R.id.WalletName);
                         textWalletName.setText(wallet.getString("name"));
@@ -112,7 +112,7 @@ public class PlaceholderFragment extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         Toast.makeText(mactivity, "positive: " + which, Toast.LENGTH_SHORT).show();
-                                        Client.getClient().deleteWallet(walletId);
+                                       // Client.getClient().deleteWallet(walletId);
                                     }
                                 });
                                 //    设置一个NegativeButton

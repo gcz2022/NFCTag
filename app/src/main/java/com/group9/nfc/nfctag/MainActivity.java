@@ -40,10 +40,12 @@ public class MainActivity extends ActionBarActivity
     private TextView goodsName;
     private TextView goodsDescription;
     private TextView unitPrice;
+    private TextView goodsAmount;
 
     private LinearLayout myAccount;
     private LinearLayout goodsIn;
     private LinearLayout customerBuy;
+    private LinearLayout adminHasItems;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -53,6 +55,7 @@ public class MainActivity extends ActionBarActivity
         myAccount = (LinearLayout) findViewById(R.id.myAccount);
         goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
         customerBuy=(LinearLayout) findViewById(R.id.customerBuy);
+        adminHasItems=(LinearLayout) findViewById(R.id.adminHasItems);
 
         //用户名
         accountTextView = (TextView) findViewById(R.id.accountName);
@@ -69,12 +72,18 @@ public class MainActivity extends ActionBarActivity
         goodsName=(TextView) findViewById(R.id.goodsName);
         goodsDescription=(TextView) findViewById(R.id.goodsDescription);
         unitPrice=(TextView) findViewById(R.id.unitPrice);
+        goodsAmount=(TextView) findViewById(R.id.goodsAmount);
 
         //用户消费
         customerId=(TextView) findViewById(R.id.customerId);
         amount=(TextView) findViewById(R.id.amount);
 
-
+//
+//        for(int i=0; i<3; i++)
+//        {
+//            Li
+//
+//        }
 
     }
     public String getBalance()
@@ -98,27 +107,40 @@ public class MainActivity extends ActionBarActivity
         final String goodsNameStr=goodsName.getText().toString();
         final String goodsDescriptionStr=goodsDescription.getText().toString();
         final String unitPriceStr=unitPrice.getText().toString();
+        final String goodsAmountStr=goodsAmount.getText().toString();
 
-        Intent intent=new Intent(this, WriteTagActivity.class);
-        intent.putExtra("goodsId", generateResult);
-        intent.putExtra("goodsName", goodsNameStr);
-        intent.putExtra("goodsDescription", goodsDescriptionStr);
-        intent.putExtra("unitPrice", unitPriceStr);
-
-        Client.Response response = new Client.AsnyRequest(){
-            public Client.Response getResponse(){
-                return Client.getClient().createItem(generateResult, goodsNameStr, goodsDescriptionStr, Integer.parseInt(unitPriceStr));
-            }
-        }.post();
-        if(response.getResult().equals("success"))
+        if(goodsNameStr.equals("")||goodsDescriptionStr.equals("")||unitPriceStr.equals("")||goodsAmountStr.equals(""))
         {
-            Toast.makeText(this, "仓库中已记载该商品！", Toast.LENGTH_LONG).show();
+            if(goodsNameStr.equals(""))
+                Toast.makeText(this, "请填写商品名称！", Toast.LENGTH_LONG).show();
+            if(goodsDescriptionStr.equals(""))
+                Toast.makeText(this, "请填写商品描述！", Toast.LENGTH_LONG).show();
+            if(unitPriceStr.equals(""))
+                Toast.makeText(this, "请填写商品价格！", Toast.LENGTH_LONG).show();
+            if(goodsAmountStr.equals(""))
+                Toast.makeText(this, "请填写商品数量！", Toast.LENGTH_LONG).show();
+
         }
         else
         {
-            Toast.makeText(this, "商品信息存入出错！", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, WriteTagActivity.class);
+            intent.putExtra("goodsId", generateResult);
+            intent.putExtra("goodsName", goodsNameStr);
+            intent.putExtra("goodsDescription", goodsDescriptionStr);
+            intent.putExtra("unitPrice", unitPriceStr);
+
+            Client.Response response = new Client.AsnyRequest() {
+                public Client.Response getResponse() {
+                    return Client.getClient().createItem(generateResult, goodsNameStr, goodsDescriptionStr, Integer.parseInt(unitPriceStr), Integer.parseInt(goodsAmountStr));
+                }
+            }.post();
+            if (response.getResult().equals("success")) {
+                Toast.makeText(this, "仓库中已记载该商品！", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "商品信息存入出错！", Toast.LENGTH_LONG).show();
+            }
+            startActivity(intent);
         }
-        startActivity(intent);
     }
     public char generateCharacter(Random random)
     {
@@ -144,20 +166,41 @@ public class MainActivity extends ActionBarActivity
     //用户消费
     public void charge(View view)
     {
-        Client.Response response = new Client.AsnyRequest(){
-            public Client.Response getResponse(){
-                return Client.getClient().charge(customerId.getText().toString(), Integer.parseInt(amount.getText().toString()));
-            }
-        }.post();
-        if(response.getResult().equals("success"))
+        if(customerId.getText().toString().isEmpty())
         {
-            Toast.makeText(this, "收款成功！", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请填写商品ID！", Toast.LENGTH_LONG).show();
+        }
+        else if(amount.getText().toString().isEmpty())
+        {
+            Toast.makeText(this, "请填写商品数量！", Toast.LENGTH_LONG).show();
         }
         else
         {
-            // error
-            Toast.makeText(this, response.getErrorMsg(), Toast.LENGTH_LONG).show();    // get error message
+
+            try
+            {
+                int amountInt=Integer.parseInt(amount.getText().toString());
+                Client.Response response = new Client.AsnyRequest(){
+                    public Client.Response getResponse(){
+                        return Client.getClient().charge(customerId.getText().toString(), Integer.parseInt(amount.getText().toString()));
+                    }
+                }.post();
+                if(response.getResult().equals("success"))
+                {
+                    Toast.makeText(this, "收款成功！", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    // error
+                    Toast.makeText(this, response.getErrorMsg(), Toast.LENGTH_LONG).show();    // get error message
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this, "请填写正确的商品数量！", Toast.LENGTH_LONG).show();
+            }
         }
+
     }
 
     @Override
