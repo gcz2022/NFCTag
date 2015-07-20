@@ -39,13 +39,26 @@ public class MainActivity2 extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        if (getIntent().getStringExtra("buy") != null && getIntent().getStringExtra("buy").equals("true")) {
+            onNavigationDrawerItemSelected(1, getIntent().getStringExtra("item_id"));
+        }
     }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, this))
+                .commit();
+    }
+
+    public void onNavigationDrawerItemSelected(int position, String text) {
+        // update the main content by replacing fragments
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, text, this))
                 .commit();
     }
 

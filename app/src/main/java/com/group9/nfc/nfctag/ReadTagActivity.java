@@ -25,10 +25,9 @@ import connection.client.Client;
  */
 
 
-public class ReadTagActivity extends Activity
-{
+public class ReadTagActivity extends Activity {
     private static String TAG = ReadTagActivity.class.getSimpleName();
-
+    private static final String ItemID = "item_id";
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -38,28 +37,29 @@ public class ReadTagActivity extends Activity
     private TextView textView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
 
-        textView = (TextView)findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textView);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        returnnns=(Button)findViewById(R.id.returnnns);
+        returnnns = (Button) findViewById(R.id.returnnns);
         returnnns.setOnClickListener(new View.OnClickListener() {
                                          @Override
-                                         public void onClick(View v)
-                                         {
-                                             if(Client.getClient().getUsername().equals("admin"))
-                                             {
-                                                 Intent intent=new Intent(v.getContext(), MainActivity.class);
+                                         public void onClick(View v) {
+                                             if (Client.getClient().getUsername().equals("admin")) {
+                                                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                                                  intent.putExtra("read", "true");
                                                  intent.putExtra("customerId", textView.getText().toString());
                                                  startActivity(intent);
+                                             } else {
+                                                 Intent intent = new Intent(v.getContext(), MainActivity2.class);
+                                                 intent.putExtra("buy", "true");
+                                                 intent.putExtra(ItemID,textView.getText().toString());
+                                                 startActivity(intent);
+                                                 finish();
                                              }
-                                             else
-                                                 startActivity(new Intent(v.getContext(), MainActivity2.class));
                                          }
                                      }
 
@@ -78,8 +78,7 @@ public class ReadTagActivity extends Activity
 
         try {
             ndetected.addDataType("application/com.group9.nfc.nfctag");
-        }
-        catch (IntentFilter.MalformedMimeTypeException e)  {
+        } catch (IntentFilter.MalformedMimeTypeException e) {
             throw new RuntimeException("Can not add MIME type", e);
         }
 
@@ -88,8 +87,7 @@ public class ReadTagActivity extends Activity
 
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         checkNFCEnabled();
 
@@ -104,25 +102,21 @@ public class ReadTagActivity extends Activity
                 textView.setText(payloadString);
 
 
-
             }
         }
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
 
         nfcAdapter.disableForegroundDispatch(this);
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
 
-        if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED))
-        {
+        if (intent.getAction().equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
             NdefMessage[] msgs = getNdefMessagesFromIntent(intent);
             confirmDisplayedContentOverwrite(msgs[0]);
 
@@ -131,8 +125,7 @@ public class ReadTagActivity extends Activity
         }
     }
 
-    NdefMessage[] getNdefMessagesFromIntent(Intent intent)
-    {
+    NdefMessage[] getNdefMessagesFromIntent(Intent intent) {
         NdefMessage[] msgs = null;
         String action = intent.getAction();
         if (action.equals(NfcAdapter.ACTION_TAG_DISCOVERED) || action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
@@ -158,8 +151,7 @@ public class ReadTagActivity extends Activity
         return msgs;
     }
 
-    private void confirmDisplayedContentOverwrite(final NdefMessage msg)
-    {
+    private void confirmDisplayedContentOverwrite(final NdefMessage msg) {
         final String data = textView.getText().toString().trim();
 
         new AlertDialog.Builder(this).setTitle("New tag found!").setMessage("Do you wanna show the content of this tag?")
@@ -170,30 +162,25 @@ public class ReadTagActivity extends Activity
                         textView.setText((payload));
 
                     }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener()
-        {
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
+            public void onClick(DialogInterface dialog, int id) {
                 textView.setText(data);
                 dialog.cancel();
             }
         }).show();
     }
 
-    private void checkNFCEnabled()
-    {
+    private void checkNFCEnabled() {
         boolean enable = nfcAdapter.isEnabled();
         if (!enable) {
             new AlertDialog.Builder(ReadTagActivity.this).setTitle("NFC is turned off!").setMessage("Please enable the NFC").setCancelable(false)
-                    .setPositiveButton("Set", new DialogInterface.OnClickListener()
-            {
-                @Override
-                    public void onClick(DialogInterface dialog, int id)
-                {
-                    startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-                }
-            }).create().show();
+                    .setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                        }
+                    }).create().show();
         }
     }
 }

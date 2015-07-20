@@ -35,5 +35,6 @@
     <string name="item_buy">购买商品</string>
     <string name="createwallet">创建</string>
     <string name="reset">重置</string>
+    <string name="description">商品描述</string>
 
 </resources>

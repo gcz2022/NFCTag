@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.lang.annotation.Retention;
+
 import connection.client.Client;
 import connection.json.JSONArray;
 import connection.json.JSONObject;
@@ -28,7 +31,7 @@ import connection.json.JSONObject;
  */
 public class PlaceholderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ERROR_MSG_NAME_TOO_LONG = "钱包名字过长";
+    private static String rawVal = "";
     private static final String ERROR_MSG_NULL_BALANCE = "输入金额";
 
     private Button RechargeBalance;
@@ -52,8 +55,19 @@ public class PlaceholderFragment extends Fragment {
         PlaceholderFragment fragment = new PlaceholderFragment();
         fragment.mActivity = (MainActivity2) activity;
         Bundle args = new Bundle();
+        rawVal = "";
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static PlaceholderFragment newInstance(int sectionNumber, String text, Activity activity) {
+        PlaceholderFragment fragment = new PlaceholderFragment();
+        fragment.mActivity = (MainActivity2) activity;
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        fragment.rawVal = text;
         return fragment;
     }
 
@@ -161,26 +175,62 @@ public class PlaceholderFragment extends Fragment {
                         return Client.getClient().getUserInfo();
                     }
                 }.post().helper.getUserBalance();
-                textAccountName = (TextView)rootView.findViewById(R.id.accountName);
+                textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
                 textAccountBalance.setText(String.valueOf(accountBalance));
-                Button item_scan = (Button) rootView.findViewById(R.id.item_scanning);
-                item_scan.setOnClickListener(new Button.OnClickListener(){
-
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mActivity,"!!@!@!@!@!@", Toast.LENGTH_LONG).show();
+                if (!rawVal.equals("")) {
+                    Client.Response response1 = new Client.AsnyRequest() {
+                        public Client.Response getResponse() {
+                            return Client.getClient().getItemInfo(rawVal);
+                        }
+                    }.post();
+                    if (response1.getResult().equals("success")) {
+                        JSONObject itemInfo = response1.json.getJSONObject("itemInfo");
+                        final String price = itemInfo.getString("price");
+                        final String id = itemInfo.getString("id");
+                        final String name = itemInfo.getString("name");
+                        final String desc = itemInfo.getString("description");
+                        TextView item_name = (TextView) rootView.findViewById(R.id.item_name);
+                        TextView item_price = (TextView) rootView.findViewById(R.id.item_price);
+                        TextView item_desc = (TextView) rootView.findViewById(R.id.item_description);
+                        item_name.setText(name);
+                        item_price.setText(String.valueOf(price));
+                        item_desc.setText(desc);
+                        final NewEditText number = (NewEditText) rootView.findViewById(R.id.layout);
+                        number.getText().toString();
+                        Button item_buy = (Button) rootView.findViewById(R.id.item_buy);
+                        item_buy.setOnClickListener(new Button.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                                int total = Integer.valueOf(price) * Integer.valueOf(number.getText().toString());
+                                builder.setMessage("总共消费：" + String.valueOf(total) + "元");
+                                builder.setTitle("提示");
+                                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Client.Response response2 = new Client.AsnyRequest() {
+                                            @Override
+                                            public Client.Response getResponse() {
+                                                return Client.getClient().buyItem(Integer.valueOf(id), Integer.valueOf(number.getText().toString()));
+                                            }
+                                        }.post();
+                                        if (response2.getResult().equals("success")) {
+                                            Toast.makeText(mActivity, "购买成功", Toast.LENGTH_LONG);
+                                            mActivity.onNavigationDrawerItemSelected(0);
+                                            mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
+                                            mActivity.mNavigationDrawerFragment.selectItem(0);
+                                        }
+                                    }
+                                });
+                                builder.create().show();
+                            }
+                        });
+                    } else {
+                        dialog("No Item Found !");
                     }
-                });
-                Button item_buy = (Button) rootView.findViewById(R.id.item_buy);
-                item_buy.setOnClickListener(new Button.OnClickListener(){
-
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(mActivity,"buy!@!@!@!@!@!@", Toast.LENGTH_LONG).show();
-                    }
-                });
+                }
                 break;
             case 3:
                 rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
@@ -283,7 +333,7 @@ public class PlaceholderFragment extends Fragment {
                             accountBalance += Integer.valueOf(AccountRecharge.getText().toString());
                             textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
                             textAccountBalance.setText(String.valueOf(accountBalance));
-                            Toast.makeText(mActivity,"充值成功", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mActivity, "充值成功", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
