@@ -14,7 +14,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".MainActivity$PlaceholderFragment">
+        tools:context=".PlaceholderFragment">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_gravity="top"
-                    android:text="账号"
+                    android:text="@string/account"
                     android:textColor="#ff5b75dc"
                     android:textSize="20sp" />
 
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_gravity="top"
-                    android:text="余额"
+                    android:text="@string/balance"
                     android:textColor="#ffdc9847"
                     android:textSize="20sp" />
 
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/border"
-            android:text="输入以下信息，将芯片放置在手机附近制作钱包。"
+            android:text="@string/wallet_hint"
             android:textSize="20sp" />
 
         <TableLayout
@@ -181,33 +181,34 @@
 
                 <TextView />
             </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="1">
-
-                <TextView />
-
-                <TextView />
-
-                <TextView />
-
-                <TextView />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView />
-
-                <Button android:text="重置" />
-
-                <Button
-                    android:id="@+id/newWalletButton"
-                    android:text="创建" />
-
-                <TextView />
-            </TableRow>
         </TableLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:text="@string/reset"
+                android:layout_gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/newWalletButton"
+                android:text="@string/createwallet"
+                android:layout_gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

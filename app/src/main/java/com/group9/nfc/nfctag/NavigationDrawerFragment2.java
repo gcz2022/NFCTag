@@ -57,12 +57,8 @@ public class NavigationDrawerFragment2 extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    private String type;
-    public void setType(String type)
-    {
-        this.type=type;
-    }
-    public NavigationDrawerFragment2() {
+    public NavigationDrawerFragment2(){
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +108,7 @@ public class NavigationDrawerFragment2 extends Fragment {
 
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
+                android.R.layout.simple_list_item_activated_2,
                 android.R.id.text1,
                 str));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -197,7 +193,7 @@ public class NavigationDrawerFragment2 extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);

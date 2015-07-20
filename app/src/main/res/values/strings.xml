@@ -41,5 +41,17 @@
         <item>哈尔滨</item>
         <item>符拉迪沃斯托克</item>
     </string-array>
+    <string name="item_name">商品名称</string>
+    <string name="item_number">数量</string>
+    <string name="item_price">单价</string>
+    <string name="all_price">总计</string>
+    <string name="item_hint">提示：将手机放置芯片附近读取以下信息~</string>
+    <string name="wallet_hint">输入以下信息，将芯片放置手机NFC芯片处制作虚拟钱包~</string>
+    <string name="balance">余额</string>
+    <string name="account">账号</string>
+    <string name="item_scan">扫描芯片</string>
+    <string name="item_buy">购买商品</string>
+    <string name="createwallet">创建</string>
+    <string name="reset">重置</string>
 
 </resources>

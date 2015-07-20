@@ -60,7 +60,8 @@ public class SignInActivity extends ActionBarActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
                 intent.putExtra("account", "admin");
-                startActivity(intent);
+                mContext.startActivity(intent);
+                mContext.finish();
             } else {
                 Intent intent = new Intent(this, MainActivity2.class);
                 Toast.makeText(this, "User :" + username + " sign in succeed", Toast.LENGTH_LONG).show();

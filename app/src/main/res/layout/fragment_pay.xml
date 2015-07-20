@@ -2,61 +2,200 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account"
     android:layout_width="fill_parent"
-    android:layout_height="100dp"
+    android:layout_height="fill_parent"
     android:layout_margin="10dp"
-    android:background="@drawable/border"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PlaceholderFragment">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <ImageView
-        android:id="@+id/accountImage"
-        android:layout_width="50dp"
-        android:layout_height="fill_parent"
-        android:src="@drawable/images" />
-
-    <TableLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp">
+        android:layout_height="60dp"
+        android:background="@drawable/border"
+        android:orientation="horizontal">
 
-        <TableRow>
+        <ImageView
+            android:id="@+id/accountImage"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/images" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="账号:"
+                android:layout_height="25dp"
+                android:layout_gravity="top"
+                android:text="@string/account"
                 android:textColor="#ff5b75dc"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/accountName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
                 android:textColor="#ff5b75dc"
-                android:textSize="20dp" />
-        </TableRow>
+                android:textSize="20sp" />
+        </LinearLayout>
 
-        <TableRow>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="余额:"
-                android:textColor="#ffdc4a4a"
-                android:textSize="20dp" />
+                android:layout_height="25dp"
+                android:layout_gravity="top"
+                android:text="@string/balance"
+                android:textColor="#ffdc9847"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/accountBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textColor="#ffdc4a4a"
-                android:textSize="20dp" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#ffdc9847"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:text="@string/item_hint"
+        android:textSize="20sp" />
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center|top"
+        android:stretchColumns="0,3">
+
+        <TableRow android:layout_marginTop="30dp">
+
+            <TextView />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:enabled="false"
+                android:minWidth="150dp"
+                android:singleLine="true" />
+
+            <TextView />
+
+        </TableRow>
+
+        <TableRow android:layout_marginTop="20dp">
+
+            <TextView />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_price"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:enabled="false"
+                android:minWidth="150dp"
+                android:singleLine="true" />
+
+            <TextView />
+
+        </TableRow>
+
+        <TableRow android:layout_marginTop="20dp">
+
+            <TextView />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_number"
+                android:textStyle="bold" />
+
+            <include
+                android:id="@+id/layout"
+                layout="@layout/edittext"/>
+
+            <TextView />
+
+        </TableRow>
+
+        <TableRow android:layout_marginTop="20dp">
+
+            <TextView />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/all_price"
+                android:textStyle="bold" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:enabled="false"
+                android:minWidth="150dp"
+                android:singleLine="true" />
+
+            <TextView />
+
         </TableRow>
     </TableLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="@string/item_scan"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="@string/item_buy"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

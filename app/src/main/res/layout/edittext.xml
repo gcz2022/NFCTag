@@ -1,0 +1,12 @@
+<com.group9.nfc.nfctag.NewEditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/samrtText"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/button"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="30dp"
+    android:background="@drawable/border"
+    android:drawableLeft="@drawable/minus"
+    android:drawableRight="@drawable/plus"
+    android:gravity="center" />
