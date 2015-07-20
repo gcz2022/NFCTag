@@ -165,6 +165,22 @@ public class PlaceholderFragment extends Fragment {
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
                 textAccountBalance.setText(String.valueOf(accountBalance));
+                Button item_scan = (Button) rootView.findViewById(R.id.item_scanning);
+                item_scan.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mActivity,"!!@!@!@!@!@", Toast.LENGTH_LONG).show();
+                    }
+                });
+                Button item_buy = (Button) rootView.findViewById(R.id.item_buy);
+                item_buy.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mActivity,"buy!@!@!@!@!@!@", Toast.LENGTH_LONG).show();
+                    }
+                });
                 break;
             case 3:
                 rootView = inflater.inflate(R.layout.fragment_wallet, container, false);

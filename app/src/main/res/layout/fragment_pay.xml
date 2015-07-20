@@ -180,6 +180,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
+            android:id="@+id/item_scanning"
             android:text="@string/item_scan"
             android:layout_gravity="bottom"
             android:layout_width="wrap_content"
@@ -189,6 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
+            android:id="@+id/item_buy"
             android:text="@string/item_buy"
             android:layout_gravity="bottom"
             android:layout_width="wrap_content"
