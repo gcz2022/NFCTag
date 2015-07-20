@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bill_pain">#ffcd3b45</color>
+    <color name="bill_pain">#ff56a64c</color>
     <color name="gray8">#ff888888</color>
     <color name="white">#fff</color>
+    <color name="bill_gain">#ffcd3b45</color>
 </resources>

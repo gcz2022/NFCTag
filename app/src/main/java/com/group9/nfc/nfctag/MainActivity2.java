@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import connection.client.Client;
 
 import static com.group9.nfc.nfctag.R.id.navigation_drawer;
@@ -31,6 +30,7 @@ public class MainActivity2 extends ActionBarActivity
                 navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -91,7 +91,8 @@ public class MainActivity2 extends ActionBarActivity
             startActivity(new Intent(this, SignInActivity.class));
             return true;
         } else if (id == R.id.action_bill) {
-            startActivity(new Intent(this, BillActivity.class));
+            Intent intent = new Intent(this, BillActivity.class);
+            startActivity(intent);
             return true;
         }
 

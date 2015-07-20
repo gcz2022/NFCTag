@@ -14,7 +14,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/select_wallet"
+                android:text="@string/spin_prompt"
                 android:textSize="20sp"
                 android:paddingEnd="20dp"
                 android:paddingStart="0dp"
@@ -25,19 +25,31 @@
                 android:id="@+id/bill_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:entries="@array/cities"
                 android:prompt="@string/spin_prompt"/>
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/fail_to_load_bill_prompt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+    <LinearLayout
+            android:id="@+id/bill_error_view"
             android:visibility="gone"
-            android:text="@string/fail_to_load_bill_prompt"/>
-
-    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="25sp"
+                android:text="@string/fail_to_load_bill_prompt"/>
+        <TextView
+                android:id="@+id/bill_fetch_error_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/bill_fetch_error_hint"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content">
         <LinearLayout
                 android:id="@+id/bill_container"
                 android:layout_width="match_parent"
