@@ -24,9 +24,7 @@ import static com.group9.nfc.nfctag.R.id.navigation_drawer;
 
 public class MainActivity2 extends ActionBarActivity
         implements NavigationDrawerFragment2.NavigationDrawerCallbacks {
-    private Button buttonRead;
-    private Button buttonWrite;
-    private NavigationDrawerFragment2 mNavigationDrawerFragment;
+    NavigationDrawerFragment2 mNavigationDrawerFragment;
     private CharSequence mTitle;
 
     @Override
@@ -42,7 +40,6 @@ public class MainActivity2 extends ActionBarActivity
                 navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
-
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments

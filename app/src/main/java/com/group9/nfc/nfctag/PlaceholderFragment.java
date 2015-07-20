@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import connection.client.Client;
 import connection.json.JSONArray;
@@ -106,7 +107,7 @@ public class PlaceholderFragment extends Fragment {
                     textWallets.setText(String.valueOf(wallets.length()));
                     LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
                     for (int i = 0; i < wallets.length(); i++) {
-                        JSONObject wallet = wallets.getJSONObject(i);
+                        final JSONObject wallet = wallets.getJSONObject(i);
                         final int walletId = wallet.getInt("id");
                         final LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
                         textWalletName = (TextView) ly.findViewById(R.id.WalletName);
@@ -126,7 +127,7 @@ public class PlaceholderFragment extends Fragment {
                                         int currentWallets = Integer.valueOf(textWallets.getText().toString()) - 1;
                                         textWallets.setText(String.valueOf(currentWallets));
                                         int currentBalance = Integer.valueOf(textAccountBalance.getText().toString()) +
-                                                Integer.valueOf(textWalletBalance.getText().toString());
+                                                Integer.valueOf(String.valueOf(wallet.getInt("balance")));
                                         textAccountBalance.setText(String.valueOf(currentBalance));
                                         ly.setVisibility(View.GONE);
                                         new Client.AsnyRequest() {
@@ -155,15 +156,24 @@ public class PlaceholderFragment extends Fragment {
                 break;
             case 2:
                 rootView = inflater.inflate(R.layout.fragment_pay, container, false);
-                break;
-            case 3:
                 accountBalance = new Client.AsnyRequest() {
                     public Client.Response getResponse() {
                         return Client.getClient().getUserInfo();
                     }
                 }.post().helper.getUserBalance();
+                textAccountName = (TextView)rootView.findViewById(R.id.accountName);
+                textAccountName.setText(Client.getClient().getUsername());
+                textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
+                textAccountBalance.setText(String.valueOf(accountBalance));
+                break;
+            case 3:
                 rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
                 final View rootView_ = rootView;
+                accountBalance = new Client.AsnyRequest() {
+                    public Client.Response getResponse() {
+                        return Client.getClient().getUserInfo();
+                    }
+                }.post().helper.getUserBalance();
                 textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
@@ -195,6 +205,8 @@ public class PlaceholderFragment extends Fragment {
                                 // success
                                 Toast.makeText(mActivity, "success", Toast.LENGTH_LONG).show();
                                 mActivity.onNavigationDrawerItemSelected(0);
+                                mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
+                                mActivity.mNavigationDrawerFragment.selectItem(0);
                                 Log.i("app", "success");
                             } else {
                                 Log.i("app", response.getErrorMsg());
