@@ -23,6 +23,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+    <string name="title_activity_bill">BillActivity</string>
+    <string name="bill_image">pain_or_gain</string>
+    <string name="bill_date_hint">date</string>
+    <string name="bill_money_hint">amount</string>
+
+    <string name="spin_prompt">请选择钱包</string>
+    <string name="bills">bills</string>
+    <string name="fail_to_load_bill_prompt">加载账单失败!</string>
+    <string name="bill_comment_hint">bill comment</string>
+
     <string name="item_name">商品名称</string>
     <string name="item_number">数量</string>
     <string name="item_price">单价</string>
@@ -36,5 +46,6 @@
     <string name="createwallet">创建</string>
     <string name="reset">重置</string>
     <string name="description">商品描述</string>
+    <string name="bill_fetch_error_hint">错误原因</string>
 
 </resources>
