@@ -31,8 +31,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"/>
         <activity
             android:name=".MainActivity2"
             android:label="@string/app_name" />
@@ -63,9 +62,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".WriteWalletActivity"
+            android:label="@string/createwallet" />
+        <activity
             android:name=".BillActivity"
-            android:label="@string/title_activity_bill">
-        </activity>
+            android:label="@string/title_activity_bill"/>
     </application>
 
 </manifest>

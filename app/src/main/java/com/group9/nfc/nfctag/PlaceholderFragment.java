@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.DigitsKeyListener;
@@ -268,12 +269,13 @@ public class PlaceholderFragment extends Fragment {
                                 }
                             }.post();
                             if (response.getResult().equals("success")) {
-                                // success
+                                Intent intent = new Intent(mActivity, WriteWalletActivity.class);
+                                intent.putExtra("wallet_rawVal", rawVal);
+                                startActivity(intent);
                                 Toast.makeText(mActivity, "success", Toast.LENGTH_LONG).show();
-                                mActivity.onNavigationDrawerItemSelected(0);
-                                mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
-                                mActivity.mNavigationDrawerFragment.selectItem(0);
-                                Log.i("app", "success");
+//                                mActivity.onNavigationDrawerItemSelected(0);
+//                                mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
+//                                mActivity.mNavigationDrawerFragment.selectItem(0);
                             } else {
                                 Log.i("app", response.getErrorMsg());
                             }
