@@ -10,41 +10,22 @@ import android.support.v4.app.Fragment;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.lang.annotation.Retention;
-
+import android.widget.*;
 import connection.client.Client;
 import connection.json.JSONArray;
 import connection.json.JSONObject;
 
-/**
- * Created by yang on 15/7/17.
- */
 public class PlaceholderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static String rawVal = "";
+    private String rawVal = "";
     private static final String ERROR_MSG_NULL_BALANCE = "输入金额";
 
-    private Button RechargeBalance;
     private MainActivity2 mActivity;
     private int accountBalance;
     private TextView textWallets;
-    private TextView textAccountName;
     private TextView textAccountBalance;
-    private TextView textWalletName;
-    private TextView textWalletBalance;
-    private TextView hintWalletBalance;
-    private Button buttonWallet;
     private View rootView = null;
 
 
@@ -56,7 +37,7 @@ public class PlaceholderFragment extends Fragment {
         PlaceholderFragment fragment = new PlaceholderFragment();
         fragment.mActivity = (MainActivity2) activity;
         Bundle args = new Bundle();
-        rawVal = "";
+        fragment.rawVal = "";
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
@@ -96,8 +77,8 @@ public class PlaceholderFragment extends Fragment {
         switch (select) {
             case 1:
                 rootView = inflater.inflate(R.layout.fragment_account, container, false);
-                RechargeBalance = (Button) rootView.findViewById(R.id.recharge);
-                RechargeBalance.setOnClickListener(new Button.OnClickListener() {
+                Button rechargeBalance = (Button) rootView.findViewById(R.id.recharge);
+                rechargeBalance.setOnClickListener(new Button.OnClickListener() {
                     public void onClick(View v) {
                         dialog();
                     }
@@ -107,7 +88,7 @@ public class PlaceholderFragment extends Fragment {
                         return Client.getClient().getUserInfo();
                     }
                 }.post().helper.getUserBalance();
-                textAccountName = (TextView) rootView.findViewById(R.id.accountName);
+                TextView textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
                 textAccountBalance.setText(String.valueOf(accountBalance));
@@ -125,9 +106,9 @@ public class PlaceholderFragment extends Fragment {
                         final JSONObject wallet = wallets.getJSONObject(i);
                         final int walletId = wallet.getInt("id");
                         final LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.wallet, null).findViewById(R.id.addwallet);
-                        textWalletName = (TextView) ly.findViewById(R.id.WalletName);
+                        TextView textWalletName = (TextView) ly.findViewById(R.id.WalletName);
                         textWalletName.setText(wallet.getString("name"));
-                        textWalletBalance = (TextView) ly.findViewById(R.id.WalletBalance);
+                        TextView textWalletBalance = (TextView) ly.findViewById(R.id.WalletBalance);
                         textWalletBalance.setText(String.valueOf(wallet.getInt("balance")));
                         ly.findViewById(R.id.deleteWallet).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -157,6 +138,14 @@ public class PlaceholderFragment extends Fragment {
                                 //    显示出该对话框
                                 builder.show();
 
+                            }
+                        });
+                        ly.findViewById(R.id.getWalletBills).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getActivity(), BillActivity.class);
+                                intent.putExtra("walletId", walletId);
+                                startActivity(intent);
                             }
                         });
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -199,7 +188,6 @@ public class PlaceholderFragment extends Fragment {
                         item_price.setText(String.valueOf(price));
                         item_desc.setText(desc);
                         final NewEditText number = (NewEditText) rootView.findViewById(R.id.layout);
-                        number.getText().toString();
                         Button item_buy = (Button) rootView.findViewById(R.id.item_buy);
                         item_buy.setOnClickListener(new Button.OnClickListener() {
                             @Override
@@ -218,7 +206,7 @@ public class PlaceholderFragment extends Fragment {
                                             }
                                         }.post();
                                         if (response2.getResult().equals("success")) {
-                                            Toast.makeText(mActivity, "购买成功", Toast.LENGTH_LONG);
+                                            Toast.makeText(mActivity, "购买成功", Toast.LENGTH_LONG).show();
                                             mActivity.onNavigationDrawerItemSelected(0);
                                             mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
                                             mActivity.mNavigationDrawerFragment.selectItem(0);
@@ -245,14 +233,14 @@ public class PlaceholderFragment extends Fragment {
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
                 textAccountBalance.setText(String.valueOf(accountBalance));
-                hintWalletBalance = (EditText) rootView.findViewById(R.id.WalletBalance);
+                TextView hintWalletBalance = (EditText) rootView.findViewById(R.id.WalletBalance);
                 hintWalletBalance.setHint("输入1~" + String.valueOf(accountBalance) + "元");
-                buttonWallet = (Button) rootView.findViewById(R.id.newWalletButton);
+                Button buttonWallet = (Button) rootView.findViewById(R.id.newWalletButton);
                 buttonWallet.setOnClickListener(new Button.OnClickListener() {
 
                     public void onClick(View v) {
                         EditText newWallet = (EditText) rootView_.findViewById(R.id.newWallet);
-                        EditText pwd = (EditText) rootView_.findViewById(R.id.AccountPwd);
+//                        EditText pwd = (EditText) rootView_.findViewById(R.id.AccountPwd);
                         EditText BalanceWallet = (EditText) rootView_.findViewById(R.id.WalletBalance);
                         EditText desc = (EditText) rootView_.findViewById(R.id.descriptionWallet);
                         if (BalanceWallet.getText().toString().equals("")) {
@@ -294,8 +282,6 @@ public class PlaceholderFragment extends Fragment {
 
     /**
      * dialog 弹出一个警告窗口 提示错误信息。
-     *
-     * @param ErrorMsg
      */
     public void dialog(String ErrorMsg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
