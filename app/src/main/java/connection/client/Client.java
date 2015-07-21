@@ -18,9 +18,9 @@ import connection.json.JSONObject;
 public class Client {
 
     // 新浪服务器地址
-    public static final String SERVER_URL = "http://virtualwallet.sinaapp.com/";
+//    public static final String SERVER_URL = "http://virtualwallet.sinaapp.com/";
     // 本地调试地址
-//    public static final String SERVER_URL = "http://10.180.32.116/java/virtualwallet/1/";
+    public static final String SERVER_URL = "http://10.180.82.178/java/virtualwallet/1/";
     private static Client singleton;
 
     private boolean logined;

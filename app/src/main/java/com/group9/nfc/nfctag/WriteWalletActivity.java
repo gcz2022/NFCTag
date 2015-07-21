@@ -49,6 +49,7 @@ public class WriteWalletActivity extends Activity {
         editText.setText(wallet_rawVal);
 
         buttonWrite = (Button)findViewById(R.id.button);
+        buttonWrite.setText("写入钱包标识符");
         buttonWrite.setOnClickListener(_tagWriter);
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -110,7 +111,6 @@ public class WriteWalletActivity extends Activity {
             else
             {
                 enableTagWriteMode();
-                finish();
             }
         }
     };
@@ -137,7 +137,8 @@ public class WriteWalletActivity extends Activity {
                 }
 
                 ndef.writeNdefMessage(message);
-                Toast.makeText(this, "商品ID已写入芯片！", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "钱包ID已写入芯片！", Toast.LENGTH_LONG).show();
+                finish();
                 return true;
             }
 
