@@ -33,14 +33,11 @@ public class WriteWalletActivity extends Activity {
     private boolean writeMode = false;
 
     private EditText editText;
-    private Button buttonWrite;
-
-    private String wallet_rawVal;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         Intent intent=getIntent();
-        wallet_rawVal=intent.getStringExtra("wallet_rawVal");
+        String wallet_rawVal = intent.getStringExtra("wallet_rawVal");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiry_write);
@@ -48,7 +45,7 @@ public class WriteWalletActivity extends Activity {
         editText = (EditText)findViewById(R.id.editText);
         editText.setText(wallet_rawVal);
 
-        buttonWrite = (Button)findViewById(R.id.button);
+        Button buttonWrite = (Button) findViewById(R.id.button);
         buttonWrite.setText("写入钱包标识符");
         buttonWrite.setOnClickListener(_tagWriter);
 
@@ -163,9 +160,8 @@ public class WriteWalletActivity extends Activity {
         byte[] id = new byte[0];
 
         NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, mimeBytes, id, dataBytes);
-        NdefMessage message = new NdefMessage(new NdefRecord[]{record});
 
-        return message;
+        return new NdefMessage(new NdefRecord[]{record});
     }
 
 
