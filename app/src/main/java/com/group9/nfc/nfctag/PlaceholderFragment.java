@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import java.util.Random;
+
 import connection.client.Client;
 import connection.json.JSONArray;
 import connection.json.JSONObject;
@@ -58,13 +61,25 @@ public class PlaceholderFragment extends Fragment {
      *
      * @return string
      */
+    public char generateCharacter(Random random)
+    {
+        char res;
+        int randomInt = random.nextInt(36);
+        if (randomInt>25)
+            res=(char)((randomInt-26)+'0');
+        else
+            res=((char) (random.nextInt(26) + 'A'));
+
+        return res;
+    }
     public String ranId() {
-        String ans = "";
-        for (int i = 0; i < 4; i++) {
-            int ch = (int) Math.floor(Math.random() * 1000) % 4;
-            ans += ('a' + ch);
+        Random random=new Random();
+        StringBuffer buffer=new StringBuffer();
+        for(int i=0; i<8; i++)
+        {
+            buffer.append(generateCharacter(random));
         }
-        return ans;
+        return buffer.toString();
     }
 
     @Override
