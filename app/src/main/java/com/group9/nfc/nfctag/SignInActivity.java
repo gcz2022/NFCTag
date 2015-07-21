@@ -18,7 +18,21 @@ public class SignInActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_sign_in);
-
+        if (Client.getClient().isLogined()){
+            if(Client.getClient().getUsername().equals("admin")){
+                Intent intent = new Intent(this, MainActivity.class);
+                Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
+                intent.putExtra("account", "admin");
+                mContext.startActivity(intent);
+                mContext.finish();
+            }   else
+            {
+                Intent intent = new Intent(this, MainActivity2.class);
+                Toast.makeText(this, "User :" + Client.getClient().getUsername() + " sign in succeed", Toast.LENGTH_LONG).show();
+                mContext.startActivity(intent);
+                mContext.finish();
+            }
+        }
     }
 
     @Override
@@ -54,8 +68,7 @@ public class SignInActivity extends ActionBarActivity {
                 return Client.getClient().validate(username, password);
             }
         }.post();
-        if (Client.getClient().isLogined()) {
-            // Client.getClient().getUsername(); // �øú������Ի�ȡ����¼�û����˺�
+        if (response.getResult().equals("success")) {
             if (username.equals("admin")) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();

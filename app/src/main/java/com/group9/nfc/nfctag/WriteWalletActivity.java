@@ -23,7 +23,6 @@ import com.group9.nfc.nfctag.R;
 import java.nio.charset.Charset;
 
 /**
-
  * Created by desolate on 15/5/19.
  */
 public class WriteWalletActivity extends Activity {
@@ -33,22 +32,19 @@ public class WriteWalletActivity extends Activity {
     private boolean writeMode = false;
 
     private EditText editText;
-    private Button buttonWrite;
 
-    private String wallet_rawVal;
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        Intent intent=getIntent();
-        wallet_rawVal=intent.getStringExtra("wallet_rawVal");
+    public void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        String wallet_rawVal = intent.getStringExtra("wallet_rawVal");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiry_write);
 
-        editText = (EditText)findViewById(R.id.editText);
+        editText = (EditText) findViewById(R.id.editText);
         editText.setText(wallet_rawVal);
 
-        buttonWrite = (Button)findViewById(R.id.button);
+        Button buttonWrite = (Button) findViewById(R.id.button);
         buttonWrite.setText("写入钱包标识符");
         buttonWrite.setOnClickListener(_tagWriter);
 
@@ -63,12 +59,11 @@ public class WriteWalletActivity extends Activity {
 
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
 
-        tagFilters = new IntentFilter[] {tagDetected};
+        tagFilters = new IntentFilter[]{tagDetected};
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
         checkNFCEnabled();
@@ -76,20 +71,16 @@ public class WriteWalletActivity extends Activity {
 
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
 
         nfcAdapter.disableForegroundDispatch(this);
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
-        if (writeMode)
-        {
-            if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
-            {
+    protected void onNewIntent(Intent intent) {
+        if (writeMode) {
+            if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
                 Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 writeTag(buildNdefMessage(), detectedTag);
 
@@ -98,25 +89,19 @@ public class WriteWalletActivity extends Activity {
         }
     }
 
-    private final View.OnClickListener _tagWriter = new View.OnClickListener()
-    {
+    private final View.OnClickListener _tagWriter = new View.OnClickListener() {
         @Override
-        public void onClick(View arg0)
-        {
-            if (editText.getText().toString().trim().length() == 0)
-            {
+        public void onClick(View arg0) {
+            if (editText.getText().toString().trim().length() == 0) {
                 Toast.makeText(WriteWalletActivity.this, "The data to write is empty. Please fill it!",
                         Toast.LENGTH_LONG).show();
-            }
-            else
-            {
+            } else {
                 enableTagWriteMode();
             }
         }
     };
 
-    boolean writeTag(NdefMessage message, Tag tag)
-    {
+    boolean writeTag(NdefMessage message, Tag tag) {
         int size = message.toByteArray().length;
 
         try {
@@ -152,8 +137,7 @@ public class WriteWalletActivity extends Activity {
         return false;
     }
 
-    private NdefMessage buildNdefMessage()
-    {
+    private NdefMessage buildNdefMessage() {
         String data = editText.getText().toString().trim();
 
         String mimeType = "application/com.group9.nfc.nfctag";
@@ -163,30 +147,25 @@ public class WriteWalletActivity extends Activity {
         byte[] id = new byte[0];
 
         NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, mimeBytes, id, dataBytes);
-        NdefMessage message = new NdefMessage(new NdefRecord[]{record});
 
-        return message;
+        return new NdefMessage(new NdefRecord[]{record});
     }
 
 
-    private void enableTagWriteMode()
-    {
+    private void enableTagWriteMode() {
         writeMode = true;
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, tagFilters, null);
         editText.setEnabled(false);
     }
 
 
-    private void checkNFCEnabled()
-    {
+    private void checkNFCEnabled() {
         boolean enable = nfcAdapter.isEnabled();
         if (!enable) {
             new AlertDialog.Builder(WriteWalletActivity.this).setTitle("NFC is turned off!").setMessage("Please enable the NFC").setCancelable(false)
-                    .setPositiveButton("Set", new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton("Set", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id)
-                        {
+                        public void onClick(DialogInterface dialog, int id) {
                             startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
                         }
                     }).create().show();

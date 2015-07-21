@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,8 @@ import connection.json.JSONObject;
 
 public class PlaceholderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ERROR_MSG_NULL_WALLET_NAME = "输入钱包名称";
+    private static final String ERROR_MSG_NOT_ENOUGH_BALANCE = "余额不足";
     private String rawVal = "";
     private static final String ERROR_MSG_NULL_BALANCE = "输入金额";
 
@@ -30,7 +34,6 @@ public class PlaceholderFragment extends Fragment {
     private TextView textWallets;
     private TextView textAccountBalance;
     private View rootView = null;
-
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -61,22 +64,21 @@ public class PlaceholderFragment extends Fragment {
      *
      * @return string
      */
-    public char generateCharacter(Random random)
-    {
+    public char generateCharacter(Random random) {
         char res;
         int randomInt = random.nextInt(36);
-        if (randomInt>25)
-            res=(char)((randomInt-26)+'0');
+        if (randomInt > 25)
+            res = (char) ((randomInt - 26) + '0');
         else
-            res=((char) (random.nextInt(26) + 'A'));
+            res = ((char) (random.nextInt(26) + 'A'));
 
         return res;
     }
+
     public String ranId() {
-        Random random=new Random();
-        StringBuffer buffer=new StringBuffer();
-        for(int i=0; i<8; i++)
-        {
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
             buffer.append(generateCharacter(random));
         }
         return buffer.toString();
@@ -248,17 +250,48 @@ public class PlaceholderFragment extends Fragment {
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
                 textAccountBalance.setText(String.valueOf(accountBalance));
-                TextView hintWalletBalance = (EditText) rootView.findViewById(R.id.WalletBalance);
+                final EditText hintWalletBalance = (EditText) rootView.findViewById(R.id.WalletBalance);
+                hintWalletBalance.addTextChangedListener(new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        String text = hintWalletBalance.getText().toString();
+                        System.out.println(text);
+                        if (Integer.valueOf(text) > accountBalance) {
+                            hintWalletBalance.setTextColor(Color.RED);
+
+                        } else {
+                            hintWalletBalance.setTextColor(Color.BLACK);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
                 hintWalletBalance.setHint("输入1~" + String.valueOf(accountBalance) + "元");
                 Button buttonWallet = (Button) rootView.findViewById(R.id.newWalletButton);
                 buttonWallet.setOnClickListener(new Button.OnClickListener() {
 
                     public void onClick(View v) {
                         EditText newWallet = (EditText) rootView_.findViewById(R.id.newWallet);
-//                        EditText pwd = (EditText) rootView_.findViewById(R.id.AccountPwd);
-                        EditText BalanceWallet = (EditText) rootView_.findViewById(R.id.WalletBalance);
+                        //TODO 钱包密码
+                        EditText pwd = (EditText) rootView_.findViewById(R.id.AccountPwd);
+                        final EditText BalanceWallet = (EditText) rootView_.findViewById(R.id.WalletBalance);
                         EditText desc = (EditText) rootView_.findViewById(R.id.descriptionWallet);
-                        if (BalanceWallet.getText().toString().equals("")) {
+                        if (Integer.valueOf(BalanceWallet.getText().toString()) > accountBalance) {
+                            dialog(ERROR_MSG_NOT_ENOUGH_BALANCE);
+                            BalanceWallet.requestFocus();
+                        } else if (newWallet.getText().toString().equals("")) {
+                            dialog(ERROR_MSG_NULL_WALLET_NAME);
+                            newWallet.requestFocus();
+                        } else if (BalanceWallet.getText().toString().equals("")) {
                             dialog(ERROR_MSG_NULL_BALANCE);
                             BalanceWallet.requestFocus();
                         } else {
@@ -276,11 +309,11 @@ public class PlaceholderFragment extends Fragment {
                                 intent.putExtra("wallet_rawVal", rawVal);
                                 startActivity(intent);
                                 Toast.makeText(mActivity, "success", Toast.LENGTH_LONG).show();
-//                                mActivity.onNavigationDrawerItemSelected(0);
-//                                mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
-//                                mActivity.mNavigationDrawerFragment.selectItem(0);
+                                mActivity.onNavigationDrawerItemSelected(0);
+                                mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
+                                mActivity.mNavigationDrawerFragment.selectItem(0);
                             } else {
-                                Log.i("app", response.getErrorMsg());
+                                dialog(response.getErrorMsg());
                             }
                         }
 

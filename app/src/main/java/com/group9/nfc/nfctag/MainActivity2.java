@@ -101,6 +101,7 @@ public class MainActivity2 extends ActionBarActivity
         if (id == R.id.action_settings) {
             Client.getClient().logout();
             startActivity(new Intent(this, SignInActivity.class));
+            finish();
             return true;
         } else if (id == R.id.action_bill) {
             Intent intent = new Intent(this, BillActivity.class);
