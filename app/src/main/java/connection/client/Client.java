@@ -1,37 +1,34 @@
 package connection.client;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import connection.json.JSONArray;
+import connection.json.JSONException;
+import connection.json.JSONObject;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
-import connection.json.JSONArray;
-import connection.json.JSONException;
-import connection.json.JSONObject;
-
 public class Client {
 
     // 新浪服务器地址
-//    public static final String SERVER_URL = "http://virtualwallet.sinaapp.com/";
+    public static final String SERVER_URL = "http://virtualwallet.sinaapp.com/";
     // 本地调试地址
-    public static final String SERVER_URL = "http://10.180.82.178/java/virtualwallet/1/";
+//    public static final String SERVER_URL = "http://10.180.82.178/java/virtualwallet/1/";
+    public static final int USERTYPE_CUSTOMER = 0, USERTYPE_RETAILER = 1;
     private static Client singleton;
 
     private boolean logined;
     private String username, password;
-    private int userId;
+    private int userId, usertype;
 
     private Client() {
         logined = false;
         username = null;
         password = null;
         userId = -1;
+        usertype = -1;
     }
 
     /**
@@ -53,24 +50,18 @@ public class Client {
 //        test2(true);
 //        test3();
         Client client = Client.getClient();
+        client.validate("admin", "admin");
+        client.logout();
         client.validate("sfc", "sfc");
-        client.validate("sfc", "sfc");
-//        client.logout();
-//        client.validate("admin", "admin");
-//        client.getUserInfo();
-//        client.getUserInfo();
-//        client.recharge(1000);
-//        client.getUserInfo();
-
     }
 
     private static void initUsers() {
         Client client = Client.getClient();
-        client.register("sfc", "sfc");
-        client.register("yty", "yty");
-        client.register("dza", "dza");
-        client.register("gcz", "gcz");
-        client.register("admin", "admin");
+        client.register("sfc", "sfc", 0);
+        client.register("yty", "yty", 0);
+        client.register("dza", "dza", 0);
+        client.register("gcz", "gcz", 0);
+        client.register("admin", "admin", 1);
     }
 
     // Very dangerous!!!
@@ -89,8 +80,8 @@ public class Client {
 
         // 切换到admin1
         if (firstTime) {
-            client.register("t1-admin", "t1-admin");
-            client.register("t1-admin", "t1-admin"); // duplicate register
+            client.register("t1-admin", "t1-admin", 1);
+            client.register("t1-admin", "t1-admin", 1); // duplicate register
             client.validate("t1-admin", "wrong-password"); // wrong password
             client.validate("t1-admin", "t1-admin");
             client.createItem("t1-item1", "t1-item1", "t1-item1 description", 1, 100);
@@ -100,7 +91,7 @@ public class Client {
         // 切换到admin2
         if (firstTime) {
             client.logout();
-            client.register("t1-admin2", "t1-admin2");
+            client.register("t1-admin2", "t1-admin2", 1);
             client.validate("t1-admin2", "t1-admin2");
             client.createItem("t1-item3", "t1-item3", "t1-item3 description", 3, 100);
         }
@@ -108,7 +99,7 @@ public class Client {
         // 切换到user1
         client.logout();
         if (firstTime)
-            client.register("t1-user", "t1-user");
+            client.register("t1-user", "t1-user", 0);
         client.validate("t1-user", "t1-user");
         Response itemInfo1 = client.getItemInfo("t1-item1");
         if (itemInfo1.getResult().equals("success"))
@@ -140,7 +131,7 @@ public class Client {
 
         // 切换到user
         if (firstTime) {
-            client.register("t2-user", "t2-user");
+            client.register("t2-user", "t2-user", 0);
         }
         client.validate("t2-user", "t2-user");
         client.createWallet("wallet1", "wallet1", "wallet1 description", 50);
@@ -151,7 +142,7 @@ public class Client {
         // 切换到admin
         client.logout();
         if (firstTime) {
-            client.register("t2-admin", "t2-admin");
+            client.register("t2-admin", "t2-admin", 1);
         }
         client.validate("t2-admin", "t2-admin");
         client.charge("wallet1", 30);
@@ -181,13 +172,15 @@ public class Client {
      *
      * @param username 用户名
      * @param password 密码
+     * @param usertype 用户类型 0为顾客 1为商家
      * @return response
      */
-    public Response register(String username, String password) {
+    public Response register(String username, String password, int usertype) {
         return new Request().requireLogout()
-                .put("username", username).put("password", password)
-                .pack("register")
-                .post(SERVER_URL);
+                .put("username", username)
+                .put("password", password)
+                .put("usertype", usertype)
+                .pack("register").post(SERVER_URL);
     }
 
     /**
@@ -207,6 +200,7 @@ public class Client {
             this.username = username;
             this.password = password;
             this.userId = response.json.getInt("userId");
+            this.usertype = response.json.getInt("usertype");
         }
         return response;
     }
@@ -218,6 +212,8 @@ public class Client {
         logined = false;
         username = null;
         password = null;
+        userId = -1;
+        usertype = -1;
     }
 
     /**
@@ -401,10 +397,11 @@ public class Client {
     }
 
     public int getUserId() {
-        if (logined)
-            return userId;
-        else
-            return -1;
+        return userId;
+    }
+
+    public int getUsertype() {
+        return usertype;
     }
 
     // debug function
