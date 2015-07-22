@@ -286,7 +286,42 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
     }
-
+    public void refresh()
+    {
+        Client.Response response = new Client.AsnyRequest() {
+            public Client.Response getResponse() {
+                return Client.getClient().getItems();
+            }
+        }.post();
+        if(response.getResult().equals("success"))
+        {
+            JSONArray items = response.json.getJSONArray("items");
+            int i;
+            for (i = 0; i < (5 > items.length() ? items.length() : 5); i++) {
+                try {
+                    findViewById(R.id.class.getField("adminHasItem_" + i).getInt(R.id.class.newInstance())).setVisibility(View.VISIBLE);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+            for(; i<5; i++)
+            {
+                try {
+                    findViewById(R.id.class.getField("adminHasItem_" + i).getInt(R.id.class.newInstance())).setVisibility(View.GONE);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     public void addItems()
     {
 
@@ -337,7 +372,7 @@ public class MainActivity extends ActionBarActivity
                 goodsPriceView.setText(item.getString("price"));
                 goodsAmountView.setText(item.getString("inventory"));
                 final int id=item.getInt("id");
-
+                final boolean delete;
                 try {
                     findViewById(R.id.class.getField("adminHasItem_" + i).getInt(R.id.class.newInstance())).setVisibility(View.VISIBLE);
                     findViewById(R.id.class.getField("delete" + i).getInt(R.id.class.newInstance())).setOnClickListener(new View.OnClickListener() {
@@ -353,10 +388,12 @@ public class MainActivity extends ActionBarActivity
 
                                     new Client.AsnyRequest() {
                                         public Client.Response getResponse() {
+
                                             return Client.getClient().deleteItem(id);
 
                                         }
                                     }.post();
+                                    addItems();
                                 }
                             });
                             //    设置一个NegativeButton
@@ -375,8 +412,7 @@ public class MainActivity extends ActionBarActivity
                 }
 
             }
-
-            for(;i<5; i++)
+            for(; i<5; i++)
             {
                 try {
                     findViewById(R.id.class.getField("adminHasItem_" + i).getInt(R.id.class.newInstance())).setVisibility(View.GONE);
@@ -400,6 +436,7 @@ public class MainActivity extends ActionBarActivity
                 balanceTextView.setText(balanceNum);
 
                 addItems();
+                refresh();
                 myAccount.setVisibility(View.VISIBLE);
                 goodsIn.setVisibility(View.GONE);
 
