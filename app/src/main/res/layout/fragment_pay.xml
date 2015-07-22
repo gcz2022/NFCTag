@@ -103,6 +103,7 @@
                 android:id="@+id/item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/editsharp"
                 android:gravity="center"
                 android:minWidth="150dp"
@@ -119,6 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/item_price"
                 android:textStyle="bold" />
 
@@ -126,6 +128,7 @@
                 android:id="@+id/item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/editsharp"
                 android:gravity="center"
                 android:minWidth="150dp"
@@ -142,12 +145,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/item_number"
                 android:textStyle="bold" />
 
             <include
                 android:id="@+id/layout"
-                layout="@layout/edittext" />
+                layout="@layout/edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp" />
 
             <TextView />
 
@@ -167,6 +174,7 @@
                 android:id="@+id/item_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/editsharp"
                 android:gravity="top"
                 android:minLines="4"
