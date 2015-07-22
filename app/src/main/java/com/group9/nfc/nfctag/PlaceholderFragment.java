@@ -254,6 +254,7 @@ public class PlaceholderFragment extends Fragment {
                         return Client.getClient().getUserInfo();
                     }
                 }.post().helper.getUserBalance();
+                TextView texthint =(TextView)rootView.findViewById(R.id.hint_text);
                 textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
@@ -269,13 +270,15 @@ public class PlaceholderFragment extends Fragment {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         String text = hintWalletBalance.getText().toString();
-                        System.out.println(text);
-                        if (Integer.valueOf(text) > accountBalance) {
-                            hintWalletBalance.setTextColor(Color.RED);
-
-                        } else {
-                            hintWalletBalance.setTextColor(Color.BLACK);
+                        if (!text.equals("")) {
+                            if (Integer.valueOf(text) > accountBalance) {
+                                hintWalletBalance.setText(String.valueOf(accountBalance));
+                                hintWalletBalance.setSelection(String.valueOf(accountBalance).length());
+                            } else {
+                                hintWalletBalance.setTextColor(Color.BLACK);
+                            }
                         }
+
                     }
 
                     @Override

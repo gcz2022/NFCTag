@@ -2,8 +2,8 @@
     android:id="@+id/account"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:background="@drawable/background"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -57,7 +57,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="top"
                 android:text="@string/balance"
-                android:textColor="#ffdc9847"
+                android:textColor="#ffdc2929"
                 android:textSize="20sp" />
 
             <TextView
@@ -66,27 +66,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:textColor="#ffdc9847"
+                android:textColor="#ffdc2929"
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
+    <com.group9.nfc.nfctag.MarTextView
+        android:id="@+id/hint_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/editsharp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
         android:padding="1dp"
-        android:background="@drawable/background_login_div"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text="@string/item_hint"
         android:textSize="20sp" />
 
     <TableLayout
-        android:background="@drawable/background_login_div"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:paddingBottom="20dp"
+        android:background="@drawable/background_login_div"
         android:gravity="center|top"
+        android:paddingBottom="20dp"
         android:stretchColumns="0,3">
 
         <TableRow android:layout_marginTop="30dp">

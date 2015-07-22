@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account"
-    android:background="@drawable/background"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".PlaceholderFragment">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/background_login_div"
         android:orientation="horizontal">
 
@@ -70,11 +70,19 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <com.group9.nfc.nfctag.MarTextView
+        android:id="@+id/hint_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/editsharp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text="@string/wallet_hint"
         android:textSize="20sp" />
 
@@ -83,12 +91,12 @@
         android:layout_height="wrap_content">
 
         <TableLayout
-            android:background="@drawable/background_login_div"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:paddingBottom="20dp"
+            android:background="@drawable/background_login_div"
             android:gravity="center|top"
+            android:paddingBottom="20dp"
             android:stretchColumns="0,3">
 
             <TableRow android:layout_marginTop="20dp">
@@ -130,6 +138,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/editsharp"
                     android:gravity="center"
+                    android:inputType="textPassword"
                     android:minWidth="150dp"
                     android:singleLine="true" />
 
@@ -151,10 +160,10 @@
                     android:id="@+id/WalletBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:background="@drawable/editsharp"
                     android:gravity="center"
-                    android:singleLine="true"
-                    android:background="@drawable/editsharp"/>
+                    android:inputType="number"
+                    android:singleLine="true" />
 
                 <TextView />
 
@@ -186,9 +195,10 @@
     </ScrollView>
 
     <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -210,9 +220,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
         <TextView
-            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>
