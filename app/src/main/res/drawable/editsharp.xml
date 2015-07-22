@@ -8,12 +8,12 @@
             android:startColor="#CCCCCC" /> -->
 
     <padding
-        android:bottom="7dp"
-        android:left="7dp"
-        android:right="7dp"
-        android:top="7dp" />
+        android:bottom="3dp"
+        android:left="3dp"
+        android:right="3dp"
+        android:top="3dp" />
     <!-- 设置圆角矩形 -->
-    <corners android:radius="3dp" />
+    <corners android:radius="5dp" />
 
     <stroke
         android:width="5px"

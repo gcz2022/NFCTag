@@ -5,4 +5,5 @@
     <color name="white">#fff</color>
     <color name="bill_gain">#ffcd3b45</color>
     <color name="transparent">#00000000</color>
+    <color name="actionbar">#ffa048ff</color>
 </resources>

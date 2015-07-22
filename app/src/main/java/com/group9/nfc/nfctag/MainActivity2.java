@@ -73,8 +73,10 @@ public class MainActivity2 extends ActionBarActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setBackgroundDrawable(this.getBaseContext().getResources().getDrawable(R.drawable.actionbar_background));
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
+        actionBar.show();
     }
 
 

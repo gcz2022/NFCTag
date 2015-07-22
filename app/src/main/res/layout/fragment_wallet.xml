@@ -17,18 +17,18 @@
             android:id="@+id/accountImage"
             android:layout_width="50dp"
             android:layout_height="fill_parent"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="15dp"
             android:src="@drawable/images" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="30dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:text="@string/account"
                 android:textColor="#ff5b75dc"
@@ -38,8 +38,6 @@
                 android:id="@+id/accountName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
                 android:textColor="#ff5b75dc"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -47,12 +45,12 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="40dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:text="@string/balance"
                 android:textColor="#ffdc2929"
@@ -62,8 +60,6 @@
                 android:id="@+id/accountBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
                 android:textColor="#ffdc2929"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -80,6 +76,7 @@
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
+        android:padding="7dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="@string/wallet_hint"
@@ -195,7 +192,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_gravity="center">
 
         <TextView
@@ -212,7 +209,7 @@
             android:id="@+id/newWalletButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center"
             android:text="@string/createwallet" />
 
         <TextView
