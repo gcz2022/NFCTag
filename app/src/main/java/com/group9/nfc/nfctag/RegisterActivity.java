@@ -51,7 +51,24 @@ public class RegisterActivity extends Activity {
                         startActivity(intent);
                         finish();
                     } else {
-                        dialog(response.getErrorMsg());
+                        final MyDialog dialog1 = new MyDialog(RegisterActivity.this, R.style.MyDialog,response.getErrorMsg());
+                        MyDialog.ListenerThree listenerThree = new MyDialog.ListenerThree() {
+                            @Override
+                            public void onClick(View view) {
+                                switch (view.getId()) {
+                                    case R.id.dialog_button_ok:
+                                        Toast.makeText(RegisterActivity.this, "ok", Toast.LENGTH_LONG).show();
+                                        dialog1.dismiss();
+                                        break;
+                                    case R.id.dialog_button_cancle:
+                                        Toast.makeText(RegisterActivity.this, "cancel", Toast.LENGTH_LONG).show();
+                                        dialog1.dismiss();
+                                        break;
+                                }
+                            }
+                        };
+                        dialog1.SetListener(listenerThree);
+                        dialog1.show();
                     }
                 }
             }
@@ -63,16 +80,24 @@ public class RegisterActivity extends Activity {
      * dialog 弹出一个警告窗口 提示错误信息。
      */
     public void dialog(String ErrorMsg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(ErrorMsg);
-        builder.setTitle("提示");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+        final MyDialog dialog1 = new MyDialog(RegisterActivity.this, R.style.MyDialog,ErrorMsg);
+        MyDialog.ListenerThree listenerThree = new MyDialog.ListenerThree() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.dialog_button_ok:
+                        Toast.makeText(RegisterActivity.this, "ok", Toast.LENGTH_LONG).show();
+                        dialog1.dismiss();
+                        break;
+                    case R.id.dialog_button_cancle:
+                        Toast.makeText(RegisterActivity.this, "cancel", Toast.LENGTH_LONG).show();
+                        dialog1.dismiss();
+                        break;
+                }
             }
-        });
-        builder.create().show();
+        };
+        dialog1.SetListener(listenerThree);
+        dialog1.show();
     }
 
 }

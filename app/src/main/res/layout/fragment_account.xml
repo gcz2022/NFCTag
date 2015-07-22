@@ -4,12 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@drawable/background"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment">
 
     <LinearLayout
-        android:background="@drawable/background_login_div"
+        android:layout_margin="5dp"
+        android:background="@drawable/editsharp"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:orientation="horizontal">
@@ -58,8 +58,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/background_login_div"
+        android:layout_margin="5dp"
+        android:background="@drawable/editsharp"
         android:orientation="horizontal">
 
         <LinearLayout

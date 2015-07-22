@@ -32,4 +32,19 @@
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
     </style>
+    <style name="MyDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- //对话框无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!-- //此对话框的背景  -->
+        <item name="android:windowBackground">@color/transparent</item>
+        <!-- 设置背景迁安透明 @color/transparent -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- //对话框是否浮动-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- //对话框是否有遮盖-->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- //设置BUTTON的风格-->
+        <item name="android:buttonStyle">@style/CustomButton</item>
+    </style>
 </resources>

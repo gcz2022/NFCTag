@@ -1,6 +1,7 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,7 @@ public class SignInActivity extends Activity {
                 mContext.finish();
             }
         }
-        Button button = (Button) findViewById(R.id.register_button);
+        final Button button = (Button) findViewById(R.id.register_button);
         button.setOnClickListener(new Button.OnClickListener(){
 
             @Override

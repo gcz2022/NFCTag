@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="60dp"
     android:layout_marginTop="20dp"
-    android:background="@drawable/border"
+    android:background="@drawable/editsharp"
     android:orientation="horizontal">
     <ImageView
         android:layout_width="60dp"
@@ -63,7 +63,6 @@
             android:textSize="12sp" />
     </LinearLayout>
     <Button
-        android:layout_marginStart="20dp"
         android:id="@+id/getWalletBills"
         android:layout_width="65dp"
         android:layout_height="40dp"
