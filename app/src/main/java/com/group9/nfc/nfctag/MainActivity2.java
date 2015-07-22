@@ -1,5 +1,6 @@
 package com.group9.nfc.nfctag;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;

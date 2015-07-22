@@ -1,66 +1,53 @@
 package com.group9.nfc.nfctag;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import connection.client.Client;
 
-public class SignInActivity extends ActionBarActivity {
-    private ActionBarActivity mContext;
+public class SignInActivity extends Activity {
+    private SignInActivity mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        setContentView(R.layout.activity_sign_in);
-        if (Client.getClient().isLogined()){
-            if(Client.getClient().getUsername().equals("admin")){
+        setContentView(R.layout.activity_login);
+        if (Client.getClient().isLogined()) {
+            if (Client.getClient().getUsertype() == Client.USERTYPE_RETAILER) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
                 intent.putExtra("account", "admin");
                 mContext.startActivity(intent);
                 mContext.finish();
-            }   else
-            {
+            } else {
                 Intent intent = new Intent(this, MainActivity2.class);
-                Toast.makeText(this, "User :" + Client.getClient().getUsername() + " sign in succeed", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "User :" + Client.getClient().getUsername() + " log in succeed", Toast.LENGTH_LONG).show();
                 mContext.startActivity(intent);
                 mContext.finish();
             }
         }
-    }
+        Button button = (Button) findViewById(R.id.register_button);
+        button.setOnClickListener(new Button.OnClickListener(){
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sign_in, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void signIn(View view) {
 
-        EditText accountView = (EditText) findViewById(R.id.account);
-        EditText passwordView = (EditText) findViewById(R.id.password);
+        EditText accountView = (EditText) findViewById(R.id.username_edit);
+        EditText passwordView = (EditText) findViewById(R.id.password_edit);
         final String username = accountView.getText().toString();
         final String password = passwordView.getText().toString();
         Client.Response response = new Client.AsnyRequest() {
@@ -69,7 +56,7 @@ public class SignInActivity extends ActionBarActivity {
             }
         }.post();
         if (response.getResult().equals("success")) {
-            if (username.equals("admin")) {
+            if (Client.getClient().getUsertype() == Client.USERTYPE_RETAILER) {
                 Intent intent = new Intent(this, MainActivity.class);
                 Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
                 intent.putExtra("account", "admin");
@@ -77,7 +64,7 @@ public class SignInActivity extends ActionBarActivity {
                 mContext.finish();
             } else {
                 Intent intent = new Intent(this, MainActivity2.class);
-                Toast.makeText(this, "User :" + username + " sign in succeed", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "User :" + username + " log in succeed", Toast.LENGTH_LONG).show();
                 mContext.startActivity(intent);
                 mContext.finish();
             }

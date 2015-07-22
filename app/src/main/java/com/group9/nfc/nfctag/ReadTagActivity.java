@@ -48,7 +48,7 @@ public class ReadTagActivity extends Activity {
         returnnns.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             if (Client.getClient().getUsername().equals("admin")) {
+                                             if (Client.getClient().getUsertype() == Client.USERTYPE_RETAILER) {
                                                  Intent intent = new Intent(v.getContext(), MainActivity.class);
                                                  intent.putExtra("read", "true");
                                                  intent.putExtra("customerId", textView.getText().toString());

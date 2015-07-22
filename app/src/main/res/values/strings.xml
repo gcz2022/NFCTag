@@ -43,9 +43,16 @@
     <string name="account">账号</string>
     <string name="item_scan">扫描芯片</string>
     <string name="item_buy">购买商品</string>
-    <string name="createwallet">创建</string>
+    <string name="createwallet">创建钱包</string>
     <string name="reset">重置</string>
     <string name="description">商品描述</string>
     <string name="bill_fetch_error_hint">错误原因</string>
-
+    <string name="username">用户名</string>
+    <string name="login_username_hint">输入用户名</string>
+    <string name="login_label_password">密码</string>
+    <string name="login_label_signin">登录</string>
+    <string name="seller">商家</string>
+    <string name="custom">客户</string>
+    <string name="register">注册</string>
+    <string name="password_hint">请输入密码</string>
 </resources>

@@ -6,7 +6,10 @@
     android:layout_marginTop="20dp"
     android:background="@drawable/border"
     android:orientation="horizontal">
-
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/wallet"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,11 +33,12 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:textColor="#ff5b75dc"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -45,7 +49,7 @@
             android:layout_gravity="top"
             android:gravity="center"
             android:text="余额"
-            android:textColor="#ffdc9847"
+            android:textColor="#ffdc2929"
             android:textSize="20sp" />
 
         <TextView
@@ -55,24 +59,23 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:maxWidth="60dp"
-            android:textColor="#ffdc9847"
-            android:textSize="10sp" />
+            android:textColor="#ffdc2929"
+            android:textSize="12sp" />
     </LinearLayout>
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
     <Button
-            android:id="@+id/getWalletBills"
-        android:layout_width="60dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/getWalletBills"
+        android:layout_width="65dp"
         android:layout_height="40dp"
         android:layout_gravity="center|right"
+        android:textSize="12sp"
         android:text="账单" />
 
     <Button
         android:id="@+id/deleteWallet"
-        android:layout_width="60dp"
+        android:layout_width="65dp"
         android:layout_height="40dp"
         android:layout_gravity="center|right"
+        android:textSize="12sp"
         android:text="删除" />
 </LinearLayout>

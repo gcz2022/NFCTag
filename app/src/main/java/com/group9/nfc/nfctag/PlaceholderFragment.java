@@ -118,7 +118,7 @@ public class PlaceholderFragment extends Fragment {
                     JSONArray wallets = response.json.getJSONArray("wallets");
                     textWallets = (TextView) rootView.findViewById(R.id.accountWalletNum);
                     textWallets.setText(String.valueOf(wallets.length()));
-                    LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.account);
+                    LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.walletTotal);
                     for (int i = 0; i < wallets.length(); i++) {
                         final JSONObject wallet = wallets.getJSONObject(i);
                         final int walletId = wallet.getInt("id");
@@ -186,6 +186,7 @@ public class PlaceholderFragment extends Fragment {
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
                 textAccountBalance.setText(String.valueOf(accountBalance));
+                Button item_buy = (Button) rootView.findViewById(R.id.item_buy);
                 if (!rawVal.equals("")) {
                     Client.Response response1 = new Client.AsnyRequest() {
                         public Client.Response getResponse() {
@@ -205,7 +206,6 @@ public class PlaceholderFragment extends Fragment {
                         item_price.setText(String.valueOf(price));
                         item_desc.setText(desc);
                         final NewEditText number = (NewEditText) rootView.findViewById(R.id.layout);
-                        Button item_buy = (Button) rootView.findViewById(R.id.item_buy);
                         item_buy.setOnClickListener(new Button.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -236,6 +236,14 @@ public class PlaceholderFragment extends Fragment {
                     } else {
                         dialog("No Item Found !");
                     }
+                } else {
+                    item_buy.setOnClickListener(new Button.OnClickListener(){
+
+                        @Override
+                        public void onClick(View v) {
+                            dialog("先扫描商品芯片获取商品信息");
+                        }
+                    });
                 }
                 break;
             case 3:
@@ -285,14 +293,14 @@ public class PlaceholderFragment extends Fragment {
                         EditText pwd = (EditText) rootView_.findViewById(R.id.AccountPwd);
                         final EditText BalanceWallet = (EditText) rootView_.findViewById(R.id.WalletBalance);
                         EditText desc = (EditText) rootView_.findViewById(R.id.descriptionWallet);
-                        if (Integer.valueOf(BalanceWallet.getText().toString()) > accountBalance) {
-                            dialog(ERROR_MSG_NOT_ENOUGH_BALANCE);
-                            BalanceWallet.requestFocus();
-                        } else if (newWallet.getText().toString().equals("")) {
+                        if (newWallet.getText().toString().equals("")) {
                             dialog(ERROR_MSG_NULL_WALLET_NAME);
                             newWallet.requestFocus();
                         } else if (BalanceWallet.getText().toString().equals("")) {
                             dialog(ERROR_MSG_NULL_BALANCE);
+                            BalanceWallet.requestFocus();
+                        } else if (Integer.valueOf(BalanceWallet.getText().toString()) > accountBalance) {
+                            dialog(ERROR_MSG_NOT_ENOUGH_BALANCE);
                             BalanceWallet.requestFocus();
                         } else {
                             final String name = newWallet.getText().toString();

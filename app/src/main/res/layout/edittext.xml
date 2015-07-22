@@ -6,7 +6,7 @@
     android:layout_below="@+id/button"
     android:layout_centerHorizontal="true"
     android:layout_marginTop="30dp"
-    android:background="@drawable/border"
+    android:background="@drawable/editsharp"
     android:drawableLeft="@drawable/minus"
     android:drawableRight="@drawable/plus"
     android:gravity="center" />

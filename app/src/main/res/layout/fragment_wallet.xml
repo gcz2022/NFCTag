@@ -1,214 +1,218 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account"
+    android:background="@drawable/background"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:scrollbars="vertical">
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".PlaceholderFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/account"
+    <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".PlaceholderFragment">
+        android:layout_height="60dp"
+        android:background="@drawable/background_login_div"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/accountImage"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/images" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/border"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/accountImage"
-                android:layout_width="50dp"
-                android:layout_height="fill_parent"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/images" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_gravity="top"
-                    android:text="@string/account"
-                    android:textColor="#ff5b75dc"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/accountName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="#ff5b75dc"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_gravity="top"
-                    android:text="@string/balance"
-                    android:textColor="#ffdc9847"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/accountBalance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="#ffdc9847"
-                    android:textSize="20sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/border"
-            android:text="@string/wallet_hint"
-            android:textSize="20sp" />
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="top"
+                android:text="@string/account"
+                android:textColor="#ff5b75dc"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/accountName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#ff5b75dc"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_gravity="top"
+                android:text="@string/balance"
+                android:textColor="#ffdc2929"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/accountBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#ffdc2929"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/editsharp"
+        android:text="@string/wallet_hint"
+        android:textSize="20sp" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
+            android:background="@drawable/background_login_div"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingBottom="20dp"
+            android:gravity="center|top"
             android:stretchColumns="0,3">
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="20dp">
 
                 <TextView />
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="钱        包:"
-                    android:textSize="25sp" />
+                    android:text="钱包名称"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/newWallet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editselector"
-                    android:hint="输入钱包名称..."
+                    android:background="@drawable/editsharp"
+                    android:gravity="center"
                     android:minWidth="150dp"
-                    android:singleLine="true"
-                    android:textAlignment="center" />
+                    android:singleLine="true" />
 
                 <TextView />
+
             </TableRow>
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="20dp">
 
                 <TextView />
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="密        码:"
-                    android:textSize="25sp" />
+                    android:text="用户密码"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/AccountPwd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editselector"
-                    android:hint="输入用户密码..."
-                    android:password="true"
+                    android:background="@drawable/editsharp"
+                    android:gravity="center"
+                    android:minWidth="150dp"
                     android:singleLine="true" />
 
                 <TextView />
+
             </TableRow>
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="20dp">
 
                 <TextView />
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充值金额:"
-                    android:textSize="25sp" />
+                    android:text="充值金额"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/WalletBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editselector"
-                    android:numeric="integer"
-                    android:singleLine="true" />
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:background="@drawable/editsharp"/>
 
                 <TextView />
+
             </TableRow>
 
-            <TableRow android:layout_marginTop="10dp">
+            <TableRow android:layout_marginTop="20dp">
 
                 <TextView />
 
                 <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:text="钱包描述:"
-                    android:textSize="25sp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="钱包描述"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/descriptionWallet"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editselector"
+                    android:background="@drawable/editsharp"
                     android:gravity="top"
-                    android:hint="输入钱包描述..."
-                    android:inputType="textMultiLine"
-                    android:lines="3" />
+                    android:minLines="3"
+                    android:minWidth="150dp" />
 
                 <TextView />
+
             </TableRow>
         </TableLayout>
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Button
-                android:text="@string/reset"
-                android:layout_gravity="bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <Button
-                android:id="@+id/newWalletButton"
-                android:text="@string/createwallet"
-                android:layout_gravity="bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/newWalletButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/createwallet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
