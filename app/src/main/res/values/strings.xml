@@ -47,5 +47,6 @@
     <string name="reset">重置</string>
     <string name="description">商品描述</string>
     <string name="bill_fetch_error_hint">错误原因</string>
+    <string name="title_activity_items">ItemsActivity</string>
 
 </resources>

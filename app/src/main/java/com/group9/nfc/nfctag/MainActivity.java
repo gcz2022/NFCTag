@@ -1,20 +1,36 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import connection.client.Client;
 
+import java.nio.Buffer;
+import java.util.Properties;
 import java.util.Random;
+
+import connection.client.Client;
+import connection.json.JSONArray;
+import connection.json.JSONObject;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -34,7 +50,8 @@ public class MainActivity extends ActionBarActivity
     private LinearLayout myAccount;
     private LinearLayout goodsIn;
     private LinearLayout customerBuy;
-    private LinearLayout adminHasItems;
+    private int itemNum;
+    private LinearLayout adminHasItemLayout;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -43,8 +60,7 @@ public class MainActivity extends ActionBarActivity
     void initViewPointer() {
         myAccount = (LinearLayout) findViewById(R.id.myAccount);
         goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
-        customerBuy = (LinearLayout) findViewById(R.id.customerBuy);
-        adminHasItems = (LinearLayout) findViewById(R.id.adminHasItems);
+        customerBuy=(LinearLayout) findViewById(R.id.customerBuy);
 
         //用户名
         accountTextView = (TextView) findViewById(R.id.accountName);
@@ -53,30 +69,23 @@ public class MainActivity extends ActionBarActivity
 
         //余额
         balanceTextView = (TextView) findViewById(R.id.balance);
-        String balanceNum = getBalance(); //= String.valueOf(response.helper.getUserBalance());
+        String balanceNum=getBalance(); //= String.valueOf(response.helper.getUserBalance());
         balanceTextView.setText(balanceNum);
         balanceTextView.setTextSize(25);
 
         //商品入库
-        goodsName = (TextView) findViewById(R.id.goodsName);
-        goodsDescription = (TextView) findViewById(R.id.goodsDescription);
-        unitPrice = (TextView) findViewById(R.id.unitPrice);
-        goodsAmount = (TextView) findViewById(R.id.goodsAmount);
+        goodsName=(TextView) findViewById(R.id.goodsName);
+        goodsDescription=(TextView) findViewById(R.id.goodsDescription);
+        unitPrice=(TextView) findViewById(R.id.unitPrice);
+        goodsAmount=(TextView) findViewById(R.id.goodsAmount);
 
         //用户消费
-        customerId = (TextView) findViewById(R.id.customerId);
-        amount = (TextView) findViewById(R.id.amount);
-
-//
-//        for(int i=0; i<3; i++)
-//        {
-//            Li
-//
-//        }
+        customerId=(TextView) findViewById(R.id.customerId);
+        amount=(TextView) findViewById(R.id.amount);
 
     }
-
-    public String getBalance() {
+    public String getBalance()
+    {
         Client.Response response = new Client.AsnyRequest() {
             public Client.Response getResponse() {
                 return Client.getClient().getUserInfo();
@@ -85,30 +94,44 @@ public class MainActivity extends ActionBarActivity
         String balanceNum = String.valueOf(response.helper.getUserBalance());
         return balanceNum;
     }
+    public int getItemNum()
+    {
+        Client.Response response = new Client.AsnyRequest() {
+            public Client.Response getResponse() {
+                return Client.getClient().getItems();
+            }
+        }.post();
 
-    public void readCustomer(View view) {
+        int res=response.json.getJSONArray("items").length();
+        return res;
+    }
+    public void readCustomer(View view)
+    {
         Toast.makeText(this, "正在读取nfc数据……", Toast.LENGTH_LONG).show();
     }
-
     //商品入库
-    public void createItem(View view) {
-        final String generateResult = generateGoodsId();
-        final String goodsNameStr = goodsName.getText().toString();
-        final String goodsDescriptionStr = goodsDescription.getText().toString();
-        final String unitPriceStr = unitPrice.getText().toString();
-        final String goodsAmountStr = goodsAmount.getText().toString();
+    public void createItem(View view)
+    {
+        final String generateResult=generateGoodsId();
+        final String goodsNameStr=goodsName.getText().toString();
+        final String goodsDescriptionStr=goodsDescription.getText().toString();
+        final String unitPriceStr=unitPrice.getText().toString();
+        final String goodsAmountStr=goodsAmount.getText().toString();
 
-        if (goodsNameStr.equals("") || goodsDescriptionStr.equals("") || unitPriceStr.equals("") || goodsAmountStr.equals("")) {
-            if (goodsNameStr.equals(""))
+        if(goodsNameStr.equals("")||goodsDescriptionStr.equals("")||unitPriceStr.equals("")||goodsAmountStr.equals(""))
+        {
+            if(goodsNameStr.equals(""))
                 Toast.makeText(this, "请填写商品名称！", Toast.LENGTH_LONG).show();
-            if (goodsDescriptionStr.equals(""))
+            if(goodsDescriptionStr.equals(""))
                 Toast.makeText(this, "请填写商品描述！", Toast.LENGTH_LONG).show();
-            if (unitPriceStr.equals(""))
+            if(unitPriceStr.equals(""))
                 Toast.makeText(this, "请填写商品价格！", Toast.LENGTH_LONG).show();
-            if (goodsAmountStr.equals(""))
+            if(goodsAmountStr.equals(""))
                 Toast.makeText(this, "请填写商品数量！", Toast.LENGTH_LONG).show();
 
-        } else {
+        }
+        else
+        {
             Intent intent = new Intent(this, WriteTagActivity.class);
             intent.putExtra("goodsId", generateResult);
             intent.putExtra("goodsName", goodsNameStr);
@@ -128,49 +151,61 @@ public class MainActivity extends ActionBarActivity
             startActivity(intent);
         }
     }
-
-    public char generateCharacter(Random random) {
+    public char generateCharacter(Random random)
+    {
         char res;
         int randomInt = random.nextInt(36);
-        if (randomInt > 25)
-            res = (char) ((randomInt - 26) + '0');
+        if (randomInt>25)
+            res=(char)((randomInt-26)+'0');
         else
-            res = ((char) (random.nextInt(26) + 'A'));
+            res=((char) (random.nextInt(26) + 'A'));
 
         return res;
     }
-
-    public String generateGoodsId() {
-        Random random = new Random();
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < 8; i++) {
+    public String generateGoodsId()
+    {
+        Random random=new Random();
+        StringBuffer buffer=new StringBuffer();
+        for(int i=0; i<8; i++)
+        {
             buffer.append(generateCharacter(random));
         }
         return buffer.toString();
     }
-
     //用户消费
-    public void charge(View view) {
-        if (customerId.getText().toString().isEmpty()) {
+    public void charge(View view)
+    {
+        if(customerId.getText().toString().isEmpty())
+        {
             Toast.makeText(this, "请填写商品ID！", Toast.LENGTH_LONG).show();
-        } else if (amount.getText().toString().isEmpty()) {
+        }
+        else if(amount.getText().toString().isEmpty())
+        {
             Toast.makeText(this, "请填写商品数量！", Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else
+        {
 
-            try {
-                int amountInt = Integer.parseInt(amount.getText().toString());
-                Client.Response response = new Client.AsnyRequest() {
-                    public Client.Response getResponse() {
+            try
+            {
+                int amountInt=Integer.parseInt(amount.getText().toString());
+                Client.Response response = new Client.AsnyRequest(){
+                    public Client.Response getResponse(){
                         return Client.getClient().charge(customerId.getText().toString(), Integer.parseInt(amount.getText().toString()));
                     }
                 }.post();
-                if (response.getResult().equals("success")) {
+                if(response.getResult().equals("success"))
+                {
                     Toast.makeText(this, "收款成功！", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else
+                {
                     // error
                     Toast.makeText(this, response.getErrorMsg(), Toast.LENGTH_LONG).show();    // get error message
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Toast.makeText(this, "请填写正确的商品数量！", Toast.LENGTH_LONG).show();
             }
         }
@@ -201,7 +236,8 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        if (intent.getStringExtra("read") != null && intent.getStringExtra("read").equals("true")) {
+        if(intent.getStringExtra("read")!=null&&intent.getStringExtra("read").equals("true"))
+        {
             onNavigationDrawerItemSelected(2);
             customerId.setText(intent.getStringExtra("customerId"));
         }
@@ -251,18 +287,122 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
-    public void setVisible(int number) {
+    public void addItems()
+    {
 
+        Client.Response response = new Client.AsnyRequest() {
+            public Client.Response getResponse() {
+                return Client.getClient().getItems();
+            }
+        }.post();
+        if(response.getResult().equals("success"))
+        {
+            JSONArray items=response.json.getJSONArray("items");
+            int i;
+            for(i=0; i<(5>items.length()?items.length():5); i++)
+            {
+
+                JSONObject item=items.getJSONObject(items.length()-1-i);
+                if(item==null)
+                    break;
+
+                String goodsNameStr="goodsName_"+i;
+                String goodsDescriptionStr="goodsDescription_"+i;
+                String goodsPriceStr="goodsUnitPrice_"+i;
+                String goodsAmountStr="goodsAmount_"+i;
+
+                TextView goodsNameView= null;
+                TextView goodsDescriptionView=null;
+                TextView goodsPriceView=null;
+                TextView goodsAmountView=null;
+                try
+                {
+                    goodsNameView = (TextView)findViewById(R.id.class.getField(goodsNameStr).getInt(R.class.newInstance()));
+                    goodsDescriptionView = (TextView)findViewById(R.id.class.getField(goodsDescriptionStr).getInt(R.class.newInstance()));
+                    goodsPriceView = (TextView)findViewById(R.id.class.getField(goodsPriceStr).getInt(R.class.newInstance()));
+                    goodsAmountView = (TextView)findViewById(R.id.class.getField(goodsAmountStr).getInt(R.class.newInstance()));
+
+
+                }
+                catch (IllegalAccessException e) {
+
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+
+                goodsNameView.setText(item.getString("name"));
+                goodsDescriptionView.setText(item.getString("description"));
+                goodsPriceView.setText(item.getString("price"));
+                goodsAmountView.setText(item.getString("inventory"));
+                final int id=item.getInt("id");
+
+                try {
+                    findViewById(R.id.class.getField("adminHasItem_" + i).getInt(R.id.class.newInstance())).setVisibility(View.VISIBLE);
+                    findViewById(R.id.class.getField("delete" + i).getInt(R.id.class.newInstance())).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("移除商品");
+                            builder.setMessage("确认移除该商品？");
+                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(MainActivity.this, "delete success", Toast.LENGTH_SHORT).show();
+
+                                    new Client.AsnyRequest() {
+                                        public Client.Response getResponse() {
+                                            return Client.getClient().deleteItem(id);
+
+                                        }
+                                    }.post();
+                                }
+                            });
+                            //    设置一个NegativeButton
+                            builder.setNegativeButton("取消", null);
+                            //    显示出该对话框
+                            builder.show();
+
+                        }
+                    });
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            for(;i<5; i++)
+            {
+                try {
+                    findViewById(R.id.class.getField("adminHasItem_" + i).getInt(R.id.class.newInstance())).setVisibility(View.GONE);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
+    public void onSectionAttached(int number)
+    {
+        switch (number)
+        {
             case 1:
-                String balanceNum = getBalance();
+                String balanceNum=getBalance();
+
                 balanceTextView.setText(balanceNum);
 
+                addItems();
                 myAccount.setVisibility(View.VISIBLE);
                 goodsIn.setVisibility(View.GONE);
+
                 customerBuy.setVisibility(View.GONE);
 
                 mTitle = getString(R.string.title_section1);
@@ -321,9 +461,6 @@ public class MainActivity extends ActionBarActivity
             Client.getClient().logout();
             finish();
             return true;
-        } else if (id == R.id.action_bill) {
-            startActivity(new Intent(this, BillActivity.class));
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -357,7 +494,9 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            int select = getArguments().getInt(ARG_SECTION_NUMBER);
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);//activity_main, container, false);
+
             return rootView;
         }
 
