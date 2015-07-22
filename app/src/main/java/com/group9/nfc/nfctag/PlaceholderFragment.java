@@ -224,9 +224,9 @@ public class PlaceholderFragment extends Fragment {
                                         }.post();
                                         if (response2.getResult().equals("success")) {
                                             Toast.makeText(mActivity, "购买成功", Toast.LENGTH_LONG).show();
-                                            mActivity.onNavigationDrawerItemSelected(0);
+                                            mActivity.onNavigationDrawerItemSelected(1);
                                             mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
-                                            mActivity.mNavigationDrawerFragment.selectItem(0);
+                                            mActivity.mNavigationDrawerFragment.selectItem(1);
                                         }
                                     }
                                 });
@@ -320,9 +320,9 @@ public class PlaceholderFragment extends Fragment {
                                 intent.putExtra("wallet_rawVal", rawVal);
                                 startActivity(intent);
                                 Toast.makeText(mActivity, "success", Toast.LENGTH_LONG).show();
-                                mActivity.onNavigationDrawerItemSelected(0);
+                                mActivity.onNavigationDrawerItemSelected(1);
                                 mActivity.getSupportActionBar().setTitle(getString(R.string.title_section2_1));
-                                mActivity.mNavigationDrawerFragment.selectItem(0);
+                                mActivity.mNavigationDrawerFragment.selectItem(1);
                             } else {
                                 dialog(response.getErrorMsg());
                             }

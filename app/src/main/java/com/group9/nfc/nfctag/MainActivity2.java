@@ -41,7 +41,7 @@ public class MainActivity2 extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, this))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position, this))
                 .commit();
     }
 
@@ -49,7 +49,7 @@ public class MainActivity2 extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1, text, this))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position, text, this))
                 .commit();
     }
 
@@ -76,7 +76,6 @@ public class MainActivity2 extends ActionBarActivity
         actionBar.setBackgroundDrawable(this.getBaseContext().getResources().getDrawable(R.drawable.actionbar_background));
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
-        actionBar.show();
     }
 
 

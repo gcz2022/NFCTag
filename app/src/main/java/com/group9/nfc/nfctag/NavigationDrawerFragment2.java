@@ -1,8 +1,11 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -10,7 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +25,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import connection.client.Client;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -53,13 +71,14 @@ public class NavigationDrawerFragment2 extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 1;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    public NavigationDrawerFragment2(){
+    public NavigationDrawerFragment2() {
 
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,28 +109,22 @@ public class NavigationDrawerFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView.addHeaderView(inflater.inflate(R.layout.header_just_username, null), null, false);
+        
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        String[] str=new String[4];
-
-        str[0]=getString(R.string.title_section1);
-
-        str[1]=getString(R.string.title_section2_2);
-
-        str[2]=getString(R.string.title_section2_3);
-
-        str[3]=getString(R.string.title_section4);
-
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                str));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        mDrawerListView.setAdapter(new MenuItemAdapter(getActivity()));
+
+        final ActionBar ab = getActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        ab.setDisplayHomeAsUpEnabled(true);
+
         return mDrawerListView;
     }
 
@@ -222,6 +235,15 @@ public class NavigationDrawerFragment2 extends Fragment {
         mCallbacks = null;
     }
 
+    public void onStart() {
+        super.onStart();
+        TextView id = (TextView) getView().findViewById(R.id.id_username);
+        id.setText("账号：" + Client.getClient().getUsername() + "\n联系方式: 18868103805");
+        TextView type = (TextView) getView().findViewById(R.id.id_type);
+        type.setText("用户类型：" + (Client.getClient().getUsertype() == 1 ? "商家" : "客户"));
+
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -268,6 +290,142 @@ public class NavigationDrawerFragment2 extends Fragment {
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    private static class LvMenuItem {
+        public LvMenuItem(int icon, String name) {
+            this.icon = icon;
+            this.name = name;
+
+            if (icon == NO_ICON && TextUtils.isEmpty(name)) {
+                type = TYPE_SEPARATOR;
+            } else if (icon == NO_ICON) {
+                type = TYPE_NO_ICON;
+            } else {
+                type = TYPE_NORMAL;
+            }
+
+            if (type != TYPE_SEPARATOR && TextUtils.isEmpty(name)) {
+                throw new IllegalArgumentException("you need set a name for a non-SEPARATOR item");
+            }
+
+        }
+
+        public LvMenuItem(String name) {
+            this(NO_ICON, name);
+        }
+
+        public LvMenuItem() {
+            this(null);
+        }
+
+        private static final int NO_ICON = 0;
+        public static final int TYPE_NORMAL = 0;
+        public static final int TYPE_NO_ICON = 1;
+        public static final int TYPE_SEPARATOR = 2;
+
+        int type;
+        String name;
+        int icon;
+
+    }
+
+    private static class MenuItemAdapter extends BaseAdapter {
+        private final int mIconSize;
+        private LayoutInflater mInflater;
+        private Context mContext;
+
+        public MenuItemAdapter(Context context) {
+            mInflater = LayoutInflater.from(context);
+            mContext = context;
+            mIconSize = context.getResources().getDimensionPixelSize(R.dimen.drawer_icon_size);
+        }
+
+        private List<LvMenuItem> mItems = new ArrayList<LvMenuItem>(
+                Arrays.asList(
+                        new LvMenuItem(R.drawable.ic_dashboard, "我的账户"),
+                        new LvMenuItem(R.drawable.ic_event, "购买商品"),
+                        new LvMenuItem(R.drawable.ic_headset, "制作钱包"),
+                        new LvMenuItem(R.drawable.ic_forum, "我的朋友"),
+                        new LvMenuItem(),
+                        new LvMenuItem("Sub Items")
+                ));
+
+
+        @Override
+        public int getCount() {
+            return mItems.size();
+        }
+
+
+        @Override
+        public Object getItem(int position) {
+            return mItems.get(position);
+        }
+
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 3;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return mItems.get(position).type;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LvMenuItem item = mItems.get(position);
+            switch (item.type) {
+                case LvMenuItem.TYPE_NORMAL:
+                    if (convertView == null) {
+                        convertView = mInflater.inflate(R.layout.design_drawer_item, parent,
+                                false);
+                    }
+                    TextView itemView = (TextView) convertView;
+                    itemView.setText(item.name);
+                    Drawable icon = mContext.getResources().getDrawable(item.icon);
+                    setIconColor(icon);
+                    if (icon != null) {
+                        icon.setBounds(0, 0, mIconSize, mIconSize);
+                        TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);
+                    }
+
+                    break;
+                case LvMenuItem.TYPE_NO_ICON:
+                    if (convertView == null) {
+                        convertView = mInflater.inflate(R.layout.design_drawer_item_subheader,
+                                parent, false);
+                    }
+                    TextView subHeader = (TextView) convertView;
+                    subHeader.setText(item.name);
+                    break;
+                case LvMenuItem.TYPE_SEPARATOR:
+                    if (convertView == null) {
+                        convertView = mInflater.inflate(R.layout.design_drawer_item_separator,
+                                parent, false);
+                    }
+                    break;
+            }
+
+            return convertView;
+        }
+
+        public void setIconColor(Drawable icon) {
+            int textColorSecondary = android.R.attr.textColorSecondary;
+            TypedValue value = new TypedValue();
+            if (!mContext.getTheme().resolveAttribute(textColorSecondary, value, true)) {
+                return;
+            }
+            int baseColor = mContext.getResources().getColor(value.resourceId);
+            icon.setColorFilter(baseColor, PorterDuff.Mode.MULTIPLY);
+        }
     }
 
     /**
