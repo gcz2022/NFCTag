@@ -13,7 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-//import android.support.v4.widget.TextViewCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -340,10 +340,10 @@ public class NavigationDrawerFragment extends Fragment {
 
         private List<LvMenuItem> mItems = new ArrayList<LvMenuItem>(
                 Arrays.asList(
-                        new LvMenuItem(R.drawable.ic_dashboard, "我的账户"),
-                        new LvMenuItem(R.drawable.ic_event, "商品入库"),
-                        new LvMenuItem(R.drawable.ic_headset, "用户消费"),
-                        new LvMenuItem(R.drawable.ic_forum, "设置"),
+                        new LvMenuItem(R.drawable.ic_mine, "我的账户"),
+                        new LvMenuItem(R.drawable.ic_in_item, "商品入库"),
+                        new LvMenuItem(R.drawable.ic_gain, "用户消费"),
+                        new LvMenuItem(R.drawable.ic_settings, "设置"),
                         new LvMenuItem("Sub Items")
                 ));
 
@@ -390,7 +390,7 @@ public class NavigationDrawerFragment extends Fragment {
                     setIconColor(icon);
                     if (icon != null) {
                         icon.setBounds(0, 0, mIconSize, mIconSize);
-//                        TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);
+                        TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);
                     }
 
                     break;
