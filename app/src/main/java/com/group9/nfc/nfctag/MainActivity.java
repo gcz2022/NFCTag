@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private String account;
+    private int itemNum;
 
     private TextView accountTextView;
     private TextView balanceTextView;
@@ -46,11 +47,13 @@ public class MainActivity extends ActionBarActivity
     private TextView goodsDescription;
     private TextView unitPrice;
     private TextView goodsAmount;
+    private TextView itemNumView;
 
     private LinearLayout myAccount;
     private LinearLayout goodsIn;
     private LinearLayout customerBuy;
-    private int itemNum;
+    private LinearLayout adminSetting;
+
     private LinearLayout adminHasItemLayout;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -61,17 +64,21 @@ public class MainActivity extends ActionBarActivity
         myAccount = (LinearLayout) findViewById(R.id.myAccount);
         goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
         customerBuy=(LinearLayout) findViewById(R.id.customerBuy);
+        adminSetting=(LinearLayout)findViewById(R.id.adminSetting);
+
 
         //用户名
         accountTextView = (TextView) findViewById(R.id.accountName);
         accountTextView.setText(account);
         accountTextView.setTextSize(25);
 
-        //余额
+        //余额,商品数量等
         balanceTextView = (TextView) findViewById(R.id.balance);
         String balanceNum=getBalance(); //= String.valueOf(response.helper.getUserBalance());
         balanceTextView.setText(balanceNum);
         balanceTextView.setTextSize(25);
+        itemNumView=(TextView)findViewById(R.id.goodsSpeciesNum);
+
 
         //商品入库
         goodsName=(TextView) findViewById(R.id.goodsName);
@@ -222,7 +229,7 @@ public class MainActivity extends ActionBarActivity
 
         super.onCreate(savedInstanceState);
         mNavigationDrawerFragment = new NavigationDrawerFragment();
-        mNavigationDrawerFragment.setType("admin");
+
         setContentView(R.layout.activity_main);
 
         initViewPointer();
@@ -238,7 +245,7 @@ public class MainActivity extends ActionBarActivity
 
         if(intent.getStringExtra("read")!=null&&intent.getStringExtra("read").equals("true"))
         {
-            onNavigationDrawerItemSelected(2);
+            onNavigationDrawerItemSelected(3);
             customerId.setText(intent.getStringExtra("customerId"));
         }
     }
@@ -321,6 +328,11 @@ public class MainActivity extends ActionBarActivity
                 }
             }
         }
+    }
+    public void commit(View view)
+    {
+
+        Toast.makeText(MainActivity.this, "提交成功！", Toast.LENGTH_SHORT).show();
     }
     public void addItems()
     {
@@ -425,41 +437,56 @@ public class MainActivity extends ActionBarActivity
                 }
             }
         }
+        itemNum=getItemNum();
+        itemNumView.setText(String.valueOf(itemNum));
+        itemNumView.setTextSize(40);
     }
     public void onSectionAttached(int number)
     {
         switch (number)
         {
-            case 1:
+            case 2:
                 String balanceNum=getBalance();
+                itemNum=getItemNum();
 
                 balanceTextView.setText(balanceNum);
+                balanceTextView.setTextSize(40);
+                itemNumView.setText(String.valueOf(itemNum));
+                itemNumView.setTextSize(40);
 
                 addItems();
                 refresh();
                 myAccount.setVisibility(View.VISIBLE);
                 goodsIn.setVisibility(View.GONE);
-
                 customerBuy.setVisibility(View.GONE);
+                adminSetting.setVisibility(View.GONE);
+
 
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case 3:
                 myAccount.setVisibility(View.GONE);
                 goodsIn.setVisibility(View.VISIBLE);
                 customerBuy.setVisibility(View.GONE);
+                adminSetting.setVisibility(View.GONE);
+
 
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case 4:
                 myAccount.setVisibility(View.GONE);
                 goodsIn.setVisibility(View.GONE);
                 customerBuy.setVisibility(View.VISIBLE);
+                adminSetting.setVisibility(View.GONE);
 
                 mTitle = getString(R.string.title_section3);
                 break;
-            case 4:
+            case 5:
                 mTitle = getString(R.string.title_section4);
+                myAccount.setVisibility(View.GONE);
+                goodsIn.setVisibility(View.GONE);
+                customerBuy.setVisibility(View.GONE);
+                adminSetting.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -467,6 +494,7 @@ public class MainActivity extends ActionBarActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setBackgroundDrawable(this.getBaseContext().getResources().getDrawable(R.drawable.actionbar_background));
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }

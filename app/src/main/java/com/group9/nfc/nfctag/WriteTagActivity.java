@@ -136,6 +136,7 @@ public class WriteTagActivity extends Activity {
 
                 ndef.writeNdefMessage(message);
                 Toast.makeText(this, "商品ID已写入芯片！", Toast.LENGTH_LONG).show();
+
                 return true;
             }
 
