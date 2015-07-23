@@ -141,7 +141,7 @@ tools:context=".MainActivity">
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/accountWalletNum"
+                    android:id="@+id/goodsSpeciesNum"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:text="5"
@@ -155,7 +155,7 @@ tools:context=".MainActivity">
 
                     android:layout_gravity="center"
                     android:gravity="center|top"
-                    android:text="商品数量" />
+                    android:text="商品种类数量" />
             </LinearLayout>
 
         </LinearLayout>
@@ -1083,10 +1083,62 @@ tools:context=".MainActivity">
             </LinearLayout>
 
 
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/adminSetting">
 
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邮件与推送"
+                android:id="@+id/switch1"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.16"
+                android:checked="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\n评分和意见"
+                android:id="@+id/textView2"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.16" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBar"
+                android:layout_weight="0.16" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:hint="评分和意见"
+                    android:gravity="center"
+                    android:id="@+id/textView3"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.02" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="提交"
+                    android:onClick="commit"
+                    android:id="@+id/button2"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.06" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
+
 
 </FrameLayout>
 </ScrollView>
