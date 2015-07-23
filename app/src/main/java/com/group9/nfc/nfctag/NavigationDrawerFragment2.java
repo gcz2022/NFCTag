@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -110,7 +111,9 @@ public class NavigationDrawerFragment2 extends Fragment {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.addHeaderView(inflater.inflate(R.layout.header_just_username, null), null, false);
-        
+
+        mDrawerListView.setAdapter(new MenuItemAdapter(getActivity()));
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -119,7 +122,6 @@ public class NavigationDrawerFragment2 extends Fragment {
         });
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
-        mDrawerListView.setAdapter(new MenuItemAdapter(getActivity()));
 
         final ActionBar ab = getActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_drawer);
@@ -284,8 +286,9 @@ public class NavigationDrawerFragment2 extends Fragment {
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        actionBar.setTitle(R.string.guider);
     }
 
     private ActionBar getActionBar() {

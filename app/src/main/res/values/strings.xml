@@ -56,5 +56,6 @@
     <string name="register">注册</string>
     <string name="password_hint">请输入密码</string>
     <string name="title_activity_items">ItemsActivity</string>
+    <string name="guider">导航</string>
 
 </resources>

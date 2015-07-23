@@ -6,4 +6,7 @@
     <color name="bill_gain">#ffcd3b45</color>
     <color name="transparent">#00000000</color>
     <color name="actionbar">#ffa048ff</color>
+    <color name="window_background">#FFF5F5F5</color>
+    <color name="software_textColor_selected">#ffa048ff</color>
+    <color name="software_textColor_unselected" >#ffeceaff</color>
 </resources>
