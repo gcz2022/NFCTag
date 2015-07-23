@@ -32,7 +32,7 @@ public class MainActivity2 extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (getIntent().getStringExtra("buy") != null && getIntent().getStringExtra("buy").equals("true")) {
-            onNavigationDrawerItemSelected(1, getIntent().getStringExtra("item_id"));
+            onNavigationDrawerItemSelected(2, getIntent().getStringExtra("item_id"));
         }
     }
 
@@ -66,6 +66,9 @@ public class MainActivity2 extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_section2_4);
+                break;
+            case 5:
+                mTitle = "设置";
                 break;
         }
     }
