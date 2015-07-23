@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,12 +26,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import connection.client.Client;
 
@@ -104,7 +107,8 @@ public class NavigationDrawerFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.addHeaderView(inflater.inflate(R.layout.header_just_username, null), null, false);
+        View view = inflater.inflate(R.layout.header_just_username, null);
+        mDrawerListView.addHeaderView(view, null, false);
 
         mDrawerListView.setAdapter(new MenuItemAdapter(getActivity()));
 
@@ -204,6 +208,7 @@ public class NavigationDrawerFragment2 extends Fragment {
 
     public void selectItem(int position) {
         mCurrentSelectedPosition = position;
+
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }
@@ -388,7 +393,7 @@ public class NavigationDrawerFragment2 extends Fragment {
                     TextView itemView = (TextView) convertView;
                     itemView.setText(item.name);
                     Drawable icon = mContext.getResources().getDrawable(item.icon);
-                    setIconColor(icon);
+                    //setIconColor(icon);
                     if (icon != null) {
                         icon.setBounds(0, 0, mIconSize, mIconSize);
 //                        TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);

@@ -1,1 +1,1 @@
-include ':app', ':blogcodes'
+include ':app'

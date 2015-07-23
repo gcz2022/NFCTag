@@ -28,7 +28,7 @@ public class MainActivity2 extends ActionBarActivity
                 getSupportFragmentManager().findFragmentById(navigation_drawer);
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
-                navigation_drawer,
+                R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         if (getIntent().getStringExtra("buy") != null && getIntent().getStringExtra("buy").equals("true")) {
