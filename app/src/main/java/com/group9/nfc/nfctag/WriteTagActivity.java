@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.group9.nfc.nfctag.R;
 
 import java.nio.charset.Charset;
 

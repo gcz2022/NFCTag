@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:buttonStyle">@style/CustomButton</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <style name="loginTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -53,13 +53,5 @@
 
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/actionbar_background</item>
-    </style>
-    <style name="Theme.DesignDemo" parent="Base.Theme.DesignDemo">
-    </style>
-    <style name="Base.Theme.DesignDemo" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#673AB7</item>
-        <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#FF4081</item>
-        <item name="android:windowBackground">@color/window_background</item>
     </style>
 </resources>
