@@ -222,7 +222,7 @@ public class MainActivity extends ActionBarActivity
 
         super.onCreate(savedInstanceState);
         mNavigationDrawerFragment = new NavigationDrawerFragment();
-        mNavigationDrawerFragment.setType("admin");
+
         setContentView(R.layout.activity_main);
 
         initViewPointer();
@@ -238,7 +238,7 @@ public class MainActivity extends ActionBarActivity
 
         if(intent.getStringExtra("read")!=null&&intent.getStringExtra("read").equals("true"))
         {
-            onNavigationDrawerItemSelected(2);
+            onNavigationDrawerItemSelected(3);
             customerId.setText(intent.getStringExtra("customerId"));
         }
     }
@@ -430,10 +430,11 @@ public class MainActivity extends ActionBarActivity
     {
         switch (number)
         {
-            case 1:
+            case 2:
                 String balanceNum=getBalance();
 
                 balanceTextView.setText(balanceNum);
+                balanceTextView.setTextSize(40);
 
                 addItems();
                 refresh();
@@ -444,21 +445,21 @@ public class MainActivity extends ActionBarActivity
 
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case 3:
                 myAccount.setVisibility(View.GONE);
                 goodsIn.setVisibility(View.VISIBLE);
                 customerBuy.setVisibility(View.GONE);
 
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case 4:
                 myAccount.setVisibility(View.GONE);
                 goodsIn.setVisibility(View.GONE);
                 customerBuy.setVisibility(View.VISIBLE);
 
                 mTitle = getString(R.string.title_section3);
                 break;
-            case 4:
+            case 5:
                 mTitle = getString(R.string.title_section4);
                 break;
         }
@@ -467,6 +468,7 @@ public class MainActivity extends ActionBarActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setBackgroundDrawable(this.getBaseContext().getResources().getDrawable(R.drawable.actionbar_background));
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
