@@ -333,7 +333,7 @@ public class PlaceholderFragment extends Fragment {
 
                 break;
             case 4:
-                rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+                rootView = inflater.inflate(R.layout.fragment_friends, container, false);
                 break;
         }
         return rootView;

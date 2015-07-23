@@ -55,7 +55,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SignInActivity"
-            android:label="Sign in"
             android:theme="@style/loginTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>

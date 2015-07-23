@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NFC</string>
+    <string name="app_name">闪付</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">log out</string>
