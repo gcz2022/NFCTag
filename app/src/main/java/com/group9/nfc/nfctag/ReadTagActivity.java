@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,14 @@ public class ReadTagActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
+        if (Client.getClient().getUsertype() != Client.USERTYPE_RETAILER)
+        {
+            ImageView imageView=(ImageView)findViewById(R.id.readImage);
+            imageView.setImageResource(R.drawable.goods);
+
+            TextView textView=(TextView)findViewById(R.id.readText);
+            textView.setText("检测到商品！");
+        }
 
         textView = (TextView) findViewById(R.id.textView);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -50,12 +59,14 @@ public class ReadTagActivity extends Activity {
                                          public void onClick(View v) {
                                              if (Client.getClient().getUsertype() == Client.USERTYPE_RETAILER) {
                                                  Intent intent = new Intent(v.getContext(), MainActivity.class);
+
                                                  intent.putExtra("read", "true");
                                                  intent.putExtra("customerId", textView.getText().toString());
                                                  startActivity(intent);
                                              } else {
                                                  Intent intent = new Intent(v.getContext(), MainActivity2.class);
                                                  intent.putExtra("buy", "true");
+
                                                  intent.putExtra(ItemID,textView.getText().toString());
                                                  startActivity(intent);
                                                  finish();

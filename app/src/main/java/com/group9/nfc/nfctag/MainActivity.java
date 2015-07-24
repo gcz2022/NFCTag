@@ -185,11 +185,11 @@ public class MainActivity extends ActionBarActivity
     {
         if(customerId.getText().toString().isEmpty())
         {
-            Toast.makeText(this, "请填写商品ID！", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请填写用户钱包ID！", Toast.LENGTH_LONG).show();
         }
         else if(amount.getText().toString().isEmpty())
         {
-            Toast.makeText(this, "请填写商品数量！", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请填写商品总额！", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -200,6 +200,7 @@ public class MainActivity extends ActionBarActivity
                 Client.Response response = new Client.AsnyRequest(){
                     public Client.Response getResponse(){
                         return Client.getClient().charge(customerId.getText().toString(), Integer.parseInt(amount.getText().toString()));
+
                     }
                 }.post();
                 if(response.getResult().equals("success"))
@@ -214,7 +215,7 @@ public class MainActivity extends ActionBarActivity
             }
             catch (Exception e)
             {
-                Toast.makeText(this, "请填写正确的商品数量！", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "请填写一个整数！", Toast.LENGTH_LONG).show();
             }
         }
 
