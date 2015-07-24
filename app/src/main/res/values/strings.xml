@@ -55,10 +55,24 @@
     <string name="login_label_signin">登录</string>
     <string name="seller">商家</string>
     <string name="custom">客户</string>
-    <string name="register">注册</string>
+    <string name="register">没用账号？<a href="#">注册</a></string>
     <string name="password_hint">请输入密码</string>
     <string name="title_activity_items">ItemsActivity</string>
     <string name="guider">导航</string>
     <string name="recharge_hint">请输入充值金额</string>
-
+    <string name="recharge">充值</string>
+    <string name="recharge_cancel">取消</string>
+    <string-array name="friend">
+        <item>李泉来</item>
+        <item>习近平</item>
+        <item>沈超楠</item>
+        <item>史飞超</item>
+        <item>包君泽</item>
+        <item>杜振安</item>
+        <item>李岩</item>
+        <item>直男</item>
+        <item>腐女</item>
+        <item>鬼父文</item>
+        <item>优衣库</item>
+    </string-array>
 </resources>
