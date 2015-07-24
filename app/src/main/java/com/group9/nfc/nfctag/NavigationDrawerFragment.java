@@ -343,8 +343,7 @@ public class NavigationDrawerFragment extends Fragment {
                         new LvMenuItem(R.drawable.ic_mine, "我的账户"),
                         new LvMenuItem(R.drawable.ic_in_item, "商品入库"),
                         new LvMenuItem(R.drawable.ic_gain, "用户消费"),
-                        new LvMenuItem(R.drawable.ic_settings, "设置"),
-                        new LvMenuItem("Sub Items")
+                        new LvMenuItem(R.drawable.ic_settings, "设置")
                 ));
 
 

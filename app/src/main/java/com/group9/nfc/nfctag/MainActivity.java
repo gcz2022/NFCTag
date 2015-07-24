@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,7 @@ public class MainActivity extends ActionBarActivity
     private LinearLayout myAccount;
     private LinearLayout goodsIn;
     private LinearLayout customerBuy;
-    private LinearLayout adminSetting;
+    private RelativeLayout adminSetting;
 
     private LinearLayout adminHasItemLayout;
 
@@ -64,6 +65,7 @@ public class MainActivity extends ActionBarActivity
         myAccount = (LinearLayout) findViewById(R.id.myAccount);
         goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
         customerBuy=(LinearLayout) findViewById(R.id.customerBuy);
+        adminSetting=(RelativeLayout) findViewById(R.id.adminSetting);
 
         //用户名
         accountTextView = (TextView) findViewById(R.id.accountName);
