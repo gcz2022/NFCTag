@@ -385,7 +385,7 @@ public class NavigationDrawerFragment extends Fragment {
                     TextView itemView = (TextView) convertView;
                     itemView.setText(item.name);
                     Drawable icon = mContext.getResources().getDrawable(item.icon);
-                    setIconColor(icon);
+//                    setIconColor(icon);
                     if (icon != null) {
                         icon.setBounds(0, 0, mIconSize, mIconSize);
                         TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);
