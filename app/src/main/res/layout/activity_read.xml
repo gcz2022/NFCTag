@@ -2,55 +2,47 @@
 
 
 <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="62dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="121dp" android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"><![CDATA[>
-
-    ]]></RelativeLayout>
+    android:layout_marginTop="62dp">
 
     <ImageView
+        android:id="@+id/readImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/readImage"
-        android:src="@drawable/wallet2"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:src="@drawable/wallet2" />
 
     <TextView
+        android:id="@+id/textViewGoodId"
         android:layout_width="wrap_content"
         android:layout_height="37dp"
-        android:text="99HLRSFD"
-        android:textSize="28sp"
-        android:id="@+id/textViewGoodId"
-
-        android:textColor="#FFFFFF"
         android:layout_above="@+id/returnnns"
         android:layout_alignEnd="@+id/returnnns"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
 
     <TextView
+        android:id="@+id/readText"
         android:layout_width="wrap_content"
         android:layout_height="127dp"
-        android:text="检测到钱包!"
-        android:id="@+id/readText"
-        android:textSize="20sp"
         android:layout_gravity="center_horizontal|top"
-        android:gravity="bottom"/>
+        android:gravity="bottom"
+        android:text="检测到钱包!"
+        android:textSize="20sp" />
 
     <Button
+        android:id="@+id/returnnns"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="返回并自动填充"
-        android:id="@+id/returnnns"
-        android:background="@drawable/button_style"
-        android:layout_margin="25dp"
         android:layout_alignParentTop="true"
-        android:layout_gravity="right|bottom" />
+        android:layout_gravity="right|bottom"
+        android:layout_margin="25dp"
+        android:background="@drawable/button_style"
+        android:text="返回并自动填充" />
 
 </FrameLayout>

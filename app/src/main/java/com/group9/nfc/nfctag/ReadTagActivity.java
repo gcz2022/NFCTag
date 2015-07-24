@@ -41,16 +41,13 @@ public class ReadTagActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
-        if (Client.getClient().getUsertype() != Client.USERTYPE_RETAILER)
+        if (Client.getClient().getUsertype() == Client.USERTYPE_CUSTOMER)
         {
             ImageView imageView=(ImageView)findViewById(R.id.readImage);
             imageView.setImageResource(R.drawable.goods);
 
             TextView textView=(TextView)findViewById(R.id.readText);
             textView.setText("检测到商品！");
-
-            TextView textViewGoodId=(TextView)findViewById(R.id.textViewGoodId);
-            textView.setText("");
         }
 
         textView = (TextView) findViewById(R.id.textViewGoodId);
@@ -66,6 +63,7 @@ public class ReadTagActivity extends Activity {
                                                  intent.putExtra("read", "true");
                                                  intent.putExtra("customerId", textView.getText().toString());
                                                  startActivity(intent);
+                                                 finish();
                                              } else {
                                                  Intent intent = new Intent(v.getContext(), MainActivity2.class);
                                                  intent.putExtra("buy", "true");
