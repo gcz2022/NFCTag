@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background_login"
-    android:gravity="center"
     android:orientation="vertical">
     <!-- padding 内边距   layout_margin 外边距
   		android:layout_alignParentTop 布局的位置是否处于顶部 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/icon" />
 
     <RelativeLayout
         android:id="@+id/login_div"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dip"
-        android:background="@drawable/background_login_div"
         android:padding="15dip">
         <!-- 账号 -->
         <TextView
@@ -55,29 +58,27 @@
             android:password="true"
             android:singleLine="true" />
         <!-- 登录button -->
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/password_edit"
-            android:layout_below="@id/password_edit"
-            android:onClick="signIn"
-            android:text="@string/login_label_signin" />
-
-        <Button
-            android:id="@+id/register_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/register"
-            android:layout_below="@+id/password_edit"
-            android:layout_toStartOf="@+id/login_button" />
-
     </RelativeLayout>
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/login_button"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_style"
+        android:onClick="signIn"
+        android:text="@string/login_label_signin" />
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp" />
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/register_text"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"
+        android:text="@string/register" />
 
 </LinearLayout>

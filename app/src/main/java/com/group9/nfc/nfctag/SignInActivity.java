@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import connection.client.Client;
@@ -32,16 +38,28 @@ public class SignInActivity extends Activity {
                 mContext.finish();
             }
         }
-        final Button button = (Button) findViewById(R.id.register_button);
-        button.setOnClickListener(new Button.OnClickListener(){
-
+        TextView textView = (TextView)findViewById(R.id.register_text);
+        String register = textView.getText().toString();
+        SpannableString spannableString = new SpannableString(register);
+        spannableString.setSpan(new ClickableSpan() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, RegisterActivity.class);
+            public void onClick(View widget) {
+                Intent intent = new Intent(SignInActivity.this,RegisterActivity.class);
                 startActivity(intent);
-                finish();
             }
-        });
+        },5,textView.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(spannableString);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+//        final Button button = (Button) findViewById(R.id.register_button);
+//        button.setOnClickListener(new Button.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mContext, RegisterActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
     }
 
     public void signIn(View view) {

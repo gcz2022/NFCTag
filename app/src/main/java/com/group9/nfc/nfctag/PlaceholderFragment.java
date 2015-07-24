@@ -2,6 +2,7 @@ package com.group9.nfc.nfctag;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -155,31 +156,34 @@ public class PlaceholderFragment extends Fragment {
                         ly.findViewById(R.id.deleteWallet).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-                                builder.setTitle("虚拟钱包");
-                                builder.setMessage("确认删除钱包么");
-                                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                final DeleteDialog dialog = new DeleteDialog(mActivity, R.style.MyDialog,"确定要删除钱包么？");
+                                dialog.show();
+                                DeleteDialog.ListenerThree listenerThree = new DeleteDialog.ListenerThree() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(mActivity, "delete success", Toast.LENGTH_SHORT).show();
-                                        int currentWallets = Integer.valueOf(textWallets.getText().toString()) - 1;
-                                        textWallets.setText(String.valueOf(currentWallets));
-                                        int currentBalance = Integer.valueOf(textAccountBalance.getText().toString()) +
-                                                Integer.valueOf(String.valueOf(wallet.getInt("balance")));
-                                        textAccountBalance.setText(String.valueOf(currentBalance));
-                                        ly.setVisibility(View.GONE);
-                                        new Client.AsnyRequest() {
-                                            public Client.Response getResponse() {
-                                                return Client.getClient().deleteWallet(walletId);
-                                            }
-                                        }.post();
+                                    public void onClick(View view) {
+                                        switch (view.getId()){
+                                            case R.id.dialog_button_ok :
+                                                Toast.makeText(mActivity, "删除成功", Toast.LENGTH_SHORT).show();
+                                                int currentWallets = Integer.valueOf(textWallets.getText().toString()) - 1;
+                                                textWallets.setText(String.valueOf(currentWallets));
+                                                int currentBalance = Integer.valueOf(textAccountBalance.getText().toString()) +
+                                                        Integer.valueOf(String.valueOf(wallet.getInt("balance")));
+                                                textAccountBalance.setText(String.valueOf(currentBalance));
+                                                ly.setVisibility(View.GONE);
+                                                new Client.AsnyRequest() {
+                                                    public Client.Response getResponse() {
+                                                        return Client.getClient().deleteWallet(walletId);
+                                                    }
+                                                }.post();
+                                                dialog.dismiss();
+                                                break;
+                                            case R.id.dialog_button_cancle :
+                                                dialog.dismiss();
+                                                break;
+                                        }
                                     }
-                                });
-                                //    设置一个NegativeButton
-                                builder.setNegativeButton("取消", null);
-                                //    显示出该对话框
-                                builder.show();
-
+                                };
+                                dialog.SetListener(listenerThree);
                             }
                         });
                         ly.findViewById(R.id.getWalletBills).setOnClickListener(new View.OnClickListener() {
@@ -358,6 +362,17 @@ public class PlaceholderFragment extends Fragment {
                 break;
             case 4:
                 rootView = inflater.inflate(R.layout.fragment_friends, container, false);
+                final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.friends);
+                String[] friend = getResources().getStringArray(R.array.friend);
+                for (int i = 0 ; i < friend.length; i++) {
+                    LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.friend, null).findViewById(R.id.my_friend);
+                    TextView fr = (TextView)ly.findViewById(R.id.User_name);
+                    fr.setText(friend[i]);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(0, 20, 0, 0);
+                    layout.addView(ly, lp);
+                }
                 break;
             case 5:
                 rootView = inflater.inflate(R.layout.fragment_settings, container, false);
