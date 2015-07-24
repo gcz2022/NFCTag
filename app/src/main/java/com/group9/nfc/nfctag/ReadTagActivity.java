@@ -48,9 +48,12 @@ public class ReadTagActivity extends Activity {
 
             TextView textView=(TextView)findViewById(R.id.readText);
             textView.setText("检测到商品！");
+
+            TextView textViewGoodId=(TextView)findViewById(R.id.textViewGoodId);
+            textView.setText("");
         }
 
-        textView = (TextView) findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textViewGoodId);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         returnnns = (Button) findViewById(R.id.returnnns);

@@ -10,17 +10,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="121dp" android:layout_height="176dp"
-        android:layout_gravity="center_horizontal|bottom">>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="返回并自动填充"
-            android:id="@+id/returnnns"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+        android:layout_width="121dp" android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"><![CDATA[>
 
-    </RelativeLayout>
+    ]]></RelativeLayout>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -34,7 +27,7 @@
         android:layout_height="37dp"
         android:text="99HLRSFD"
         android:textSize="28sp"
-        android:id="@+id/textView"
+        android:id="@+id/textViewGoodId"
 
         android:textColor="#FFFFFF"
         android:layout_above="@+id/returnnns"
@@ -49,5 +42,15 @@
         android:textSize="20sp"
         android:layout_gravity="center_horizontal|top"
         android:gravity="bottom"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="返回并自动填充"
+        android:id="@+id/returnnns"
+        android:background="@drawable/button_style"
+        android:layout_margin="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="right|bottom" />
 
 </FrameLayout>

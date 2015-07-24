@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editText"
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="62dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="58dp"
-        android:hint="@string/editText" />
+        android:id="@+id/writeImage"
+        android:src="@drawable/goods"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:id="@+id/editText"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center" />
+
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="写入商品ID" />
-</RelativeLayout>
+        android:text="写入商品ID"
+        android:id="@+id/button"
+        android:background="@drawable/button_style"
+        android:layout_margin="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="right|bottom" />
+
+</FrameLayout>

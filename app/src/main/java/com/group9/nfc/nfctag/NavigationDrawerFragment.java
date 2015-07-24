@@ -13,7 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v4.widget.TextViewCompat;
+//import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -389,7 +389,7 @@ public class NavigationDrawerFragment extends Fragment {
                     setIconColor(icon);
                     if (icon != null) {
                         icon.setBounds(0, 0, mIconSize, mIconSize);
-                        TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);
+//                        TextViewCompat.setCompoundDrawablesRelative(itemView, icon, null, null, null);
                     }
 
                     break;

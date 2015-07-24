@@ -16,6 +16,8 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.group9.nfc.nfctag.R;
@@ -31,7 +33,8 @@ public class WriteWalletActivity extends Activity {
     private IntentFilter[] tagFilters;
     private boolean writeMode = false;
 
-    private EditText editText;
+    private TextView editText;
+    private ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,11 @@ public class WriteWalletActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiry_write);
 
-        editText = (EditText) findViewById(R.id.editText);
+        editText = (TextView) findViewById(R.id.editText);
+        imageView = (ImageView) findViewById(R.id.writeImage);
+
+        imageView.setImageResource(R.drawable.wallet2);
+
         editText.setText(wallet_rawVal);
 
         Button buttonWrite = (Button) findViewById(R.id.button);

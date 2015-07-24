@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,7 +32,7 @@ public class WriteTagActivity extends Activity {
     private IntentFilter[] tagFilters;
     private boolean writeMode = false;
 
-    private EditText editText;
+    private TextView editText;
     private Button buttonWrite;
 
     private String goodsId;
@@ -44,7 +45,7 @@ public class WriteTagActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiry_write);
 
-        editText = (EditText)findViewById(R.id.editText);
+        editText = (TextView)findViewById(R.id.editText);
         editText.setText(goodsId);
 
         buttonWrite = (Button)findViewById(R.id.button);
