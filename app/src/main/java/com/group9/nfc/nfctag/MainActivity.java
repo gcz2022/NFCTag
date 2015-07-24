@@ -64,8 +64,6 @@ public class MainActivity extends ActionBarActivity
         myAccount = (LinearLayout) findViewById(R.id.myAccount);
         goodsIn = (LinearLayout) findViewById(R.id.goodsIn);
         customerBuy=(LinearLayout) findViewById(R.id.customerBuy);
-        adminSetting=(LinearLayout)findViewById(R.id.adminSetting);
-
 
         //用户名
         accountTextView = (TextView) findViewById(R.id.accountName);
@@ -78,6 +76,7 @@ public class MainActivity extends ActionBarActivity
         balanceTextView.setText(balanceNum);
         balanceTextView.setTextSize(25);
         itemNumView=(TextView)findViewById(R.id.goodsSpeciesNum);
+
 
 
         //商品入库
@@ -461,7 +460,6 @@ public class MainActivity extends ActionBarActivity
                 customerBuy.setVisibility(View.GONE);
                 adminSetting.setVisibility(View.GONE);
 
-
                 mTitle = getString(R.string.title_section1);
                 break;
             case 3:
@@ -469,7 +467,6 @@ public class MainActivity extends ActionBarActivity
                 goodsIn.setVisibility(View.VISIBLE);
                 customerBuy.setVisibility(View.GONE);
                 adminSetting.setVisibility(View.GONE);
-
 
                 mTitle = getString(R.string.title_section2);
                 break;
@@ -487,6 +484,7 @@ public class MainActivity extends ActionBarActivity
                 goodsIn.setVisibility(View.GONE);
                 customerBuy.setVisibility(View.GONE);
                 adminSetting.setVisibility(View.VISIBLE);
+
                 break;
         }
     }
@@ -527,7 +525,12 @@ public class MainActivity extends ActionBarActivity
             finish();
             return true;
         }
-
+        if(id==R.id.action_bill)
+        {
+            Intent intent = new Intent(this, BillActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

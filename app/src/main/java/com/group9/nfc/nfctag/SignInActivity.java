@@ -22,8 +22,7 @@ public class SignInActivity extends Activity {
         if (Client.getClient().isLogined()) {
             if (Client.getClient().getUsertype() == Client.USERTYPE_RETAILER) {
                 Intent intent = new Intent(this, MainActivity.class);
-                Toast.makeText(this, "Admin sign in succeed", Toast.LENGTH_LONG).show();
-                intent.putExtra("account", "admin");
+                Toast.makeText(this, Client.getClient().getUsername()+" sign in succeed", Toast.LENGTH_LONG).show();
                 mContext.startActivity(intent);
                 mContext.finish();
             } else {
