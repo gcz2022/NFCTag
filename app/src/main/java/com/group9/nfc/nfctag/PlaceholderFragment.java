@@ -114,8 +114,11 @@ public class PlaceholderFragment extends Fragment {
                                             textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
                                             textAccountBalance.setText(String.valueOf(accountBalance));
                                             Toast.makeText(mActivity, "充值成功", Toast.LENGTH_LONG).show();
+                                            dialog1.dismiss();
+                                        } else {
+                                            AccountRecharge.requestFocus();
+                                            Toast.makeText(mActivity,"输入充值金额",Toast.LENGTH_LONG).show();
                                         }
-                                        dialog1.dismiss();
                                         break;
                                     case R.id.dialog_button_cancle:
                                         dialog1.dismiss();
@@ -156,13 +159,13 @@ public class PlaceholderFragment extends Fragment {
                         ly.findViewById(R.id.deleteWallet).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final DeleteDialog dialog = new DeleteDialog(mActivity, R.style.MyDialog,"确定要删除钱包么？");
+                                final DeleteDialog dialog = new DeleteDialog(mActivity, R.style.MyDialog, "确定要删除钱包么？");
                                 dialog.show();
                                 DeleteDialog.ListenerThree listenerThree = new DeleteDialog.ListenerThree() {
                                     @Override
                                     public void onClick(View view) {
-                                        switch (view.getId()){
-                                            case R.id.dialog_button_ok :
+                                        switch (view.getId()) {
+                                            case R.id.dialog_button_ok:
                                                 Toast.makeText(mActivity, "删除成功", Toast.LENGTH_SHORT).show();
                                                 int currentWallets = Integer.valueOf(textWallets.getText().toString()) - 1;
                                                 textWallets.setText(String.valueOf(currentWallets));
@@ -177,7 +180,7 @@ public class PlaceholderFragment extends Fragment {
                                                 }.post();
                                                 dialog.dismiss();
                                                 break;
-                                            case R.id.dialog_button_cancle :
+                                            case R.id.dialog_button_cancle:
                                                 dialog.dismiss();
                                                 break;
                                         }
@@ -263,7 +266,7 @@ public class PlaceholderFragment extends Fragment {
                             }
                         });
                     } else {
-                        dialog("No Item Found !");
+                        dialog("没有发现这个芯片的商品");
                     }
                 } else {
                     item_buy.setOnClickListener(new Button.OnClickListener() {
@@ -364,14 +367,11 @@ public class PlaceholderFragment extends Fragment {
                 rootView = inflater.inflate(R.layout.fragment_friends, container, false);
                 final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.friends);
                 String[] friend = getResources().getStringArray(R.array.friend);
-                for (int i = 0 ; i < friend.length; i++) {
+                for (int i = 0; i < friend.length; i++) {
                     LinearLayout ly = (LinearLayout) inflater.inflate(R.layout.friend, null).findViewById(R.id.my_friend);
-                    TextView fr = (TextView)ly.findViewById(R.id.User_name);
+                    TextView fr = (TextView) ly.findViewById(R.id.User_name);
                     fr.setText(friend[i]);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(0, 20, 0, 0);
-                    layout.addView(ly, lp);
+                    layout.addView(ly);
                 }
                 break;
             case 5:
