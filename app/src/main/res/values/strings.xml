@@ -38,8 +38,9 @@
     <string name="item_price">单价</string>
     <string name="all_price">总计</string>
     <string name="item_hint">提示：将NFC芯片置于手机的合适位置以读取用户ID~</string>
-    <string name="wallet_hint">提示：输入以下信息，将NFC芯片置于手机的合适位置以制作虚拟钱包~</string>
     <string name="goods_in_hint">提示：输入以下信息，将NFC芯片置于手机的合适位置以写入商品信息~</string>
+    <string name="item_hint_1">提示：将手机放置芯片附近读取商品相关信息~</string>
+    <string name="wallet_hint">提示：输入以下信息，将芯片放置手机NFC芯片处制作虚拟钱包~</string>
     <string name="balance">余额</string>
     <string name="account">账号</string>
     <string name="item_scan">扫描芯片</string>
@@ -58,5 +59,6 @@
     <string name="password_hint">请输入密码</string>
     <string name="title_activity_items">ItemsActivity</string>
     <string name="guider">导航</string>
+    <string name="recharge_hint">请输入充值金额</string>
 
 </resources>

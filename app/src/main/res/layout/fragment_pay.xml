@@ -77,7 +77,7 @@
         android:padding="7dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="@string/item_hint"
+        android:text="@string/item_hint_1"
         android:textSize="20sp" />
 
     <TableLayout

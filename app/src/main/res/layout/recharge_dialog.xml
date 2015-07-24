@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_recharge"
+    android:layout_width="wrap_content"
+    android:layout_height="200dp"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dip"
+            android:drawableLeft="@drawable/ic_recharge"
+            android:text="充值"
+            android:textColor="#ffdc2929"
+            android:textSize="24dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/lins" />
+    <EditText
+        android:id="@+id/recharge_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:inputType="number"
+        android:singleLine="true"
+        android:hint="@string/recharge_hint"
+        android:background="@drawable/editsharp"
+        android:gravity="center"
+        android:minWidth="150dp"
+        android:textColor="#000000" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center_horizontal"
+        android:paddingBottom="10dip"
+        android:paddingTop="10dip">
+
+        <Button
+            android:id="@+id/dialog_button_ok"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/btn_background_black"
+            android:text="确定"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/dialog_button_cancle"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:layout_toRightOf="@id/dialog_button_ok"
+            android:background="@drawable/btn_background_black"
+            android:text="取消"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,8 +1,6 @@
 package com.group9.nfc.nfctag;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,8 +49,8 @@ public class RegisterActivity extends Activity {
                         startActivity(intent);
                         finish();
                     } else {
-                        final MyDialog dialog1 = new MyDialog(RegisterActivity.this, R.style.MyDialog,response.getErrorMsg());
-                        MyDialog.ListenerThree listenerThree = new MyDialog.ListenerThree() {
+                        final RechargeDialog dialog1 = new RechargeDialog(RegisterActivity.this, R.style.MyDialog,response.getErrorMsg());
+                        RechargeDialog.ListenerThree listenerThree = new RechargeDialog.ListenerThree() {
                             @Override
                             public void onClick(View view) {
                                 switch (view.getId()) {
@@ -80,8 +78,8 @@ public class RegisterActivity extends Activity {
      * dialog 弹出一个警告窗口 提示错误信息。
      */
     public void dialog(String ErrorMsg) {
-        final MyDialog dialog1 = new MyDialog(RegisterActivity.this, R.style.MyDialog,ErrorMsg);
-        MyDialog.ListenerThree listenerThree = new MyDialog.ListenerThree() {
+        final RechargeDialog dialog1 = new RechargeDialog(RegisterActivity.this, R.style.MyDialog,ErrorMsg);
+        RechargeDialog.ListenerThree listenerThree = new RechargeDialog.ListenerThree() {
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {

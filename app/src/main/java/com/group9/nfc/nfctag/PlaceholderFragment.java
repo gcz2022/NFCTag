@@ -2,7 +2,6 @@ package com.group9.nfc.nfctag;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +83,7 @@ public class PlaceholderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         int select = getArguments().getInt(ARG_SECTION_NUMBER);
         /**
@@ -97,7 +95,34 @@ public class PlaceholderFragment extends Fragment {
                 Button rechargeBalance = (Button) rootView.findViewById(R.id.recharge);
                 rechargeBalance.setOnClickListener(new Button.OnClickListener() {
                     public void onClick(View v) {
-                        dialog();
+                        final RechargeDialog dialog1 = new RechargeDialog(mActivity, R.style.MyDialog);
+                        dialog1.show();
+                        final EditText AccountRecharge = dialog1.getRMB();
+                        RechargeDialog.ListenerThree listenerThree = new RechargeDialog.ListenerThree() {
+                            @Override
+                            public void onClick(View view) {
+                                switch (view.getId()) {
+                                    case R.id.dialog_button_ok:
+                                        Client.Response response = new Client.AsnyRequest() {
+                                            public Client.Response getResponse() {
+                                                return Client.getClient().recharge(Integer.valueOf(AccountRecharge.getText().toString()));
+                                            }
+                                        }.post();
+                                        if (response.getResult().equals("success")) {
+                                            accountBalance += Integer.valueOf(AccountRecharge.getText().toString());
+                                            textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
+                                            textAccountBalance.setText(String.valueOf(accountBalance));
+                                            Toast.makeText(mActivity, "充值成功", Toast.LENGTH_LONG).show();
+                                        }
+                                        dialog1.dismiss();
+                                        break;
+                                    case R.id.dialog_button_cancle:
+                                        dialog1.dismiss();
+                                        break;
+                                }
+                            }
+                        };
+                        dialog1.SetListener(listenerThree);
                     }
                 });
                 accountBalance = new Client.AsnyRequest() {
@@ -237,7 +262,7 @@ public class PlaceholderFragment extends Fragment {
                         dialog("No Item Found !");
                     }
                 } else {
-                    item_buy.setOnClickListener(new Button.OnClickListener(){
+                    item_buy.setOnClickListener(new Button.OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
@@ -254,7 +279,6 @@ public class PlaceholderFragment extends Fragment {
                         return Client.getClient().getUserInfo();
                     }
                 }.post().helper.getUserBalance();
-                TextView texthint =(TextView)rootView.findViewById(R.id.hint_text);
                 textAccountName = (TextView) rootView.findViewById(R.id.accountName);
                 textAccountName.setText(Client.getClient().getUsername());
                 textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance);
@@ -335,6 +359,10 @@ public class PlaceholderFragment extends Fragment {
             case 4:
                 rootView = inflater.inflate(R.layout.fragment_friends, container, false);
                 break;
+            case 5:
+                rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+                break;
         }
         return rootView;
     }
@@ -343,17 +371,12 @@ public class PlaceholderFragment extends Fragment {
      * dialog 弹出一个警告窗口 提示错误信息。
      */
     public void dialog(String ErrorMsg) {
-        final MyDialog dialog1 = new MyDialog(mActivity, R.style.MyDialog,ErrorMsg);
-        MyDialog.ListenerThree listenerThree = new MyDialog.ListenerThree() {
+        final WaringDialog dialog1 = new WaringDialog(mActivity, R.style.MyDialog, ErrorMsg);
+        WaringDialog.ListenerThree listenerThree = new WaringDialog.ListenerThree() {
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.dialog_button_ok:
-                        Toast.makeText(mActivity, "ok", Toast.LENGTH_LONG).show();
-                        dialog1.dismiss();
-                        break;
-                    case R.id.dialog_button_cancle:
-                        Toast.makeText(mActivity, "cancel", Toast.LENGTH_LONG).show();
                         dialog1.dismiss();
                         break;
                 }
@@ -361,39 +384,6 @@ public class PlaceholderFragment extends Fragment {
         };
         dialog1.SetListener(listenerThree);
         dialog1.show();
-    }
-
-    /**
-     * 输入充值金额
-     */
-    public void dialog() {
-        final Context context = mActivity;
-        //定义1个文本输入框
-        final EditText AccountRecharge = new EditText(mActivity);
-        AccountRecharge.setKeyListener(new DigitsKeyListener(false, true));
-        //创建对话框
-        new AlertDialog.Builder(context)
-                .setTitle("请输入金额")//设置对话框标题
-                .setIcon(android.R.drawable.ic_dialog_info)//设置对话框图标
-                .setView(AccountRecharge)//为对话框添加要显示的组件
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {//设置对话框[肯定]按钮
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Client.Response response = new Client.AsnyRequest() {
-                            public Client.Response getResponse() {
-                                return Client.getClient().recharge(Integer.valueOf(AccountRecharge.getText().toString()));
-                            }
-                        }.post();
-                        if (response.getResult().equals("success")) {
-                            accountBalance += Integer.valueOf(AccountRecharge.getText().toString());
-                            textAccountBalance = (TextView) rootView.findViewById(R.id.accountBalance2);
-                            textAccountBalance.setText(String.valueOf(accountBalance));
-                            Toast.makeText(mActivity, "充值成功", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                })
-                .setNegativeButton("取消", null)//设置对话框[否定]按钮
-                .show();
     }
 
     @Override

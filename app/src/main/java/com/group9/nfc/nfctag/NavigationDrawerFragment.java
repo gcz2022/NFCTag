@@ -340,11 +340,11 @@ public class NavigationDrawerFragment extends Fragment {
 
         private List<LvMenuItem> mItems = new ArrayList<LvMenuItem>(
                 Arrays.asList(
-                        new LvMenuItem(R.drawable.ic_dashboard, "我的账户"),
-                        new LvMenuItem(R.drawable.ic_event, "商品入库"),
-                        new LvMenuItem(R.drawable.ic_headset, "用户消费"),
-                        new LvMenuItem(R.drawable.ic_forum, "设置")
-
+                        new LvMenuItem(R.drawable.ic_mine, "我的账户"),
+                        new LvMenuItem(R.drawable.ic_in_item, "商品入库"),
+                        new LvMenuItem(R.drawable.ic_gain, "用户消费"),
+                        new LvMenuItem(R.drawable.ic_settings, "设置"),
+                        new LvMenuItem("Sub Items")
                 ));
 
 

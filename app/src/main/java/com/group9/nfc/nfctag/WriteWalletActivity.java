@@ -123,7 +123,6 @@ public class WriteWalletActivity extends Activity {
 
                 ndef.writeNdefMessage(message);
                 Toast.makeText(this, "钱包ID已写入芯片！", Toast.LENGTH_LONG).show();
-                finish();
                 return true;
             }
 
@@ -133,7 +132,6 @@ public class WriteWalletActivity extends Activity {
         } catch (Exception e) {
             Toast.makeText(this, "Cannot write to this tag due to an Exception.", Toast.LENGTH_LONG).show();
         }
-
         return false;
     }
 
