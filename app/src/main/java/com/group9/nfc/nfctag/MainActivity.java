@@ -449,6 +449,9 @@ public class MainActivity extends ActionBarActivity
         {
             case 2:
                 String balanceNum=getBalance();
+                //TODO
+                String admintext = Client.getClient().getUsername();
+                accountTextView.setText(admintext);
                 itemNum=getItemNum();
 
                 balanceTextView.setText(balanceNum);

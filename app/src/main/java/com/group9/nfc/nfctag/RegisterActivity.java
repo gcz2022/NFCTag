@@ -37,7 +37,7 @@ public class RegisterActivity extends Activity {
                     dialog("两次密码输入不同");
                 } else {
                     final int user_type = (type.getCheckedRadioButtonId() == R.id.radioButton ? 1 : 0);
-                    Toast.makeText(RegisterActivity.this, String.valueOf(user_type), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(RegisterActivity.this, String.valueOf(user_type), Toast.LENGTH_LONG).show();
                     Client.Response response = new Client.AsnyRequest() {
                         public Client.Response getResponse() {
                             return Client.getClient().register(username.getText().toString(), pwd1.getText().toString(), user_type);
@@ -45,28 +45,12 @@ public class RegisterActivity extends Activity {
                     }.post();
 
                     if (response.getResult().equals("success")) {
+                        Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(RegisterActivity.this, SignInActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        final RechargeDialog dialog1 = new RechargeDialog(RegisterActivity.this, R.style.MyDialog,response.getErrorMsg());
-                        RechargeDialog.ListenerThree listenerThree = new RechargeDialog.ListenerThree() {
-                            @Override
-                            public void onClick(View view) {
-                                switch (view.getId()) {
-                                    case R.id.dialog_button_ok:
-                                        Toast.makeText(RegisterActivity.this, "ok", Toast.LENGTH_LONG).show();
-                                        dialog1.dismiss();
-                                        break;
-                                    case R.id.dialog_button_cancle:
-                                        Toast.makeText(RegisterActivity.this, "cancel", Toast.LENGTH_LONG).show();
-                                        dialog1.dismiss();
-                                        break;
-                                }
-                            }
-                        };
-                        dialog1.SetListener(listenerThree);
-                        dialog1.show();
+                        dialog(response.getErrorMsg());
                     }
                 }
             }
@@ -78,17 +62,12 @@ public class RegisterActivity extends Activity {
      * dialog 弹出一个警告窗口 提示错误信息。
      */
     public void dialog(String ErrorMsg) {
-        final RechargeDialog dialog1 = new RechargeDialog(RegisterActivity.this, R.style.MyDialog,ErrorMsg);
-        RechargeDialog.ListenerThree listenerThree = new RechargeDialog.ListenerThree() {
+        final WaringDialog dialog1 = new WaringDialog(RegisterActivity.this, R.style.MyDialog,ErrorMsg);
+        WaringDialog.ListenerThree listenerThree = new WaringDialog.ListenerThree() {
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.dialog_button_ok:
-                        Toast.makeText(RegisterActivity.this, "ok", Toast.LENGTH_LONG).show();
-                        dialog1.dismiss();
-                        break;
-                    case R.id.dialog_button_cancle:
-                        Toast.makeText(RegisterActivity.this, "cancel", Toast.LENGTH_LONG).show();
                         dialog1.dismiss();
                         break;
                 }
